@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import React, {Component} from "react";
-import {Card, Callout, Button, Tag, Intent, Icon} from "@blueprintjs/core";
+import {Card, Callout, Button, Tag, Intent, Icon,InputGroup} from "@blueprintjs/core";
 import {connect} from "react-redux";
 import {pluginRegistry} from "plugins/pluginRegistration";
 import objectPath from "object-path";
@@ -52,11 +52,16 @@ class _TaskDetail extends Component {
     this.state = {
       task: task,
       confirmOpened: false,
-      downloadLink: ""
+      downloadLink: "",
+      firstInputValue: 0,
+      secondInputValue: 0,
+      serachedPariod: ""
     };
     this.autoRefresh = null;
     this.timeArray = [];
+    this.fillArray = [...new Set(this.timeArray)];
   }
+  
   setDownloadLink = async () => {
     let serverObject = await pluginRegistry.getServer(this.props.server);
     let client = await serverObject.getClient();
@@ -158,8 +163,49 @@ class _TaskDetail extends Component {
   
     return hours + "h " + minutes + "m " + seconds + "s " + milliseconds+ "ms ";
   }
+  updateFirstInputValue(evt) {
+    if (evt.target.value > [...new Set(this.timeArray)].length) {
+      const val = [...new Set(this.timeArray)].length-1
+      this.setState({
+        firstInputValue: val,
+        secondInputValue: [...new Set(this.timeArray)].length
+      });
+    }
+    else if (evt.target.value <= 0) {
+      this.setState({
+        firstInputValue: 1
+      });
+    } else {
+      this.setState({
+        firstInputValue: evt.target.value,
+        serachedPariod: "value"
+      });
+      
+    }
+  }
+  updateSecondInputValue(evt) {
+    if (evt.target.value > [...new Set(this.timeArray)].length) {
+      const val = [...new Set(this.timeArray)].length-1
+      this.setState({
+        secondInputValue: val
+      });
+    }
+    else if (evt.target.value <= 0) {
+      this.setState({
+        secondInputValue: 1
+      });
+    } else {
+      this.setState({
+        secondInputValue: evt.target.value,
+        serachedPariod: "value"
+      });
+      
+    }
+  }
   render() {
     const {task} = this.state;
+    const filteredArray = [...new Set(this.timeArray)];
+    const lastValueFilteredArray = filteredArray[filteredArray.length-1];
     let intent = Intent.PRIMARY;
     switch (task.status) {
       case "FINISHED":
@@ -285,6 +331,45 @@ class _TaskDetail extends Component {
                 </div>
               </Card>
             ) : null}
+            {/* {task.taskhistory_set &&
+            Array.isArray(task.taskhistory_set) &&
+            task.taskhistory_set.length > 0 ? (
+              <Card className="pt-elevation-4">
+                <h5>Task Time</h5>
+                <div>
+                  <table className="pt-table pt-bordered pt-striped">
+                    <thead>
+                      <tr>
+                        <td>Total time</td>
+                        <td>From last update</td>
+                        <td>Time difference</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {" "}
+                          <tr>
+                            <th>{this.msToTime(new Date(lastValueFilteredArray).getTime() - new Date(task.taskhistory_set[0].created).getTime())}</th>
+                            <th>{this.msToTime(new Date(lastValueFilteredArray).getTime() - new Date(task.taskhistory_set[task.taskhistory_set.length-1].modified).getTime())}</th>
+                            <th><InputGroup value={this.state.firstInputValue} onChange={evt => this.updateFirstInputValue(evt)} type="number" min='1' max={filteredArray.length-1} placeHolder={`min.1`} /></th>
+                            <th><InputGroup value={this.state.secondInputValue} onChange={evt => this.updateSecondInputValue(evt)} type="number" min='1' max={filteredArray.length} placeHolder={`max.${filteredArray.length}`}/></th>
+
+                          </tr>
+                          {
+                            this.state.serachedPariod != "" ?
+                            <tr>
+                              Time difference between messages {this.state.firstInputValue} and {this.state.secondInputValue}:
+                              
+                              <p>{this.msToTime(new Date(filteredArray[this.state.secondInputValue-1]).getTime() - new Date(filteredArray[this.state.firstInputValue-1]).getTime())}</p>
+                              </tr>
+                          // <tr>Diiference: {new Date(task.taskmessage_set[this.firstInputValue-1]).getTime()}</tr>
+                          :null
+                          }
+                      {" "}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            ) : null} */}
             <Card className="task-messages pt-elevation-4">
               <h5>Messages</h5>
               {task.taskmessage_set.map((message, index) => {
@@ -307,20 +392,20 @@ class _TaskDetail extends Component {
                     intent = Intent.PRIMARY;
                 }
                 this.timeArray.push(message.created);
-                const fillteredTimeArray = [...new Set(this.timeArray)]
                 const timesArray = [];
                 let i;
-                for (i=0;i < fillteredTimeArray.length; ++i) {
-                  if (i === 0) {
-                    timesArray.push(this.msToTime(new Date(fillteredTimeArray[i]).getTime()));
-                    const diffTime = fillteredTimeArray[i] - fillteredTimeArray[i-1];
-                    // timesArray.push(diffTime)
-                    // timesArray.push(this.msToTime(new Date(fillteredTimeArray[i]).getTime()));
-                  } else {
-                    const filteredArrayDiff = new Date(fillteredTimeArray[i]).getTime() - new Date(fillteredTimeArray[i-1]).getTime();
-                    timesArray.push(this.msToTime(filteredArrayDiff));
+                for (i=0;i < filteredArray.length; ++i) {
+                  if(task.taskhistory_set.length === 0) {
+                    null
                   }
-                  
+                  else {
+                    if (i === filteredArray.length-1) {
+                      null
+                    } else {
+                      const filteredArrayDiff = new Date(filteredArray[i+1]).getTime() - new Date(filteredArray[i]).getTime();
+                      timesArray.push(this.msToTime(filteredArrayDiff));
+                    }
+                  }
                 };
                 return (
                   <div
@@ -342,12 +427,9 @@ class _TaskDetail extends Component {
                           </tr>
                           {yieldDataPairRowIfSet("Created", message.created)}
                           {
-                            index > 0 ? 
-                            <tr>
-                              <td >Time difference between messages</td><td>{timesArray[index]} <span className="pt-icon-time"></span></td>
-                            </tr> 
-                            : 
-                            null
+                          <tr>
+                            <td>Step time: </td><td>{timesArray[index]} <span className="pt-icon-time"></span></td>
+                          </tr>
                           }
                         </tbody>
                       </table>

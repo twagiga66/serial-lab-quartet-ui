@@ -92,7 +92,7 @@ class _ServerTasks extends Component {
     this.fetchTasks = setInterval(() => {
       this.processTasks();
     }, 
-    200000
+    20000
     );
     this.setState({loading: !this.state.loading});
   }
@@ -138,7 +138,7 @@ class _ServerTasks extends Component {
     this.setState(
       { loading : true },
       () => {
-          setTimeout(()=>{this.setState({loading : false})}, 750)
+          setTimeout(()=>{this.setState({loading : false})}, [])
       }
     );
   };

@@ -42,6 +42,7 @@ class _PaginatedList extends Component {
     };
     this.offset = 0;
     this.currentPage = 1;
+    // this.poolID = [4,2,5,6];
     this.debounced = null;
     this.fetchEntries = null;
   }
@@ -116,6 +117,7 @@ class _PaginatedList extends Component {
     if (this.debounced) {
       clearTimeout(this.debounced);
     }
+    const poolID=6
     this.debounced = setTimeout(() => {
       const {loadEntries, server} = this.props;
       loadEntries(
@@ -123,7 +125,8 @@ class _PaginatedList extends Component {
         this.state.keywordSearch,
         this.currentPage,
         this.props.ordering ? this.props.ordering : null,
-        this.props.type ? this.props.type : null
+        // this.props.type ? this.props.type : null,
+        poolID
       );
     }, clear);
     this.loadingScreen();
@@ -131,6 +134,7 @@ class _PaginatedList extends Component {
 
   render() {
     const {entries} = this.state;
+    console.log(this.props)
     return (
       <Card className="pt-elevation-4">
         <h5>

@@ -287,7 +287,7 @@ export class _NavPluginRoot extends Component {
   };
   componentDidMount() {
     if (this.props.server && this.serverHasSerialbox()) {
-      this.props.loadPools(pluginRegistry.getServer(this.props.serverID));
+      // this.props.loadPools(pluginRegistry.getServer(this.props.serverID));
     }
   }
 

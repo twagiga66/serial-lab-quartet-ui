@@ -37,12 +37,14 @@ import {loadPools, loadRegions} from "../reducers/numberrange";
 class _RegionDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {alloc: 1, lastUpdated: null};
+    this.state = {alloc: 1, lastUpdated: null, loading: false};
     // these two properties below make it easy to retrieve
     // and trigger actions.
     this.currentPool = {readable_name: "", machine_name: ""};
+
   }
   componentDidMount() {
+    this.setState({ loading : true });
     //this.props.loadPools(this.props.servers[this.props.match.params.serverID]);
     this.loadPoolDetail(this.props);
   }
@@ -60,10 +62,16 @@ class _RegionDetail extends Component {
       this.currentPool
     );
   }
-
+  loadingScreen = () => {
+    this.setState(
+      { loading : true },
+      () => {
+          setTimeout(()=>{this.setState({loading : false})}, [])
+      }
+    );
+  };
   render() {
     let regions = this.props.currentRegions;
-
     return (
       <RightPanel
         title={

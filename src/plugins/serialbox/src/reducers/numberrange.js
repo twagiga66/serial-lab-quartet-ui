@@ -321,8 +321,45 @@ export default handleActions(
     {}
 );
 
+export const loadResponseRulesForNumberPool = async (server, response, poolID) => {
+    try {
+        
+        let responseRules = await pluginRegistry
+            .getServer(server.serverID)
+            .fetchListAll("serialbox_response_rules_pool_list", {pool_id: poolID}, []);
+        // poor-man's matching alg.
+        console.log("Loading Response Rule with ID: " + poolID)
+        console.log("Response: ", response)
+        let poolsMap = {};
+        // response.results.forEach(pool => {
+        //     poolsMap[pool.id] = pool;
+        //     pool.response_rules = [];
+        // });
+        response.pools.forEach(pool => {
+            poolsMap[pool.id] = pool;
+            pool.response_rules = [];
+        });
+        console.log("response rules list: ",responseRules)
+        if (responseRules && responseRules.length > 0) {
+            responseRules.forEach(responseRule => {
+                try {
+                    poolsMap[responseRule.pool].response_rules.push(responseRule);
+                } catch (e) {
+                    // ignore responseRule that don't have a pool set.
+                    console.log("A response rule appears to not have a pool/rule assigned.");
+                    console.log(e);
+                }
+            });
+        }
+        console.log("final response: ", response)
+        return response
+        
+    } catch (e) {
+        return response
+    }
+};
 
-export const loadPoolList = (server, search, page, ordering) => {
+export const loadPoolList = (server, search, page, ordering, poolID) => {
     const params = {};
     if (search) {
         params.search = search;
@@ -333,14 +370,57 @@ export const loadPoolList = (server, search, page, ordering) => {
     if (ordering) {
         params.ordering = ordering;
     }
+    if (poolID) {
+        params.poolID = poolID;
+    }
+    console.log(server, search, page, ordering, poolID)
     return async dispatch => {
         let serverObject = pluginRegistry.getServer(server.serverID);
         let response_pools = null;
         let pools = null;
+        // let poolIDarray = [6,5,4];
+
+        // let numberPool = 6;
+        // let i;
         serverObject
             .fetchPageList("serialbox_pools_list", params, [])
             .then(async response => {
-                response = await loadResponseRules(server, response);
+                // for(i=0; i <poolIDarray.length; ++i) {
+                //     console.log(poolIDarray[i])
+                //     response = await loadResponseRulesForNumberPool(server, response, poolID=poolIDarray[i]);
+                // }
+                response = await loadResponseRulesForNumberPool(server, response, poolID=poolID);
+                console.log(response)
+                return dispatch({
+                    type: actions.loadPools,
+                    payload: {
+                        serverID: server.serverID,
+                        server: server,
+                        pools: response.results,
+                        count: response.count,
+                        next: response.next
+                    }
+                })
+            })
+            .catch(e => {
+                showMessage({
+                    type: "error",
+                    id: "plugins.masterData.errorFetchPools",
+                    values: {error: e}
+                });
+            });
+    };
+};
+
+
+export const loadResponserulesForPool = (server, poolID) => {
+    return async dispatch => {
+        let serverObject = pluginRegistry.getServer(server.serverID);
+        serverObject
+            .fetchPageList("serialbox_pools_list", params, [])
+            .then(async response => {
+
+                response = await loadResponseRulesForNumberPool(server, response, poolID=poolID);
                 return dispatch({
                     type: actions.loadPools,
                     payload: {

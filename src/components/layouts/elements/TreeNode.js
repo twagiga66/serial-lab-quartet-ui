@@ -60,7 +60,7 @@ class _TreeNode extends Component {
       this.props.serverVis.splice(this.props.serverID, 1);
     } 
     else {
-      console.log('Value already exist!');
+      true
     }
     if (this.props.onClick) {
       this.props.onClick(e);

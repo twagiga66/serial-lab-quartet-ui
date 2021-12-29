@@ -17,7 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import PoolForm from "./PoolForm";
-import {deleteResponseRule} from "../reducers/numberrange";
+import {deleteResponseRule, loadResponseRulesForNumberPool} from "../reducers/numberrange";
 const React = qu4rtet.require("react");
 const {Component} = React;
 const {connect} = qu4rtet.require("react-redux");
@@ -28,9 +28,36 @@ const {FormattedMessage} = qu4rtet.require("react-intl");
 class _AddPool extends Component {
   constructor(props) {
     super(props);
+    this.state = {loading: true};
     this.currentServer = this.props.servers[this.props.match.params.serverID];
+    this.debounced = null;
+    this.responserulesState=this.props.nr[this.props.match.params.serverID]
   }
-  componentDidMount() {}
+  componentDidMount() {
+    setTimeout(()=>{this.processEntries();}, 500)
+    this.processEntries();
+  }
+  loadingScreen = () => {
+    this.setState(
+      { loading : true },
+      () => {
+          setTimeout(()=>{this.setState({loading : false})}, [])
+      }
+    );
+  };
+  processEntries = (clear = false) => {
+    if (this.debounced) {
+      clearTimeout(this.debounced);
+    }
+    const poolID = 4
+    this.debounced = setTimeout(() => {
+      loadResponseRulesForNumberPool(
+        this.props.server,
+        this.responserulesState,
+        poolID
+      );
+    }, clear);
+  };
 
   editResponseRule = responseRule => {
     let pool = this.getPool();
@@ -71,6 +98,7 @@ class _AddPool extends Component {
   render() {
     let editMode = this.getEditMode();
     let pool = this.getPool();
+    console.log("add pool data", this.props)
     return (
         <RightPanel
             title={
@@ -135,6 +163,42 @@ class _AddPool extends Component {
                         </tr>
                         </thead>
                         <tbody>
+                        {this.responserulesState.pools[0].response_rules
+                            ? this.responserulesState.pools[0].response_rules.map(responseRule => {
+                              return (
+                                  <tr key={responseRule.id}>
+                                    <td>
+                                      {responseRule.rule
+                                          ? this.props.rules.find(
+                                              rule => rule.id === responseRule.rule
+                                          ).name
+                                          : null}
+                                    </td>
+                                    <td>{responseRule.content_type}</td>
+                                    <td style={{width: "80px"}}>
+                                      <ButtonGroup minimal small>
+                                        <Button
+                                            small="true"
+                                            iconName="edit"
+                                            onClick={this.editResponseRule.bind(
+                                                this,
+                                                responseRule
+                                            )}
+                                        />
+                                        <Button
+                                            small="true"
+                                            iconName="trash"
+                                            onClick={this.deleteResponseRule.bind(
+                                                this,
+                                                responseRule
+                                            )}
+                                        />
+                                      </ButtonGroup>
+                                    </td>
+                                  </tr>
+                              );
+                            })
+                            : null}
                         {pool.response_rules
                             ? pool.response_rules.map(responseRule => {
                               return (
@@ -185,6 +249,7 @@ class _AddPool extends Component {
 export const AddPool = connect(
     (state, ownProps) => {
       return {
+        server: state.serversettings.servers[ownProps.match.params.serverID],
         servers: state.serversettings.servers,
         nr: state.numberrange.servers,
         rules: state.capture.servers
@@ -192,5 +257,5 @@ export const AddPool = connect(
             : []
       };
     },
-    {deleteResponseRule}
+    {loadResponseRulesForNumberPool, deleteResponseRule}
 )(_AddPool);

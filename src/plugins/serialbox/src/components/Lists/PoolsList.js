@@ -86,7 +86,7 @@ class _PoolsList extends Component {
 
     render() {
         const {server, pools, loadPoolList, count, next} = this.props;
-
+        
         return (
             <RightPanel
                 title={

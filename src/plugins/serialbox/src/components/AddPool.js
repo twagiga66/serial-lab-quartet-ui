@@ -49,6 +49,9 @@ class _AddPool extends Component {
     if (this.debounced) {
       clearTimeout(this.debounced);
     }
+    this.setState({
+      loading: false
+  }, () => {
     const poolID = 4
     this.debounced = setTimeout(() => {
       loadResponseRulesForNumberPool(
@@ -57,6 +60,8 @@ class _AddPool extends Component {
         poolID
       );
     }, clear);
+  });
+    
   };
 
   editResponseRule = responseRule => {
@@ -98,7 +103,8 @@ class _AddPool extends Component {
   render() {
     let editMode = this.getEditMode();
     let pool = this.getPool();
-    console.log("add pool data", this.props)
+    console.log("Props", this.props);
+    console.log("State", this.state)
     return (
         <RightPanel
             title={

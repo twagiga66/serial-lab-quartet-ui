@@ -28,14 +28,19 @@ const {FormattedMessage} = qu4rtet.require("react-intl");
 class _AddPool extends Component {
   constructor(props) {
     super(props);
-    this.state = {loading: true};
+    this.state = {
+      loading: true, 
+      responseRules: []
+    };
     this.currentServer = this.props.servers[this.props.match.params.serverID];
     this.debounced = null;
     this.responserulesState=this.props.nr[this.props.match.params.serverID]
   }
   componentDidMount() {
-    setTimeout(()=>{this.processEntries();}, 500)
+    // setTimeout(()=>{this.processEntries();}, 500)
     this.processEntries();
+    console.log("Props", this.props);
+    console.log("State", this.state);
   }
   loadingScreen = () => {
     this.setState(
@@ -49,19 +54,25 @@ class _AddPool extends Component {
     if (this.debounced) {
       clearTimeout(this.debounced);
     }
-    this.setState({
-      loading: false
-  }, () => {
-    const poolID = 4
     this.debounced = setTimeout(() => {
       loadResponseRulesForNumberPool(
         this.props.server,
         this.responserulesState,
-        poolID
-      );
-    }, clear);
-  });
-    
+        sessionStorage.getItem("ResponseRulesID")
+      )
+      .then(() => {
+        let pool = {};
+        let pools = this.props.nr[this.props.match.params.serverID].pools;
+        // most up to date.
+        pool = pools.find(pool => {
+          return pool.machine_name === this.props.match.params.poolName;
+        });
+        this.setState({
+          loading: false,
+          responseRules: pool,
+        })
+      })
+    })
   };
 
   editResponseRule = responseRule => {
@@ -102,9 +113,9 @@ class _AddPool extends Component {
   };
   render() {
     let editMode = this.getEditMode();
-    let pool = this.getPool();
+    // let pool = this.getPool();
     console.log("Props", this.props);
-    console.log("State", this.state)
+    console.log("State", this.state);
     return (
         <RightPanel
             title={
@@ -114,7 +125,15 @@ class _AddPool extends Component {
                   <FormattedMessage id="plugins.numberRange.editPool" />
               )
             }>
-          <div className="large-cards-container">
+              {/* {<div>{this.props.nr[this.props.match.params.serverID].pools.map(pool => {
+                <p>{pool.id}</p>
+              })}</div>} */}
+              {<div>{this.state.responseRules.response_rules ?
+              this.state.responseRules.response_rules.map(rr => <p>{rr.id}</p>)
+              : 
+              <p>no data</p>}
+              </div>}
+          {/* <div className="large-cards-container">
             <Card className="pt-elevation-4 form-card">
               <h5>
                 {!editMode ? (
@@ -205,8 +224,69 @@ class _AddPool extends Component {
                               );
                             })
                             : null}
-                        {pool.response_rules
-                            ? pool.response_rules.map(responseRule => {
+                        </tbody>
+                      </table>
+                  ) : null}
+                </Card>
+            ) : null}
+          </div> */}
+          {/* <div className="large-cards-container">
+            <Card className="pt-elevation-4 form-card">
+              <h5>
+                {!editMode ? (
+                    <FormattedMessage id="plugins.numberRange.addPool" />
+                ) : (
+                    <FormattedMessage id="plugins.numberRange.editPool" />
+                )}
+              </h5>
+              <PoolForm
+                  server={this.currentServer}
+                  history={this.props.history}
+                  pool={pool}
+              />
+            </Card>
+            {editMode ? (
+                <Card className="pt-elevation-4 form-card">
+                  <h5>
+                    <button
+                        className="pt-button right-aligned-elem pt-interactive pt-intent-primary"
+                        onClick={e => {
+                          this.props.history.push({
+                            pathname: `/number-range/add-response-rule/${
+                                this.currentServer.serverID
+                            }/pool-id/${pool.id}/`,
+                            state: {pool: pool}
+                          });
+                        }}>
+                      <FormattedMessage id="plugins.numberRange.addResponseRule" />
+                    </button>
+                    <FormattedMessage id="plugins.numberRange.responseRules" />
+                  </h5>
+                  {pool &&
+                  Array.isArray(pool.response_rules) &&
+                  pool.response_rules.length > 0 ? (
+                      <table className="pt-table pt-interactive pt-bordered pt-striped">
+                        <thead>
+                        <tr>
+                          <th>
+                            <FormattedMessage
+                                id="plugins.numberRange.ruleName"
+                                defaultMessage="Rule Name"
+                            />
+                          </th>
+                          <th>
+                            {" "}
+                            <FormattedMessage
+                                id="plugins.numberRange.contentType"
+                                defaultMessage="Content Type"
+                            />
+                          </th>
+                          <th />
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.responserulesState.pools[0].response_rules
+                            ? this.responserulesState.pools[0].response_rules.map(responseRule => {
                               return (
                                   <tr key={responseRule.id}>
                                     <td>
@@ -246,7 +326,7 @@ class _AddPool extends Component {
                   ) : null}
                 </Card>
             ) : null}
-          </div>
+          </div> */}
         </RightPanel>
     );
   }

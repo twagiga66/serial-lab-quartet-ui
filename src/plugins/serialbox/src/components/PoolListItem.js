@@ -100,7 +100,7 @@ class PoolListItem extends Component {
         const pool = this.props.entry;
         const {sequential, randomized, listBased} = this.getAllowedRegionTypes(pool);
         const intl = pluginRegistry.getIntl();
-        console.info('Rendering menu for pool ' + pool.readable_name);
+        // console.info('Rendering menu for pool ' + pool.readable_name);
         return (
             <Menu>
                 <ButtonGroup className="context-menu-control" minimal={true}>
@@ -198,8 +198,9 @@ class PoolListItem extends Component {
                 <td>{pool.readable_name}</td>
                 <td>
                     <Link
-                        to={`/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`}>
-                        {pool.machine_name}
+                        to={`/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`}
+                        >
+                        <div onClick={() => sessionStorage.setItem("ResponseRulesID", pool.id)}>{pool.machine_name}</div>
                     </Link>
                 </td>
                 <td>

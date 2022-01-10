@@ -233,7 +233,7 @@ const generateFile = (server, pool, exportType, data, size) => {
 export const setAllocation = (server, pool, value, exportType) => {
     return dispatch => {
         allocate(server, pool, value, exportType).then(data => {
-            console.info('dispatch called...')
+            // console.info('dispatch called...')
             if (typeof data === "object") {
                 // let's take a look at the data.
                 if (data.detail) {
@@ -328,8 +328,8 @@ export const loadResponseRulesForNumberPool = async (server, response, poolID) =
             .getServer(server.serverID)
             .fetchListAll("serialbox_response_rules_pool_list", {pool_id: poolID}, []);
         // poor-man's matching alg.
-        console.log("Loading Response Rule with ID: " + poolID)
-        console.log("Response: ", response)
+        // console.log("Loading Response Rule with ID: " + poolID)
+        // console.log("Response: ", response)
         let poolsMap = {};
         // response.results.forEach(pool => {
         //     poolsMap[pool.id] = pool;
@@ -339,7 +339,7 @@ export const loadResponseRulesForNumberPool = async (server, response, poolID) =
             poolsMap[pool.id] = pool;
             pool.response_rules = [];
         });
-        console.log("response rules list: ",responseRules)
+        // console.log("response rules list: ",responseRules)
         if (responseRules && responseRules.length > 0) {
             responseRules.forEach(responseRule => {
                 try {
@@ -351,7 +351,7 @@ export const loadResponseRulesForNumberPool = async (server, response, poolID) =
                 }
             });
         }
-        console.log("final response: ", response)
+        // console.log("final response: ", response)
         return response
         
     } catch (e) {
@@ -373,7 +373,7 @@ export const loadPoolList = (server, search, page, ordering, poolID) => {
     if (poolID) {
         params.poolID = poolID;
     }
-    console.log(server, search, page, ordering, poolID)
+    // console.log(server, search, page, ordering, poolID)
     return async dispatch => {
         let serverObject = pluginRegistry.getServer(server.serverID);
         let response_pools = null;
@@ -390,7 +390,7 @@ export const loadPoolList = (server, search, page, ordering, poolID) => {
                 //     response = await loadResponseRulesForNumberPool(server, response, poolID=poolIDarray[i]);
                 // }
                 response = await loadResponseRulesForNumberPool(server, response, poolID=poolID);
-                console.log(response)
+                // console.log(response)
                 return dispatch({
                     type: actions.loadPools,
                     payload: {

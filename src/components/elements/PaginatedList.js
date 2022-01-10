@@ -134,7 +134,7 @@ class _PaginatedList extends Component {
 
   render() {
     const {entries} = this.state;
-    console.log(this.props)
+    // console.log(this.props)
     return (
       <Card className="pt-elevation-4">
         <h5>

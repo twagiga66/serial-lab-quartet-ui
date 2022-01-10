@@ -125,15 +125,14 @@ class _AddPool extends Component {
                   <FormattedMessage id="plugins.numberRange.editPool" />
               )
             }>
-              {/* {<div>{this.props.nr[this.props.match.params.serverID].pools.map(pool => {
-                <p>{pool.id}</p>
-              })}</div>} */}
-              {<div>{this.state.responseRules.response_rules ?
+            {/* 
+            {<div>{this.state.responseRules.response_rules ?
               this.state.responseRules.response_rules.map(rr => <p>{rr.id}</p>)
               : 
               <p>no data</p>}
-              </div>}
-          {/* <div className="large-cards-container">
+              </div>} 
+              */}
+          <div className="large-cards-container">
             <Card className="pt-elevation-4 form-card">
               <h5>
                 {!editMode ? (
@@ -145,7 +144,7 @@ class _AddPool extends Component {
               <PoolForm
                   server={this.currentServer}
                   history={this.props.history}
-                  pool={pool}
+                  pool={this.state.responseRules}
               />
             </Card>
             {editMode ? (
@@ -157,17 +156,17 @@ class _AddPool extends Component {
                           this.props.history.push({
                             pathname: `/number-range/add-response-rule/${
                                 this.currentServer.serverID
-                            }/pool-id/${pool.id}/`,
-                            state: {pool: pool}
+                            }/pool-id/${this.state.responseRules.id}/`,
+                            state: {pool: this.state.responseRules}
                           });
                         }}>
                       <FormattedMessage id="plugins.numberRange.addResponseRule" />
                     </button>
                     <FormattedMessage id="plugins.numberRange.responseRules" />
                   </h5>
-                  {pool &&
-                  Array.isArray(pool.response_rules) &&
-                  pool.response_rules.length > 0 ? (
+                  {this.state.responseRules &&
+                  Array.isArray(this.state.responseRules.response_rules) &&
+                  this.state.responseRules.response_rules.length > 0 ? (
                       <table className="pt-table pt-interactive pt-bordered pt-striped">
                         <thead>
                         <tr>
@@ -188,8 +187,8 @@ class _AddPool extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {this.responserulesState.pools[0].response_rules
-                            ? this.responserulesState.pools[0].response_rules.map(responseRule => {
+                        {this.state.responseRules.response_rules
+                            ? this.state.responseRules.response_rules.map(responseRule => {
                               return (
                                   <tr key={responseRule.id}>
                                     <td>
@@ -229,104 +228,7 @@ class _AddPool extends Component {
                   ) : null}
                 </Card>
             ) : null}
-          </div> */}
-          {/* <div className="large-cards-container">
-            <Card className="pt-elevation-4 form-card">
-              <h5>
-                {!editMode ? (
-                    <FormattedMessage id="plugins.numberRange.addPool" />
-                ) : (
-                    <FormattedMessage id="plugins.numberRange.editPool" />
-                )}
-              </h5>
-              <PoolForm
-                  server={this.currentServer}
-                  history={this.props.history}
-                  pool={pool}
-              />
-            </Card>
-            {editMode ? (
-                <Card className="pt-elevation-4 form-card">
-                  <h5>
-                    <button
-                        className="pt-button right-aligned-elem pt-interactive pt-intent-primary"
-                        onClick={e => {
-                          this.props.history.push({
-                            pathname: `/number-range/add-response-rule/${
-                                this.currentServer.serverID
-                            }/pool-id/${pool.id}/`,
-                            state: {pool: pool}
-                          });
-                        }}>
-                      <FormattedMessage id="plugins.numberRange.addResponseRule" />
-                    </button>
-                    <FormattedMessage id="plugins.numberRange.responseRules" />
-                  </h5>
-                  {pool &&
-                  Array.isArray(pool.response_rules) &&
-                  pool.response_rules.length > 0 ? (
-                      <table className="pt-table pt-interactive pt-bordered pt-striped">
-                        <thead>
-                        <tr>
-                          <th>
-                            <FormattedMessage
-                                id="plugins.numberRange.ruleName"
-                                defaultMessage="Rule Name"
-                            />
-                          </th>
-                          <th>
-                            {" "}
-                            <FormattedMessage
-                                id="plugins.numberRange.contentType"
-                                defaultMessage="Content Type"
-                            />
-                          </th>
-                          <th />
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this.responserulesState.pools[0].response_rules
-                            ? this.responserulesState.pools[0].response_rules.map(responseRule => {
-                              return (
-                                  <tr key={responseRule.id}>
-                                    <td>
-                                      {responseRule.rule
-                                          ? this.props.rules.find(
-                                              rule => rule.id === responseRule.rule
-                                          ).name
-                                          : null}
-                                    </td>
-                                    <td>{responseRule.content_type}</td>
-                                    <td style={{width: "80px"}}>
-                                      <ButtonGroup minimal small>
-                                        <Button
-                                            small="true"
-                                            iconName="edit"
-                                            onClick={this.editResponseRule.bind(
-                                                this,
-                                                responseRule
-                                            )}
-                                        />
-                                        <Button
-                                            small="true"
-                                            iconName="trash"
-                                            onClick={this.deleteResponseRule.bind(
-                                                this,
-                                                responseRule
-                                            )}
-                                        />
-                                      </ButtonGroup>
-                                    </td>
-                                  </tr>
-                              );
-                            })
-                            : null}
-                        </tbody>
-                      </table>
-                  ) : null}
-                </Card>
-            ) : null}
-          </div> */}
+          </div>
         </RightPanel>
     );
   }

@@ -164,6 +164,7 @@ class _PoolForm extends Component {
           field.hidden = true;
         }
         //field.name = field.name.replace(/_/g, "");
+        console.log(field);
         return (
           <Field
             key={field.name}
@@ -213,5 +214,5 @@ export default connect(
       nr: state.numberrange.servers
     };
   },
-  {loadPools}
+  {loadResponseRulesForNumberPool}
 )(withRouter(PoolForm));

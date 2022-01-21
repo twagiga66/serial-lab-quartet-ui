@@ -185,6 +185,7 @@ class _EventList extends Component {
             count={count}
             next={next}
             type={this.eventType}
+            event={true}
           />
         </div>
       </RightPanel>

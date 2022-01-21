@@ -283,7 +283,9 @@ export class _NavPluginRoot extends Component {
       .appList.includes("serialbox");
   }
   goTo = path => {
+    sessionStorage.setItem("newPool", true);
     this.props.history.push(path);
+    
   };
   componentDidMount() {
     if (this.props.server && this.serverHasSerialbox()) {

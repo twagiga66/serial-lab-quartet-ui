@@ -200,7 +200,15 @@ class PoolListItem extends Component {
                     <Link
                         to={`/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`}
                         >
-                        <div onClick={() => sessionStorage.setItem("ResponseRulesID", pool.id)}>{pool.machine_name}</div>
+                        <div 
+                            onClick={
+                                (e)=>this.props.setValues(
+                                e, 
+                                this.props.index, 
+                                pool.id, 
+                                `/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`)}>{pool.machine_name
+                            }
+                        </div>
                     </Link>
                 </td>
                 <td>

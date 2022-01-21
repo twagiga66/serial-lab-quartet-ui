@@ -30,7 +30,7 @@ const {Field, reduxForm, SubmissionError, change} = qu4rtet.require(
 );
 const loadRules = qu4rtet.require("./plugins/capture/src/reducers/capture");
 import {RuleDialog} from "./Dialogs/RuleDialog";
-
+import {deleteResponseRule, loadResponseRulesForNumberPool} from "../reducers/numberrange";
 const ResponseRuleForm = reduxForm({
   form: "responseRuleForm"
 })(PageForm);
@@ -46,7 +46,12 @@ class _AddResponseRule extends Component {
 
   }
   submitCallback() {
-    this.props.loadPoolList(this.props.server);
+    // loadResponseRulesForNumberPool(
+    //   this.props.server,
+    //   this.responserulesState,
+    //   sessionStorage.getItem("ResponseRulesID")
+    // )
+    this.props.loadPoolList(this.props.server,null,null,null, sessionStorage.getItem("ResponseRulesID"));
   }
 
   toggleRuleDialog = evt => {
@@ -99,7 +104,7 @@ class _AddResponseRule extends Component {
               objectName="Response Rule"
               submitCallback={this.submitCallback.bind(this)}
               redirectPath={`/number-range/edit-pool/${this.props.server.serverID}/${pool.machine_name}`}
-              djangoPath="serialbox/response-rules/"
+              djangoPath={editMode ? `serialbox/response-rules/pool/${pool.id}` : "serialbox/response-rules"}
               existingValues={responseRule}
               prepopulatedValues={[{name: "pool", value: pool.id}]}
               parameters={responseRule ? {id: responseRule.id} : {}}

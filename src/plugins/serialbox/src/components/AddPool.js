@@ -34,22 +34,19 @@ class _AddPool extends Component {
     };
     this.currentServer = this.props.servers[this.props.match.params.serverID];
     this.debounced = null;
-    this.responserulesState=this.props.nr[this.props.match.params.serverID]
+    try{
+      this.responserulesState=this.props.nr[this.props.match.params.serverID];
+    }
+    catch(e) {
+      console.log(e)
+    }
   }
   componentDidMount() {
     // setTimeout(()=>{this.processEntries();}, 500)
     this.processEntries();
-    console.log("Props", this.props);
-    console.log("State", this.state);
+    // console.log("Props", this.props);
+    // console.log("State", this.state);
   }
-  loadingScreen = () => {
-    this.setState(
-      { loading : true },
-      () => {
-          setTimeout(()=>{this.setState({loading : false})}, [])
-      }
-    );
-  };
   processEntries = (clear = false) => {
     if (this.debounced) {
       clearTimeout(this.debounced);
@@ -76,17 +73,76 @@ class _AddPool extends Component {
   };
 
   editResponseRule = responseRule => {
-    let pool = this.getPool();
-    this.props.history.push({
-      pathname: `/number-range/add-response-rule/${
-          this.props.match.params.serverID
-      }/pool-id/${pool.id}`,
-      state: {defaultValues: responseRule, edit: true, pool: pool}
-    });
+    // let pool = this.getPool();
+    loadResponseRulesForNumberPool(
+      this.props.server,
+      this.responserulesState,
+      sessionStorage.getItem("ResponseRulesID")
+    )
+    .then(() => {
+      let pool = {};
+        let pools = this.props.nr[this.props.match.params.serverID].pools;
+        // most up to date.
+        pool = pools.find(pool => {
+          return pool.machine_name === this.props.match.params.poolName;
+        });
+        this.setState({
+          loading: false,
+          responseRules: pool,
+        })
+        this.props.history.push({
+          pathname: `/number-range/add-response-rule/${
+              this.props.match.params.serverID
+          }/pool-id/${pool.id}`,
+          state: {defaultValues: responseRule, edit: true, pool: pool}
+        });
+    })
+    
   };
+
+responseRulesFunction = () => {
+  loadResponseRulesForNumberPool(
+    this.props.server,
+    this.responserulesState,
+    sessionStorage.getItem("ResponseRulesID")
+  )
+  .then(() => {
+    let pool = {};
+      let pools = this.props.nr[this.props.match.params.serverID].pools;
+      // most up to date.
+      pool = pools.find(pool => {
+        return pool.machine_name === this.props.match.params.poolName;
+      });
+      this.setState({
+        loading: false,
+        responseRules: pool,
+      })
+  })
+}
+
   deleteResponseRule = responseRule => {
-    let pool = this.getPool();
+    // let pool = this.getPool();
+    console.log("data", this.props.server)
+    this.setState({loading: true});
     this.props.deleteResponseRule(this.currentServer, responseRule);
+    loadResponseRulesForNumberPool(
+      this.props.server,
+      this.responserulesState,
+      sessionStorage.getItem("ResponseRulesID")
+    )
+    .then(() => {
+      let pool = {};
+        let pools = this.props.nr[this.props.match.params.serverID].pools;
+        // most up to date.
+        pool = pools.find(pool => {
+          return pool.machine_name === this.props.match.params.poolName;
+        });
+        this.setState({
+          loading: false,
+          responseRules: pool,
+        })
+    })
+    console.log("deleting response rules:", this.currentServer, responseRule)
   };
   getEditMode = () => {
     return (this.props.location.pathname.search('edit') > 0)
@@ -114,8 +170,9 @@ class _AddPool extends Component {
   render() {
     let editMode = this.getEditMode();
     // let pool = this.getPool();
-    console.log("Props", this.props);
-    console.log("State", this.state);
+    // console.log("Props", this.props);
+    // console.log("State", this.state.responseRules);
+
     return (
         <RightPanel
             title={
@@ -125,13 +182,6 @@ class _AddPool extends Component {
                   <FormattedMessage id="plugins.numberRange.editPool" />
               )
             }>
-            {/* 
-            {<div>{this.state.responseRules.response_rules ?
-              this.state.responseRules.response_rules.map(rr => <p>{rr.id}</p>)
-              : 
-              <p>no data</p>}
-              </div>} 
-              */}
           <div className="large-cards-container">
             <Card className="pt-elevation-4 form-card">
               <h5>

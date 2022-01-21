@@ -187,7 +187,7 @@ export const deleteResponseRule = (server, responseRule, page) => {
                 client.apis.serialbox
                     .serialbox_response_rules_delete(responseRule)
                     .then(result => {
-                        return dispatch(loadPoolList(server, null, page, null));
+                        return dispatch(loadPoolList(server, null, page, null, 0));
                     })
                     .catch(e => {
                         showMessage({

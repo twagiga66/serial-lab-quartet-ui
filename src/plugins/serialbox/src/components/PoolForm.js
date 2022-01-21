@@ -33,15 +33,32 @@ const {withRouter} = qu4rtet.require("react-router");
 class _PoolForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {formStructure: []};
+    this.state = {
+      formStructure: [],
+      poolData: this.props.pool,
+      isNewPool: sessionStorage.getItem("newPool")
+    };
   }
 
   componentDidMount() {
+    if (this.state.isNewPool === true){
+      if(this.props.nr) {
+        this.props.nr = undefined
+      }
+    }
     this.constructForm(this.props);
+    this.setState({poolData: this.props.pool});
   }
   componentWillReceiveProps(nextProps) {
     // quick check to ensure we have a valid server.
-    this.constructForm(nextProps);
+    if (this.props.nr !== undefined) {
+      this.state.isNewPool
+      this.setState({poolData: this.props.nr[this.props.match.params.serverID].pools[sessionStorage.getItem("clickedElementOfNumberPoolsList")]});
+      this.constructForm(this.state.poolData);
+    }
+    else {
+      this.constructForm(nextProps);
+    }
   }
   cancel = evt => {
     evt.preventDefault();
@@ -60,10 +77,27 @@ class _PoolForm extends Component {
             formStructure: formStructure
           },
           () => {
-            if (props.pool) {
+            // if (this.props.nr !== undefined && sessionStorage.getItem("addNewPool") !== true) {
+            //   // fed existing values.
+            //     props.initialize(this.props.nr[this.props.match.params.serverID].pools[sessionStorage.getItem("clickedElementOfNumberPoolsList")]);
+            // } else {
+            //   // After state has been rendered,
+            //   // initialize checkboxes as false by default to prevent them
+            //   // from being missing in post.
+            //   for (let field of this.state.formStructure) {
+            //     if (field.description.type === "boolean") {
+            //       props.dispatch(change("addPool", field.name, false));
+            //     }
+            //   }
+            // }
+            const pathStr = this.props.history.location.pathname;
+              const [empty, firstPartPath, secondPathPart,  ...others] = pathStr.split("/");
+            
               // fed existing values.
-              props.initialize(props.pool);
-            } else {
+              
+                if (secondPathPart === "edit-pool") {
+                  props.initialize(this.props.nr[this.props.match.params.serverID].pools[sessionStorage.getItem("clickedElementOfNumberPoolsList")]);
+                } else {
               // After state has been rendered,
               // initialize checkboxes as false by default to prevent them
               // from being missing in post.
@@ -164,7 +198,6 @@ class _PoolForm extends Component {
           field.hidden = true;
         }
         //field.name = field.name.replace(/_/g, "");
-        console.log(field);
         return (
           <Field
             key={field.name}
@@ -214,5 +247,5 @@ export default connect(
       nr: state.numberrange.servers
     };
   },
-  {loadResponseRulesForNumberPool}
+  {loadPools}
 )(withRouter(PoolForm));

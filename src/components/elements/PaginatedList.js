@@ -21,6 +21,8 @@ import {Card, Tag, ControlGroup, Button, InputGroup} from "@blueprintjs/core";
 import {FormattedMessage} from "react-intl";
 import {withRouter} from "react-router";
 import {pluginRegistry} from "plugins/pluginRegistration";
+import { loadEntry } from "../../plugins/epcis/src/reducers/epcis";
+import { session } from "inject-css";
 
 /*
   Displays a list of objects (entries, events, companies, locations) as
@@ -120,21 +122,40 @@ class _PaginatedList extends Component {
     const poolID=6
     this.debounced = setTimeout(() => {
       const {loadEntries, server} = this.props;
-      loadEntries(
-        server,
-        this.state.keywordSearch,
-        this.currentPage,
-        this.props.ordering ? this.props.ordering : null,
-        // this.props.type ? this.props.type : null,
-        poolID
-      );
+      if (this.props.event === true) {
+        loadEntries(
+          server,
+          this.state.keywordSearch,
+          this.currentPage,
+          this.props.ordering ? this.props.ordering : null,
+          this.props.type ? this.props.type : null,
+          // poolID
+        );
+      } else {
+        loadEntries(
+          server,
+          this.state.keywordSearch,
+          this.currentPage,
+          this.props.ordering ? this.props.ordering : null,
+          // this.props.type ? this.props.type : null,
+          poolID
+        );
+      }
     }, clear);
     this.loadingScreen();
   };
 
+setValues = (e, index, id, path) => {
+  e.preventDefault();
+  // sessionStorage.setItem("addNewPool", false)
+  sessionStorage.setItem("newPool", false);
+  sessionStorage.setItem("ResponseRulesID", id);
+  sessionStorage.setItem("clickedElementOfNumberPoolsList", index);
+  this.goTo(path);
+}
+
   render() {
     const {entries} = this.state;
-    // console.log(this.props)
     return (
       <Card className="pt-elevation-4">
         <h5>
@@ -210,6 +231,8 @@ class _PaginatedList extends Component {
                           server={this.props.server}
                           history={this.props.history}
                           page={this.currentPage}
+                          index = {index}
+                          setValues = {this.setValues}
                         />
                       );
                     })

@@ -104,7 +104,7 @@ class _AddResponseRule extends Component {
               objectName="Response Rule"
               submitCallback={this.submitCallback.bind(this)}
               redirectPath={`/number-range/edit-pool/${this.props.server.serverID}/${pool.machine_name}`}
-              djangoPath={editMode ? `serialbox/response-rules/pool/${pool.id}` : "serialbox/response-rules"}
+              djangoPath={editMode ? `serialbox/response-rules/pool/${pool.id}` : `serialbox/response-rules/pool/${pool.id}`}
               existingValues={responseRule}
               prepopulatedValues={[{name: "pool", value: pool.id}]}
               parameters={responseRule ? {id: responseRule.id} : {}}

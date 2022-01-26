@@ -231,10 +231,20 @@ class PoolListItem extends Component {
                     <Link
                         to={`/number-range/region-detail/${serverID}/${pool.machine_name}/`}>
                         {this.props.regionNumber}{" "}
-                        <FormattedMessage
+                        <div 
+                            onClick={
+                                (e)=>this.props.setValues(
+                                e, 
+                                this.props.index, 
+                                pool.id, 
+                                `/number-range/region-detail/${serverID}/${pool.machine_name}/`)}>
+                                {/* {pool.machine_name} */}
+                               <FormattedMessage
                             id="plugins.numberRange.regions"
                             defaultMessage="regions"
-                        />
+                        /> 
+                        </div>
+                        
                     </Link>
                 </td>
                 <Dialog

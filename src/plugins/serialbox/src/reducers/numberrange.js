@@ -132,7 +132,30 @@ export const loadRegions = (server, pool) => {
             });
     };
 };
-
+export const loadRegionsForNumberPool = (server, pool) => {
+    console.log(server, pool)
+    return dispatch => {
+        // first get all pools again to refresh pool list.
+        getPools(server)
+            .then(async pools => {
+                // second get region for given pool (updated.)
+                let updatedPool = pools.find(aPool => {
+                    console.log(aPool.machine_name)
+                    return aPool.machine_name === pool.machine_name;
+                    
+                });
+                getRegions(server, updatedPool).then(regions => {
+                    dispatch({
+                        type: actions.loadRegions,
+                        payload: regions
+                    });
+                });
+            })
+            .catch(e => {
+                showMessage({type: "error", msg: e});
+            });
+    };
+};
 export const deleteARegion = (server, pool, region) => {
     return dispatch => {
         deleteRegion(server, region)
@@ -158,7 +181,31 @@ export const deleteARegion = (server, pool, region) => {
             });
     };
 };
-
+export const deleteARegionOfNumberPool = (server, pool, region) => {
+    return dispatch => {
+        deleteRegion(server, region)
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        pluginRegistry.getHistory().push("/access-denied");
+                        return;
+                    } else {
+                        throw new Error(response);
+                    }
+                }
+                if (response.ok && response.status === 204) {
+                    dispatch(loadRegionsForNumberPool(server, pool));
+                    showMessage({
+                        id: "plugins.numberRange.regionDeletedSuccessfully",
+                        type: "warning"
+                    });
+                }
+            })
+            .catch(error => {
+                showMessage({type: "error", msg: error.detail});
+            });
+    };
+};
 export const deleteAPool = (server, pool) => {
     return dispatch => {
         deletePool(server, pool)
@@ -322,6 +369,7 @@ export default handleActions(
 );
 
 export const loadResponseRulesForNumberPool = async (server, response, poolID) => {
+    console.log(server, response, poolID)
     try {
         
         let responseRules = await pluginRegistry

@@ -28,7 +28,7 @@ const {FormattedMessage} = qu4rtet.require("react-intl");
 const classNames = qu4rtet.require("classnames");
 const {DeleteDialog} = qu4rtet.require("./components/elements/DeleteDialog");
 const {RightPanel} = qu4rtet.require("./components/layouts/Panels");
-import {loadPools, loadRegions} from "../reducers/numberrange";
+import {loadPools, loadRegions,loadRegionsForNumberPool} from "../reducers/numberrange";
 
 /**
  * _RegionDetail - Description
@@ -37,36 +37,54 @@ import {loadPools, loadRegions} from "../reducers/numberrange";
 class _RegionDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {alloc: 1, lastUpdated: null, loading: false};
+    this.state = {
+      alloc: 1, 
+      lastUpdated: null, 
+      loading: true,
+    };
     // these two properties below make it easy to retrieve
     // and trigger actions.
     this.currentPool = {readable_name: "", machine_name: ""};
 
   }
   componentDidMount() {
-    this.setState({ loading : true });
-    //this.props.loadPools(this.props.servers[this.props.match.params.serverID]);
     this.loadPoolDetail(this.props);
+    setTimeout(()=>{this.setState({loading : false})}, 1200)
   }
   previewAlloc = evt => {
     this.setState({alloc: Number(evt.target.value)});
   };
+  //PREVIOUS
+  // loadPoolDetail(props) {
+  //   for (let pool of this.props.pools) {
+  //     if (pool.machine_name === props.match.params.pool) {
+  //       this.currentPool = pool;
+  //       console.log("pool", pool)
+  //     }
+  //   }
+  //   this.props.loadRegions(
+  //     pluginRegistry.getServer(props.server.serverID),
+  //     this.currentPool
+  //   );
+  // }
   loadPoolDetail(props) {
     for (let pool of this.props.pools) {
       if (pool.machine_name === props.match.params.pool) {
         this.currentPool = pool;
+        
       }
     }
-    this.props.loadRegions(
+    this.props.loadRegionsForNumberPool(
       pluginRegistry.getServer(props.server.serverID),
       this.currentPool
-    );
+    )
+    // this.loadingScreen();
   }
   loadingScreen = () => {
     this.setState(
       { loading : true },
       () => {
-          setTimeout(()=>{this.setState({loading : false})}, [])
+          setTimeout(()=>{this.setState({loading : false})}, 10000)
       }
     );
   };
@@ -80,6 +98,22 @@ class _RegionDetail extends Component {
             values={{poolName: this.currentPool.readable_name}}
           />
         }>
+        {
+        this.state.loading === true ?
+        <div className="region_loading">
+          <div className="middle">
+            <div className="bar bar1"></div>
+            <div className="bar bar2"></div>
+            <div className="bar bar3"></div>
+            <div className="bar bar4"></div>
+            <div className="bar bar5"></div>
+            <div className="bar bar6"></div>
+            <div className="bar bar7"></div>
+            <div className="bar bar8"></div>
+          </div>
+        </div>
+
+        :
         <div className="auto-cards-container">
           {regions && regions.length > 0 ? (
             regions.map(region => (
@@ -103,7 +137,7 @@ class _RegionDetail extends Component {
               </div>
             </Callout>
           )}
-        </div>
+        </div>}
       </RightPanel>
     );
     //<div>{JSON.stringify(this.props.region)}</div>;
@@ -118,5 +152,9 @@ export var RegionDetail = connect(
       currentRegions: state.numberrange.currentRegions
     };
   },
-  {loadPools, loadRegions}
+  {
+    loadPools, 
+    loadRegions, 
+    loadRegionsForNumberPool
+  }
 )(_RegionDetail);

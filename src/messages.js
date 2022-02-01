@@ -31,6 +31,7 @@ export default {
         start: "Start",
         connectServer: "Connect to a Server",
         resourcesDocumentation: "Resources & Documentation",
+        releaseNotes: "Relese notes",
         documentation: "{projectName} Module Documentation",
         documentationOnly: "{projectName} Documentation",
         servers: "Servers",
@@ -61,6 +62,7 @@ export default {
         userVerified: "User successfully verified.",
         deleteServer: "Remove Server",
         serverDetails: "Server Details",
+        releaseNotes: "Release Notes",
         deleteServerConfirm:
           "Are you sure you want to remove this server? No data from this server will be deleted.",
         noServerMsg:

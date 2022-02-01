@@ -29,11 +29,20 @@ import {updateMessages} from "reducers/locales";
 import {ServerDetails} from "components/screens/server/ServerDetails";
 import AddLocalPlugin from "components/screens/plugins/AddLocalPlugin";
 import {AccessDenied} from "components/screens/auth/AccessDenied";
+import releaseNotes from "./components/screens/server/releaseNotes";
 
 const coreRoutes = () => {
   return [
-    <Route key="dashboard" exact path="/" component={Dashboard} />,
-
+    <Route 
+      key="dashboard" 
+      exact path="/" 
+      component={Dashboard} 
+    />,
+    <Route 
+      key="releaseNotes" 
+      exact path="/release-notes" 
+      component={releaseNotes} 
+    />,
     <Route
       key="serversettings"
       path="/server-settings/:serverID?"

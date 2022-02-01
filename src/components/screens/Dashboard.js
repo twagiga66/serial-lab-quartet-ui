@@ -25,6 +25,8 @@ import {Large4} from "./Large4";
 import "./Dashboard.css";
 import {withRouter} from "react-router";
 import Clock from "../elements/Clock";
+import { releaseNotes } from './releseNotesData.json';
+
 class _DashboardRight extends Component {
   constructor(props) {
     super(props);
@@ -185,6 +187,24 @@ class _DashboardRight extends Component {
                       rel="noopener noreferrer">
                       <FormattedMessage id="app.dashboard.desktopPluginTutorial" />
                     </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="dashboard-actions-group">
+                <h4>
+                  <FormattedMessage id="app.dashboard.releaseNotes" />
+                </h4>
+                <ul>
+                  <li>
+                    <h6>{releaseNotes[0].versionNumber}, {releaseNotes[0].varsionName}</h6>
+                  </li>
+                  <li>
+                    {releaseNotes[0].versionFeatures.map((feature, index) => (
+                      <div key={index} className="feature-description"><g className="pt-icon-arrow-right" />{" "}{feature}</div>
+                    ))}
+                  </li>
+                  <li>
+                    <a onClick={this.goTo.bind(this, '/release-notes')}>All release notes</a>
                   </li>
                 </ul>
               </div>

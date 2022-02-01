@@ -62,7 +62,8 @@ const defaultLocaleMsg = {
     when: "When",
     objectEvent: "Object Event",
     entryList: "Entries",
-    lastKnownDisposition: "Last Known Disposition"
+    lastKnownDisposition: "Last Known Disposition",
+    realeaseNotes: "Release Notes"
   }
 };
 

@@ -42,8 +42,13 @@ class releaseNotes extends Component {
                         <div className="form-card pt-elevation-4 zero-padding" key={index}>
                            <h4>{note.versionNumber}, {note.varsionName}</h4>
                            <ul>
-                                {note.versionFeatures.map((feature, index) => (
-                                    <li key={index} className="release-list-style" ><g className="pt-icon-arrow-right" /> {feature}</li>
+                                {note.releaseNotesDescriptionsFeature.map((feature, index) => (
+                                    <li key={index} className="release-list-style" >
+                                      <g className="pt-icon-arrow-right" /> 
+                                       <FormattedMessage 
+                                      id={`app.dashboard.releaseNotesDescriptionsFeature.${note.versionNumber}.${feature}`} 
+                                      /> 
+                                    </li>
                                 ))}
                            </ul>
                            <img src='./icon.png' alt='qu4rtet'/>

@@ -196,15 +196,24 @@ class _DashboardRight extends Component {
                 </h4>
                 <ul>
                   <li>
-                    <h6>{releaseNotes[0].versionNumber}, {releaseNotes[0].varsionName}</h6>
+                    <h6>{releaseNotes[0].versionNumber}, <FormattedMessage id={`${releaseNotes[0].varsionName}`} /></h6>
                   </li>
-                  <li>
+                  {/* <li>
                     {releaseNotes[0].versionFeatures.map((feature, index) => (
-                      <div key={index} className="feature-description"><g className="pt-icon-arrow-right" />{" "}{feature}</div>
+                      <div key={index} className="feature-description"><g className="pt-icon-arrow-right" />
+                      {" "}<FormattedMessage id={`app.dashboard.${feature}`} />{feature}</div>
+                    ))}
+                  </li> */}
+                  <li>
+                    {releaseNotes[0].releaseNotesDescriptionsFeature.map((feature, index) => (
+                      <div key={index} className="feature-description"><g className="pt-icon-arrow-right" />
+                      {" "}<FormattedMessage id={`app.dashboard.releaseNotesDescriptionsFeature.${releaseNotes[0].versionNumber}.${feature}`} /></div>
                     ))}
                   </li>
                   <li>
-                    <a onClick={this.goTo.bind(this, '/release-notes')}>All release notes</a>
+                    <a onClick={this.goTo.bind(this, '/release-notes')}>
+                      <FormattedMessage id="app.dashboard.allReleaseNotes" />
+                    </a>
                   </li>
                 </ul>
               </div>

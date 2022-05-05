@@ -17,7 +17,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, {Component} from "react";
-import {Card, Tag, ControlGroup, Button, InputGroup} from "@blueprintjs/core";
+import {Card, Tag, ControlGroup, Button, InputGroup,
+  Intent} from "@blueprintjs/core";
 import {FormattedMessage} from "react-intl";
 import {withRouter} from "react-router";
 import {pluginRegistry} from "plugins/pluginRegistration";
@@ -40,13 +41,16 @@ class _PaginatedList extends Component {
       maxPages: 1,
       count: 0,
       interactive: 'pt-interactive',
-      loading: true
+      loading: true,
+      loadingRR: true,
+      currentPage: null,
     };
     this.offset = 0;
     this.currentPage = 1;
     // this.poolID = [4,2,5,6];
     this.debounced = null;
     this.fetchEntries = null;
+    this.timer = null;
   }
 
   // filter by a field in the rows.
@@ -59,34 +63,89 @@ class _PaginatedList extends Component {
 
   // search by a field in the rows or all of them.
   searchBy = evt => {
-    this.setState({keywordSearch: evt.currentTarget.value}, () => {
+    // this.setState({keywordSearch: evt.currentTarget.value}, () => {
       this.offset = 0;
       this.currentPage = 1;
       this.processEntries();
-    });
+    // });
   };
-
+  updateSearch = evt => {
+    this.setState({keywordSearch: evt.currentTarget.value});
+  };
+  handleEnterKeySearch = evt => {
+    if (evt.key === "Enter") {
+      this.searchBy(evt);
+    }
+  };
   componentDidMount() {
+    if (sessionStorage.getItem("loadingRR") === null ) {
+      sessionStorage.setItem("loadingRR", false);
+    }
     this.processEntries();
     this.setState({
       entries: this.props.entries,
       maxPages: 1,
-      count: 0
+      count: 0,
     });
+    this.timer = setInterval(()=> {
+      if(sessionStorage.getItem("loading") != this.state.loading || sessionStorage.getItem("loadingRR") != this.state.loadingRR) {
+        this.setState({
+          loading: JSON.parse(sessionStorage.getItem("loading")),
+          loadingRR: JSON.parse(sessionStorage.getItem("loadingRR")),
+        });
+        
+      };
+      if (sessionStorage.getItem("loadingRR") != this.state.loadingRR) {
+        this.setState({
+          loading: JSON.parse(sessionStorage.getItem("loading")),
+          loadingRR: JSON.parse(sessionStorage.getItem("loadingRR")),
+        });
+      }
+      if (this.state.loadingRR === null) {
+        this.setState({
+          loadingRR: false
+        })
+      }
+    }
+    , 5);
   }
-
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
   // refresh the Lists, keeping the search filters.
   componentWillReceiveProps(nextProps) {
     let maxPages = this.currentPage;
     if (nextProps.next !== null && Array.isArray(nextProps.entries)) {
       maxPages = Math.ceil(nextProps.count / nextProps.entries.length);
+      // console.log("nextProps.count", nextProps.count)
+      // console.log("nextProps.entries.length", nextProps.entries.length)
+      // console.log(Math.ceil(nextProps.count / nextProps.entries.length));
+      if(Number.isNaN(maxPages) || maxPages === Infinity) {
+        // console.log("Change state: ", Number.isNaN(maxPages));
+        
+      }
+      // if(maxPages === Infinity) {
+      //   this.setState({
+      //     maxPages: 1
+      //   });
+      // }
+      else {
+        this.setState({
+          maxPages: maxPages
+        });
+      }
     }
     this.setState({
+      currentPage: this.currentPage
+    })
+    this.setState({
       entries: nextProps.entries,
-      maxPages: maxPages,
       count: nextProps.count,
-      interactive: this.props.interactive === false ? '' : ' pt-interactive'
+      interactive: this.props.interactive === false ? '' : ' pt-interactive',
+      loading: JSON.parse(sessionStorage.getItem("loading")),
+      loadingRR: JSON.parse(sessionStorage.getItem("loadingRR"))
     });
+    
   }
 
   goTo = path => {
@@ -109,7 +168,7 @@ class _PaginatedList extends Component {
     this.setState(
       { loading : true },
       () => {
-          setTimeout(()=>{this.setState({loading : false})}, [])
+          setTimeout(()=>{this.setState({loading : false})}, 6000);
       }
     );
   };
@@ -142,7 +201,7 @@ class _PaginatedList extends Component {
         );
       }
     }, clear);
-    this.loadingScreen();
+    // this.loadingScreen(); 
   };
 
 setValues = (e, index, id, path) => {
@@ -155,6 +214,7 @@ setValues = (e, index, id, path) => {
 }
 
   render() {
+    // console.log(this.state.maxPages)
     const {entries} = this.state;
     return (
       <Card className="pt-elevation-4">
@@ -178,13 +238,13 @@ setValues = (e, index, id, path) => {
             <div className="pagination-control">
               <div>
                 <Button
-                  disabled={this.currentPage - 1 < 1}
+                  disabled={this.currentPage - 1 < 1 || this.state.loading === true || this.state.loadingRR === true}
                   onClick={this.previous.bind(this)}>
                   previous
                 </Button>{" "}
                 |{" "}
                 <Button
-                  disabled={this.currentPage >= this.state.maxPages}
+                  disabled={this.currentPage >= this.state.maxPages  || this.state.loading === true || this.state.loadingRR === true}
                   onClick={this.next.bind(this)}>
                   next
                 </Button>
@@ -192,13 +252,15 @@ setValues = (e, index, id, path) => {
             </div>
             <div>
               <ControlGroup fill={false} vertical={false}>
-                <div className="pt-select">
+              <Button intent={Intent.PRIMARY} onClick={this.searchBy}>Search</Button>
+                {/* <div className="pt-select">
                   <select value={this.state.filter}>
                     <option value="">Search</option>
                   </select>
-                </div>
+                </div> */}
                 <InputGroup
-                  onChange={this.searchBy}
+                  onChange={this.updateSearch}
+                  onKeyPress={this.handleEnterKeySearch}
                   value={this.state.keywordSearch}
                   placeholder={pluginRegistry
                     .getIntl()
@@ -221,7 +283,7 @@ setValues = (e, index, id, path) => {
                   textAlign: "center",
                   verticalAlign: "middle !important"
                 }}>
-                {Array.isArray(entries) && entries.length > 0 && this.state.loading === false
+                {Array.isArray(entries) && entries.length > 0 && this.state.loading === false && this.state.loadingRR === false && this.currentPage===this.state.currentPage
                   ? entries.map((entry, index) => {
                       return (
                         <this.props.entryClass
@@ -237,25 +299,9 @@ setValues = (e, index, id, path) => {
                       );
                     })
                     : 
-                    this.state.keywordSearch != "" && entries != undefined && entries.length === 0?
-                    <tr className='tableLoading'>
-                        <div class="middle searchResult">
-                            <FormattedMessage
-                                id="app.common.searchResult"
-                                defaultMessage="No search result"
-                            />
-                        </div>
-                    </tr>
-                    : this.state.keywordSearch === "" && entries != undefined && entries.length === 0?
-                    <tr className='tableLoading'>
-                        <div class="middle searchResult">
-                        <FormattedMessage
-                                id="app.common.emptyArray"
-                                defaultMessage="Empty array"
-                            />
-                        </div>
-                    </tr>
-                    : 
+                    this.state.loading === true 
+                    || 
+                    this.state.loadingRR === true ?
                   <tr className='tableLoading'>
                     <div className="middle">
                         <div className="bar bar1"></div>
@@ -267,7 +313,39 @@ setValues = (e, index, id, path) => {
                         <div className="bar bar7"></div>
                         <div className="bar bar8"></div>
                     </div>
+                  </tr>  
+                  : 
+                  this.state.keywordSearch != "" && entries != undefined && entries.length === 0 && this.state.loading === false && this.state.loadingRR === false && this.currentPage===this.state.currentPage?
+                  <tr className='tableLoading'>
+                      <div class="middle searchResult">
+                          <FormattedMessage
+                              id="app.common.searchResult"
+                              defaultMessage="No search result"
+                          />
+                      </div>
                   </tr>
+                  : this.state.keywordSearch === "" && entries != undefined && entries.length === 0 && this.state.loading === false && this.state.loadingRR === false && this.currentPage===this.state.currentPage?
+                  <tr className='tableLoading'>
+                      <div class="middle searchResult">
+                      <FormattedMessage
+                              id="app.common.emptyArray"
+                              defaultMessage="Empty array"
+                          />
+                      </div>
+                  </tr>
+                  :
+                  <tr className='tableLoading'>
+                    <div class="middle">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                        <div class="bar bar4"></div>
+                        <div class="bar bar5"></div>
+                        <div class="bar bar6"></div>
+                        <div class="bar bar7"></div>
+                        <div class="bar bar8"></div>
+                    </div>
+                  </tr> 
                   }
               </tbody>
             </table>

@@ -285,7 +285,7 @@ export class _NavPluginRoot extends Component {
   goTo = path => {
     sessionStorage.setItem("newPool", true);
     this.props.history.push(path);
-    
+    this.props.loadPools(pluginRegistry.getServer(this.props.serverID));
   };
   componentDidMount() {
     if (this.props.server && this.serverHasSerialbox()) {

@@ -41,6 +41,7 @@ export class _ControlPanel extends Component {
     this.props.switchVisibility(true);
     this.props.serverVisibility([]);
     this.setState({ isDark: this.isDark(this.props.theme) });
+    // console.log(this.props.visibility)
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ isDark: this.isDark(nextProps.theme) });
@@ -60,7 +61,7 @@ export class _ControlPanel extends Component {
           <div className='prompt_container'>
             <img src='./components/layouts/elements/icon.png' />
             {this.props.visibility ? 
-            ("Would you like to hide inactive servers?") : ("Would you like to unhide inactive servers?")
+            ("Would you like to hide inactive servers?") : ("Would you like to show inactive servers?")
             }
           </div>
         )
@@ -68,10 +69,13 @@ export class _ControlPanel extends Component {
       .then((willHide) => {
         if (willHide) {
           swal(this.props.visibility ? 
-            ("INACTIVE SERVERS HIDED") : ("INACTIVE SERVERS UNHIDED"), {
+            ("Inactive servers hidden") : ("Inactive servers shown"), {
             icon: "success",
           });
-          this.props.switchVisibility(!this.props.visibility)
+          this.props.switchVisibility(!this.props.visibility);
+          if(this.props.visibility === true) {
+            this.props.serverVis.splice(0);
+          }
         } 
       })
     } else if (this.props.intl.locale === "fr-FR") {
@@ -92,6 +96,7 @@ export class _ControlPanel extends Component {
       //   } 
       // })
     }
+    
   }
   render() {
     const { controlButtons } = this.props;

@@ -36,37 +36,61 @@ class _TreeNode extends Component {
       highlightedNode: false
     };
   }
-  toggleChildren = evt => {
-    evt.stopPropagation();
-    evt.preventDefault();
-    this.setState({collapsed: !this.state.collapsed});
-    sessionStorage.setItem(`pageTask${this.props.serverID}`, "1");
-    sessionStorage.setItem(`pageSearch${this.props.serverID}`, "");
-  };
   componentDidMount() {
     this.activateNode(this.props.currentPath, this.props.path);
   }
   componentWillReceiveProps(nextProps) {
     this.activateNode(nextProps.currentPath, nextProps.path);
+    if(this.props.visibility === false && nextProps.visibility === true) {
+      
+      if(this.state.collapsed === false && this.props.visibility === false) {
+        this.setState({collapsed: true});
+      }
+    }
   }
+  //Clicking on arrow at tree node function needs to be implemented in both (toggleChildren && go)!!
+  toggleChildren = evt => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    this.setState({collapsed: !this.state.collapsed});
+    
+    if (evt.currentTarget.classList.contains('tree-arrow-0') && !this.props.serverVis.includes(this.props.serverID)) {
+      this.props.serverVis.push(this.props.serverID);
+    }
+    if (evt.currentTarget.classList.contains('tree-arrow-0') && !this.state.collapsed && this.props.serverVis.includes(this.props.serverID) && this.props.visibility===true)  {
+      const index = this.props.serverVis.indexOf(this.props.serverID);
+      if (index !== -1) {
+        this.props.serverVis.splice(index, 1);
+      }
+    } 
+    if (evt.currentTarget.classList.contains('tree-node-depth-0') && !this.state.collapsed && this.props.serverVis.includes(this.props.serverID) && this.props.visibility===true)  {
+      const index = this.props.serverVis.indexOf(this.props.serverID);
+      if (index !== -1) {
+        console.log(index)
+        this.props.serverVis.splice(index, 1);
+      }
+    } 
+    sessionStorage.setItem(`pageTask${this.props.serverID}`, "1");
+    sessionStorage.setItem(`pageSearch${this.props.serverID}`, "");
+  };
   go = e => {
     e.stopPropagation(); // prevent parent go to be triggered.
     e.preventDefault();
     this.toggleChildren(e);
-    if (e.currentTarget.classList.contains('tree-node-depth-0') && this.state.collapsed && !this.props.serverVis.includes(this.props.serverID)) {
-      this.props.serverVis.push(this.props.serverID);
-    } 
-    else if (e.currentTarget.classList.contains('tree-node-depth-0') && this.props.visibility && this.props.serverVis.includes(this.props.serverID)) {
-      this.props.serverVis.splice(this.props.serverID, 1);
-    } 
-    else {
-      true
-    }
-    if (this.props.onClick) {
-      this.props.onClick(e);
-    } else if (this.props.path) {
-      this.props.history.push(this.props.path);
-    }
+      if (e.currentTarget.classList.contains('tree-node-depth-0') && this.state.collapsed && !this.props.serverVis.includes(this.props.serverID)) {
+        this.props.serverVis.push(this.props.serverID);
+      } 
+      if (e.currentTarget.classList.contains('tree-node-depth-0') && !this.state.collapsed && this.props.serverVis.includes(this.props.serverID) && this.props.visibility===true)  {
+        const index = this.props.serverVis.indexOf(this.props.serverID);
+        if (index !== -1) {
+          this.props.serverVis.splice(index, 1);
+        }
+      } 
+      if (this.props.onClick) {
+        this.props.onClick(e);
+      } else if (this.props.path) {
+        this.props.history.push(this.props.path);
+      }
   };
   activateNode(currentPath, path) {
     if (path) {
@@ -75,8 +99,11 @@ class _TreeNode extends Component {
     }
   }
   hideActiveServer = () => {
-    console.log('Clicked server:' + this.props.serverID);
-    this.props.serverVis.splice(this.props.serverID, 1);
+    const index = this.props.serverVis.indexOf(this.props.serverID);
+    if (index !== -1) {
+      this.props.serverVis.splice(index, 1);
+    }
+    this.setState({collapsed: true})
   }
   /**
    * renderContextMenu - Use onContextMenu={} to display a menu.
@@ -96,6 +123,7 @@ class _TreeNode extends Component {
     });
     let collapsed = this.state.collapsed; // for future use to have more logic.
     return (
+      <li className="list-flex-display">
       <li
         className={classNames({
           arrow: true,
@@ -121,7 +149,11 @@ class _TreeNode extends Component {
           })}
           onClick={this.go}
           >
-          <a onClick={this.toggleChildren}>
+          <a 
+          onClick={this.toggleChildren} 
+          className={classNames({
+                [`tree-arrow-${this.props.depth}`]: true,
+              })}>
             <span
               className={classNames({
                 "arrow-straight": collapsed,
@@ -141,18 +173,23 @@ class _TreeNode extends Component {
             })}>
             <span className="tree-node-label">{this.props.children}</span>
           </a>
-          {this.props.visibility === false 
-          // && 
-          // this.props.serverVis.includes(this.props.serverID) 
-          ? 
-          <div 
-          className='remove_server pt-button pt-icon-disable'
-          onClick={this.hideActiveServer}
-          ></div> 
-          : ""
-          }
+          
         </div>
         <SubTree collapsed={collapsed}>{childrenNodes}</SubTree>
+      </li>
+      {this.props.visibility === false 
+      ? 
+      <div 
+      className={
+        classNames({
+          [`tree-node-depth-${this.props.depth} remove_server pt-button pt-icon-disable`]: true,
+          [`tree-node-depth-${this.props.depth} remove_server pt-button pt-icon-disable tree-node-invisible`]: 
+            this.props.visibility === false && !this.props.serverVis.includes(this.props.serverID)
+      })}
+      onClick={this.hideActiveServer}
+      ></div> 
+      : ""
+      }
       </li>
     );
   }

@@ -59,7 +59,6 @@ class _TaskDetail extends Component {
     };
     this.autoRefresh = null;
     this.timeArray = [];
-    this.fillArray = [...new Set(this.timeArray)];
   }
   
   setDownloadLink = async () => {
@@ -152,7 +151,7 @@ class _TaskDetail extends Component {
       });
   };
   msToTime = (duration) => {
-    var milliseconds = (duration),
+    var milliseconds = parseInt((duration % 1000)),
       seconds = Math.floor((duration / 1000) % 60),
       minutes = Math.floor((duration / (1000 * 60)) % 60),
       hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
@@ -160,49 +159,12 @@ class _TaskDetail extends Component {
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     seconds = (seconds < 10) ? "0" + seconds : seconds;
-  
+    // console.log(hours + "h " + minutes + "m " + seconds + "s " + milliseconds+ "ms ")
     return hours + "h " + minutes + "m " + seconds + "s " + milliseconds+ "ms ";
   }
-  updateFirstInputValue(evt) {
-    if (evt.target.value > [...new Set(this.timeArray)].length) {
-      const val = [...new Set(this.timeArray)].length-1
-      this.setState({
-        firstInputValue: val,
-        secondInputValue: [...new Set(this.timeArray)].length
-      });
-    }
-    else if (evt.target.value <= 0) {
-      this.setState({
-        firstInputValue: 1
-      });
-    } else {
-      this.setState({
-        firstInputValue: evt.target.value,
-        serachedPariod: "value"
-      });
-      
-    }
-  }
-  updateSecondInputValue(evt) {
-    if (evt.target.value > [...new Set(this.timeArray)].length) {
-      const val = [...new Set(this.timeArray)].length-1
-      this.setState({
-        secondInputValue: val
-      });
-    }
-    else if (evt.target.value <= 0) {
-      this.setState({
-        secondInputValue: 1
-      });
-    } else {
-      this.setState({
-        secondInputValue: evt.target.value,
-        serachedPariod: "value"
-      });
-      
-    }
-  }
+
   render() {
+    // console.log(this.state)
     const {task} = this.state;
     const filteredArray = [...new Set(this.timeArray)];
     const lastValueFilteredArray = filteredArray[filteredArray.length-1];
@@ -230,10 +192,10 @@ class _TaskDetail extends Component {
           <div className="cards-container">
             <Card className="pt-elevation-4">
             
-              <h5>
+              <h5 className="task-detail-title">
               <button 
                 tabindex="0" 
-                className="pt-icon-arrow-left pt-button left-aligned-elem pt-interactive pt-intent-primary"
+                className="pt-icon-arrow-left pt-button pt-interactive pt-intent-primary"
                 title="Back"
                 onClick={e => 
                   {this.props.history.push(`/capture/tasks/${
@@ -242,10 +204,10 @@ class _TaskDetail extends Component {
                 }>
                 <FormattedMessage id="plugins.capture.backToList" />
               </button>
-                {task.name}
+                <span style={{paddingLeft: "10px"}}>{task.name}</span>
                 {this.state.downloadLink ? (
                   <a
-                    style={{color: linkColor, paddingLeft: "10px"}}
+                    style={{color: linkColor, paddingLeft: "10px",paddingRight: "10px"}}
                     href={this.state.downloadLink}
                     target="_blank">
                     <Icon
@@ -256,7 +218,7 @@ class _TaskDetail extends Component {
                 ) : null}
                 <button
                   onClick={this.toggleConfirmRestart}
-                  className="pt-button right-aligned-elem pt-interactive pt-intent-primary">
+                  className="pt-button pt-interactive pt-intent-primary pt-btn-flex">
                   <FormattedMessage id="plugins.capture.restart" />
                 </button>
               </h5>
@@ -392,21 +354,20 @@ class _TaskDetail extends Component {
                     intent = Intent.PRIMARY;
                 }
                 this.timeArray.push(message.created);
+                const fillteredTimeArray = [...new Set(this.timeArray)]
                 const timesArray = [];
                 let i;
-                for (i=0;i < filteredArray.length; ++i) {
-                  if(task.taskhistory_set.length === 0) {
-                    null
+                for (i=0;i < fillteredTimeArray.length; ++i) {
+                  if (i === 0) {
+                    timesArray.push(this.msToTime(new Date(fillteredTimeArray[i]).getTime()));
+                    const diffTime = fillteredTimeArray[i] - fillteredTimeArray[i-1];
+                  } else {
+                    const filteredArrayDiff = new Date(fillteredTimeArray[i]).getTime() - new Date(fillteredTimeArray[i-1]).getTime();
+                    timesArray.push(this.msToTime(filteredArrayDiff));
                   }
-                  else {
-                    if (i === filteredArray.length-1) {
-                      null
-                    } else {
-                      const filteredArrayDiff = new Date(filteredArray[i+1]).getTime() - new Date(filteredArray[i]).getTime();
-                      timesArray.push(this.msToTime(filteredArrayDiff));
-                    }
-                  }
+                  
                 };
+
                 return (
                   <div
                     key={`task-message-${message.id}`}
@@ -427,9 +388,13 @@ class _TaskDetail extends Component {
                           </tr>
                           {yieldDataPairRowIfSet("Created", message.created)}
                           {
-                          <tr>
-                            <td>Step time: </td><td>{timesArray[index]} <span className="pt-icon-time"></span></td>
-                          </tr>
+                            index > 0 ? 
+                            <tr>
+                              <td>Time</td>
+                              <td>{timesArray[index]} <span className="pt-icon-time"></span></td>
+                            </tr> 
+                            : 
+                            null
                           }
                         </tbody>
                       </table>

@@ -136,11 +136,13 @@ responseRulesFunction = () => {
         // most up to date.
         pool = pools.find(pool => {
           return pool.machine_name === this.props.match.params.poolName;
+        }, ()=> {
+          setTimeout(()=>{this.setState({
+            loading: false,
+            responseRules: pool,
+          })}, 1000);
+          
         });
-        this.setState({
-          loading: false,
-          responseRules: pool,
-        })
     })
     console.log("deleting response rules:", this.currentServer, responseRule)
   };

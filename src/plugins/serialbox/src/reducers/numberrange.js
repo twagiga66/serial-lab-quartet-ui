@@ -438,13 +438,10 @@ export const loadPoolList = (server, search, page, ordering, poolID) => {
     }
     // console.log(server, search, page, ordering, poolID)
     return async dispatch => {
+        sessionStorage.setItem("loadingRR", true);
         let serverObject = pluginRegistry.getServer(server.serverID);
         let response_pools = null;
         let pools = null;
-        // let poolIDarray = [6,5,4];
-
-        // let numberPool = 6;
-        // let i;
         serverObject
             .fetchPageList("serialbox_pools_list", params, [])
             .then(async response => {
@@ -454,6 +451,7 @@ export const loadPoolList = (server, search, page, ordering, poolID) => {
                 // }
                 response = await loadResponseRulesForNumberPool(server, response, poolID=poolID);
                 // console.log(response)
+                sessionStorage.setItem("loadingRR", false);
                 return dispatch({
                     type: actions.loadPools,
                     payload: {
@@ -463,9 +461,10 @@ export const loadPoolList = (server, search, page, ordering, poolID) => {
                         count: response.count,
                         next: response.next
                     }
-                })
+                });
             })
             .catch(e => {
+                sessionStorage.setItem("loadingRR", false);
                 showMessage({
                     type: "error",
                     id: "plugins.masterData.errorFetchPools",
@@ -479,10 +478,11 @@ export const loadPoolList = (server, search, page, ordering, poolID) => {
 export const loadResponserulesForPool = (server, poolID) => {
     return async dispatch => {
         let serverObject = pluginRegistry.getServer(server.serverID);
+        sessionStorage.setItem("loadingRR", true);
         serverObject
             .fetchPageList("serialbox_pools_list", params, [])
             .then(async response => {
-
+                sessionStorage.setItem("loadingRR", false);
                 response = await loadResponseRulesForNumberPool(server, response, poolID=poolID);
                 return dispatch({
                     type: actions.loadPools,
@@ -496,6 +496,7 @@ export const loadResponserulesForPool = (server, poolID) => {
                 })
             })
             .catch(e => {
+                sessionStorage.setItem("loadingRR", false);
                 showMessage({
                     type: "error",
                     id: "plugins.masterData.errorFetchPools",

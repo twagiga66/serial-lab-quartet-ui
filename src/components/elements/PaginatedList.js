@@ -178,7 +178,7 @@ class _PaginatedList extends Component {
     if (this.debounced) {
       clearTimeout(this.debounced);
     }
-    const poolID=6
+    const poolID=6;
     this.debounced = setTimeout(() => {
       const {loadEntries, server} = this.props;
       if (this.props.event === true) {

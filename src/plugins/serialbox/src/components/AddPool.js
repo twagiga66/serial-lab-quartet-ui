@@ -120,31 +120,42 @@ responseRulesFunction = () => {
   })
 }
 
-  deleteResponseRule = responseRule => {
+  deleteResponseRules = responseRule => {
     // let pool = this.getPool();
-    console.log("data", this.props.server)
     this.setState({loading: true});
-    this.props.deleteResponseRule(this.currentServer, responseRule);
-    loadResponseRulesForNumberPool(
-      this.props.server,
-      this.responserulesState,
-      sessionStorage.getItem("ResponseRulesID")
-    )
+    console.log(this.currentServer, responseRule)
+    this.props.deleteResponseRule(this.currentServer, responseRule)
+    .then(()=> {
+      loadResponseRulesForNumberPool(
+        this.props.server,
+        this.responserulesState,
+        sessionStorage.getItem("ResponseRulesID")
+      )
+    })
     .then(() => {
-      let pool = {};
+        let pool = {};
         let pools = this.props.nr[this.props.match.params.serverID].pools;
         // most up to date.
         pool = pools.find(pool => {
-          return pool.machine_name === this.props.match.params.poolName;
-        }, ()=> {
-          setTimeout(()=>{this.setState({
-            loading: false,
-            responseRules: pool,
-          })}, 1000);
-          
+          return pool.machine_name === this.props.match.params.poolName 
         });
+        this.setState({
+          loading: true,
+          responseRules: pool,
+        },
+        () => {
+          loadResponseRulesForNumberPool(
+            this.props.server,
+            this.responserulesState,
+            sessionStorage.getItem("ResponseRulesID")
+          )
+          this.setState({
+            loading: true,
+            responseRules: pool,
+          })
+        }
+        )
     })
-    console.log("deleting response rules:", this.currentServer, responseRule)
   };
   getEditMode = () => {
     return (this.props.location.pathname.search('edit') > 0)
@@ -264,7 +275,7 @@ responseRulesFunction = () => {
                                         <Button
                                             small="true"
                                             iconName="trash"
-                                            onClick={this.deleteResponseRule.bind(
+                                            onClick={this.deleteResponseRules.bind(
                                                 this,
                                                 responseRule
                                             )}

@@ -241,7 +241,7 @@ export const deleteAPool = (server, pool) => {
 };
 
 export const deleteResponseRule = (server, responseRule, page) => {
-    return dispatch => {
+    return async dispatch => {
         pluginRegistry
             .getServer(server.serverID)
             .getClient()

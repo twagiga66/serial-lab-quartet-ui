@@ -41,6 +41,7 @@ class _PoolForm extends Component {
   }
 
   componentDidMount() {
+    console.log("Entered to pool form");
     if (this.state.isNewPool === true){
       if(this.props.nr) {
         this.props.nr = undefined
@@ -152,9 +153,9 @@ class _PoolForm extends Component {
               type: "success"
             });
           }
-          this.props.loadPools(
-            pluginRegistry.getServer(this.props.server.serverID)
-          );
+          // this.props.loadPools(
+          //   pluginRegistry.getServer(this.props.server.serverID)
+          // );
           setTimeout(() => {
             // tiny bit of padding.
             this.props.history.push(

@@ -28,7 +28,7 @@ const {FormattedMessage} = qu4rtet.require("react-intl");
 const classNames = qu4rtet.require("classnames");
 const {DeleteDialog} = qu4rtet.require("./components/elements/DeleteDialog");
 const {RightPanel} = qu4rtet.require("./components/layouts/Panels");
-import {loadPools, loadRegions,loadRegionsForNumberPool} from "../reducers/numberrange";
+import {loadPools, loadRegions,loadRegionsForNumberPool, loadPool, loadExactRegionsForNumberPool,loadPoolList} from "../reducers/numberrange";
 
 /**
  * _RegionDetail - Description
@@ -40,7 +40,7 @@ class _RegionDetail extends Component {
     this.state = {
       alloc: 1, 
       lastUpdated: null, 
-      loading: true,
+      loading: false,
     };
     // these two properties below make it easy to retrieve
     // and trigger actions.
@@ -48,8 +48,11 @@ class _RegionDetail extends Component {
 
   }
   componentDidMount() {
-    this.loadPoolDetail(this.props);
-    setTimeout(()=>{this.setState({loading : false})}, 1200)
+    this.loadPoolDetailUpdated(this.props);
+    // this.loadPoolDetail(this.props);
+  }
+  componentWillReceiveProps(nextProps) {
+
   }
   previewAlloc = evt => {
     this.setState({alloc: Number(evt.target.value)});
@@ -71,23 +74,24 @@ class _RegionDetail extends Component {
     for (let pool of this.props.pools) {
       if (pool.machine_name === props.match.params.pool) {
         this.currentPool = pool;
-        
       }
     }
-    this.props.loadRegionsForNumberPool(
+    //NEW
+    this.props.loadExactRegionsForNumberPool(
       pluginRegistry.getServer(props.server.serverID),
       this.currentPool
     )
-    // this.loadingScreen();
+
   }
-  loadingScreen = () => {
-    this.setState(
-      { loading : true },
-      () => {
-          setTimeout(()=>{this.setState({loading : false})}, 10000)
-      }
-    );
-  };
+  //NEW REQUEST FOR ONE NUMBER POOL
+  loadPoolDetailUpdated(props) {
+    // this.setState({loading : true});
+    // setTimeout(()=> this.setState({loading: false}), 3000);
+    
+    this.props.loadPool(pluginRegistry.getServer(props.server.serverID), this.props.match.params.pool);
+    setTimeout(()=> this.props.loadExactRegionsForNumberPool(pluginRegistry.getServer(props.server.serverID), this.props.pool), 3000);
+  }
+
   render() {
     let regions = this.props.currentRegions;
     return (
@@ -122,7 +126,7 @@ class _RegionDetail extends Component {
                 lastUpdated={this.state.lastUpdated}
                 region={region}
                 alloc={this.state.alloc}
-                pool={this.currentPool}
+                pool={this.props.pool}
                 serverID={this.props.server.serverID}
                 serverObject={pluginRegistry.getServer(
                   this.props.server.serverID
@@ -146,15 +150,20 @@ class _RegionDetail extends Component {
 
 export var RegionDetail = connect(
   (state, ownProps) => {
+    console.log("STATE:", state)
     return {
       server: state.serversettings.servers[ownProps.match.params.serverID],
       pools: state.numberrange.servers[ownProps.match.params.serverID].pools,
-      currentRegions: state.numberrange.currentRegions
+      currentRegions: state.numberrange.currentRegions,
+      pool: state.numberrange.pool
     };
   },
   {
     loadPools, 
+    loadPool,
     loadRegions, 
-    loadRegionsForNumberPool
+    loadRegionsForNumberPool,
+    loadExactRegionsForNumberPool,
+    loadPoolList
   }
 )(_RegionDetail);

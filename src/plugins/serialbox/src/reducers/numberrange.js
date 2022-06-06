@@ -18,6 +18,7 @@
 
 import {
     getPools,
+    getPool,
     getRegion,
     getRegions,
     allocate,
@@ -38,7 +39,8 @@ import {setServerState} from "lib/reducer-helper";
 export const initialData = () => ({
     servers: {},
     region: {},
-    currentRegions: []
+    currentRegions: [],
+    pool: {}
 });
 
 export const loadResponseRules = async (server, response) => {
@@ -70,7 +72,6 @@ export const loadResponseRules = async (server, response) => {
               }, []);
             return response
         }
-        console.log(response)
         return response
     } catch (e) {
         if (response) {
@@ -94,6 +95,24 @@ export const loadPools = server => {
                 payload: {
                     [server.serverID]: {pools: pools, server: server}
                 }
+            });
+        });
+    };
+};
+
+export const loadPool = (server, poolName, pool) => {
+    return dispatch => {
+        getPool(server, poolName)
+        .then(async pool => {
+            dispatch({
+                type: actions.loadPool,
+                payload: pool
+            });
+        });
+        getRegions(server, poolName).then(regions => {
+            dispatch({
+                type: actions.loadRegions,
+                payload: regions
             });
         });
     };
@@ -148,16 +167,13 @@ export const loadRegions = (server, pool) => {
     };
 };
 export const loadRegionsForNumberPool = (server, pool) => {
-    console.log(server, pool)
     return dispatch => {
         // first get all pools again to refresh pool list.
-        getPools(server)
+        loadPoolList(server, null, Number(sessionStorage.getItem("ActualPage")), null, 0)
             .then(async pools => {
                 // second get region for given pool (updated.)
                 let updatedPool = pools.find(aPool => {
-                    console.log(aPool.machine_name)
                     return aPool.machine_name === pool.machine_name;
-                    
                 });
                 getRegions(server, updatedPool).then(regions => {
                     dispatch({
@@ -170,6 +186,16 @@ export const loadRegionsForNumberPool = (server, pool) => {
                 showMessage({type: "error", msg: e});
             });
     };
+};
+export const loadExactRegionsForNumberPool = (server, pool) => {
+    return dispatch => {
+    getRegions(server, pool).then(regions => {
+        dispatch({
+            type: actions.loadRegions,
+            payload: regions
+        });
+    });
+};
 };
 export const deleteARegion = (server, pool, region) => {
     return dispatch => {
@@ -209,7 +235,7 @@ export const deleteARegionOfNumberPool = (server, pool, region) => {
                     }
                 }
                 if (response.ok && response.status === 204) {
-                    dispatch(loadRegionsForNumberPool(server, pool));
+                    dispatch(getPool(server, pool.machine_name))
                     showMessage({
                         id: "plugins.numberRange.regionDeletedSuccessfully",
                         type: "warning"
@@ -349,6 +375,12 @@ export default handleActions(
                 next: action.payload.next
             });
         },
+        [actions.loadPool]: (state, action) => {
+            return {
+                ...state,
+                pool: action.payload,
+            };
+        },
         [actions.loadRegion]: (state, action) => {
             return {
                 ...state,
@@ -384,9 +416,7 @@ export default handleActions(
 );
 
 export const loadResponseRulesForNumberPool = async (server, response, poolID) => {
-    console.log(server, response, poolID)
     try {
-        
         let responseRules = await pluginRegistry
             .getServer(server.serverID)
             .fetchListAll("serialbox_response_rules_pool_list", {pool_id: poolID}, []);
@@ -445,12 +475,7 @@ export const loadPoolList = (server, search, page, ordering, poolID) => {
         serverObject
             .fetchPageList("serialbox_pools_list", params, [])
             .then(async response => {
-                // for(i=0; i <poolIDarray.length; ++i) {
-                //     console.log(poolIDarray[i])
-                //     response = await loadResponseRulesForNumberPool(server, response, poolID=poolIDarray[i]);
-                // }
                 response = await loadResponseRulesForNumberPool(server, response, poolID=poolID);
-                // console.log(response)
                 sessionStorage.setItem("loadingRR", false);
                 return dispatch({
                     type: actions.loadPools,

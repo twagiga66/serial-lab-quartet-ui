@@ -118,10 +118,9 @@ class _RegionForm extends Component {
           }
           setTimeout(() => {
             // tiny bit of padding.
+            //Remove pushing to regions
             this.props.history.push(
-              `/number-range/region-detail/${this.props.server.serverID}/${
-                this.props.pool.machine_name
-              }`
+              `/number-range/pools/${this.props.server.serverID}`
             );
           }, 100);
 

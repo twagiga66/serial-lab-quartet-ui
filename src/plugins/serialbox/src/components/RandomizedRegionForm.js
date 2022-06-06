@@ -117,9 +117,7 @@ class _RandomizedRegionForm extends Component {
           setTimeout(() => {
             // tiny bit of padding.
             this.props.history.push(
-              `/number-range/region-detail/${this.props.server.serverID}/${
-                this.props.pool.machine_name
-              }`
+              `/number-range/pools/${this.props.server.serverID}`
             );
           }, 100);
           return proms[1];

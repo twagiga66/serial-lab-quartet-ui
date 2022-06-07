@@ -94,6 +94,7 @@ class _RegionDetail extends Component {
 
   render() {
     let regions = this.props.currentRegions;
+    // setInterval(()=> console.log(this.props), 2000)
     return (
       <RightPanel
         title={
@@ -150,7 +151,6 @@ class _RegionDetail extends Component {
 
 export var RegionDetail = connect(
   (state, ownProps) => {
-    console.log("STATE:", state)
     return {
       server: state.serversettings.servers[ownProps.match.params.serverID],
       pools: state.numberrange.servers[ownProps.match.params.serverID].pools,

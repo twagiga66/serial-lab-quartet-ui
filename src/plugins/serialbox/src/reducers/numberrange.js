@@ -101,6 +101,7 @@ export const loadPools = server => {
 };
 
 export const loadPool = (server, poolName, pool) => {
+    console.log(server, poolName, pool)
     return dispatch => {
         getPool(server, poolName)
         .then(async pool => {
@@ -108,13 +109,14 @@ export const loadPool = (server, poolName, pool) => {
                 type: actions.loadPool,
                 payload: pool
             });
-        });
-        getRegions(server, poolName).then(regions => {
-            dispatch({
-                type: actions.loadRegions,
-                payload: regions
+            getRegions(server, pool).then(regions => {
+                dispatch({
+                    type: actions.loadRegions,
+                    payload: regions
+                });
             });
         });
+        
     };
 };
 
@@ -169,7 +171,7 @@ export const loadRegions = (server, pool) => {
 export const loadRegionsForNumberPool = (server, pool) => {
     return dispatch => {
         // first get all pools again to refresh pool list.
-        loadPoolList(server, null, Number(sessionStorage.getItem("ActualPage")), null, 0)
+        loadPool()
             .then(async pools => {
                 // second get region for given pool (updated.)
                 let updatedPool = pools.find(aPool => {
@@ -189,7 +191,15 @@ export const loadRegionsForNumberPool = (server, pool) => {
 };
 export const loadExactRegionsForNumberPool = (server, pool) => {
     return dispatch => {
-    getRegions(server, pool).then(regions => {
+    getPool(server, pool.machine_name)
+    .then(async pool => {
+        dispatch({
+            type: actions.loadPool,
+            payload: pool
+        });
+    })
+    getRegions(server, pool)
+    .then(async regions => {
         dispatch({
             type: actions.loadRegions,
             payload: regions
@@ -235,7 +245,8 @@ export const deleteARegionOfNumberPool = (server, pool, region) => {
                     }
                 }
                 if (response.ok && response.status === 204) {
-                    dispatch(getPool(server, pool.machine_name))
+                    dispatch(loadPool(server, pool.machine_name))
+                    // dispatch(loadRegions(server, pool));
                     showMessage({
                         id: "plugins.numberRange.regionDeletedSuccessfully",
                         type: "warning"

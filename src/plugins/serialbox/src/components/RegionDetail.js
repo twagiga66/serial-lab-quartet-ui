@@ -89,12 +89,11 @@ class _RegionDetail extends Component {
     // setTimeout(()=> this.setState({loading: false}), 3000);
     
     this.props.loadPool(pluginRegistry.getServer(props.server.serverID), this.props.match.params.pool);
-    setTimeout(()=> this.props.loadExactRegionsForNumberPool(pluginRegistry.getServer(props.server.serverID), this.props.pool), 3000);
+    // setTimeout(()=> this.props.loadExactRegionsForNumberPool(pluginRegistry.getServer(props.server.serverID), this.props.pool), 500);
   }
 
   render() {
     let regions = this.props.currentRegions;
-    // setInterval(()=> console.log(this.props), 2000)
     return (
       <RightPanel
         title={

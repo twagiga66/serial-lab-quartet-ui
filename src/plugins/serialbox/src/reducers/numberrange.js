@@ -100,8 +100,8 @@ export const loadPools = server => {
     };
 };
 
-export const loadPool = (server, poolName, pool) => {
-    console.log(server, poolName, pool)
+export const loadPool = (server, poolName) => {
+    console.log(server, poolName)
     return dispatch => {
         getPool(server, poolName)
         .then(async pool => {
@@ -110,6 +110,7 @@ export const loadPool = (server, poolName, pool) => {
                 payload: pool
             });
             getRegions(server, pool).then(regions => {
+                console.log(server, pool, regions)
                 dispatch({
                     type: actions.loadRegions,
                     payload: regions
@@ -427,6 +428,7 @@ export default handleActions(
 );
 
 export const loadResponseRulesForNumberPool = async (server, response, poolID) => {
+    // console.log(server, response, poolID)
     try {
         let responseRules = await pluginRegistry
             .getServer(server.serverID)

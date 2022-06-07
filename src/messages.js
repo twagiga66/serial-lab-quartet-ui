@@ -36,7 +36,7 @@ export default {
         servers: "Servers",
         noServerFound:
           "You currently have no QU4RTET server in your configuration.",
-        version: "Version {appVersion}",
+        version: "Version {appVersion}_internal",
         desktopPluginTutorial: "QU4RTET Desktop Plugin Development Tutorial"
       },
       serverSettings: {

@@ -56,6 +56,7 @@ export const loadResponseRules = async (server, response) => {
             pool.response_rules = [];
         });
         if (responseRules && responseRules.length > 0) {
+            console,log("responseRules",responseRules)
             responseRules.forEach(responseRule => {
                 try {
                     poolsMap[responseRule.pool].response_rules.push(responseRule);
@@ -428,24 +429,16 @@ export default handleActions(
 );
 
 export const loadResponseRulesForNumberPool = async (server, response, poolID) => {
-    // console.log(server, response, poolID)
+    console.log(server, response, poolID)
     try {
         let responseRules = await pluginRegistry
             .getServer(server.serverID)
             .fetchListAll("serialbox_response_rules_pool_list", {pool_id: poolID}, []);
-        // poor-man's matching alg.
-        // console.log("Loading Response Rule with ID: " + poolID)
-        // console.log("Response: ", response)
         let poolsMap = {};
-        // response.results.forEach(pool => {
-        //     poolsMap[pool.id] = pool;
-        //     pool.response_rules = [];
-        // });
         response.pools.forEach(pool => {
             poolsMap[pool.id] = pool;
             pool.response_rules = [];
         });
-        // console.log("response rules list: ",responseRules)
         if (responseRules && responseRules.length > 0) {
             responseRules.forEach(responseRule => {
                 try {
@@ -457,7 +450,7 @@ export const loadResponseRulesForNumberPool = async (server, response, poolID) =
                 }
             });
         }
-        // console.log("final response: ", response)
+        console.log("final response: ", response)
         return response
         
     } catch (e) {

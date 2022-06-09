@@ -18,6 +18,8 @@
 
 import PoolForm from "./PoolForm";
 import {deleteResponseRule, loadResponseRulesForNumberPool} from "../reducers/numberrange";
+import {loadRule} from "../../../capture/src/reducers/capture";
+
 const React = qu4rtet.require("react");
 const {Component} = React;
 const {connect} = qu4rtet.require("react-redux");
@@ -42,10 +44,32 @@ class _AddPool extends Component {
     }
   }
   componentDidMount() {
-    // setTimeout(()=>{this.processEntries();}, 500)
     this.processEntries();
+    // this.props.loadRule(this.props.server, {id: 10});
     // console.log("Props", this.props);
     // console.log("State", this.state);
+  }
+
+  componentWillUnmount() {
+    console.log("Clearing Array.");
+    this.props.loadRule(this.props.server, "clearArr");
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log("Next Props: ", nextProps)
+    if(this.state.responseRules.response_rules){
+      this.state.responseRules.response_rules.find((item, index) => {
+        if(this.props.rule){
+          // if(item.rule === this.props.rule.arr[index].obj.id){
+          //   let completeRR = {};
+          //   console.log("STAAR",this.state)
+          //   const copyOfRR = [...this.state.responseRules.response_rules[index]];
+          //   console.log(copyOfRR)
+          //   copyOfRR.responseRuleName = this.props.rule.arr[index].obj.name
+          //   console.log(copyOfRR)
+          //  }
+        }
+      })
+    }
   }
   processEntries = (clear = false) => {
     if (this.debounced) {
@@ -67,6 +91,10 @@ class _AddPool extends Component {
         this.setState({
           loading: false,
           responseRules: pool,
+        }, ()=> {
+          this.state.responseRules.response_rules.map(item => {
+            this.props.loadRule(this.props.server, {id: item.rule})
+          })
         })
       })
     })
@@ -180,12 +208,16 @@ responseRulesFunction = () => {
     }
     return pool;
   };
+  mapArray(){
+
+  }
   render() {
     let editMode = this.getEditMode();
     // let pool = this.getPool();
-    // console.log("Props", this.props);
-    // console.log("State", this.state.responseRules);
-
+    console.log("Render Props", this.props);
+    console.log("State", this.state);
+    
+    
     return (
         <RightPanel
             title={
@@ -227,7 +259,69 @@ responseRulesFunction = () => {
                     </button>
                     <FormattedMessage id="plugins.numberRange.responseRules" />
                   </h5>
-                  {this.state.responseRules &&
+                  {this.props.rule &&
+                  this.props.rule.arr.length > 0 ? (
+                      <table className="pt-table pt-interactive pt-bordered pt-striped">
+                        <thead>
+                        <tr>
+                          <th>
+                            <FormattedMessage
+                                id="plugins.numberRange.ruleName"
+                                defaultMessage="Rule Name"
+                            />
+                          </th>
+                          <th>
+                            {" "}
+                            <FormattedMessage
+                                id="plugins.numberRange.contentType"
+                                defaultMessage="Content Type"
+                            />
+                          </th>
+                          <th />
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.props.rule.arr
+                            ? this.props.rule.arr.map((responseRule, index) => {
+                              return (
+                                  <tr key={responseRule.obj.id}>
+                                    <td>
+                                      {responseRule.obj.name}
+                                    </td>
+                                    <td>{
+                                      this.state.responseRules ?
+                                      this.state.responseRules.response_rules[index].content_type
+                                      :
+                                      ""
+                                      }</td>
+                                    {/* <td style={{width: "80px"}}>
+                                      <ButtonGroup minimal small>
+                                        <Button
+                                            small="true"
+                                            iconName="edit"
+                                            onClick={this.editResponseRule.bind(
+                                                this,
+                                                responseRule
+                                            )}
+                                        />
+                                        <Button
+                                            small="true"
+                                            iconName="trash"
+                                            onClick={this.deleteResponseRules.bind(
+                                                this,
+                                                responseRule
+                                            )}
+                                        />
+                                      </ButtonGroup>
+                                    </td>  */}
+                                  </tr>
+                              );
+                            })
+                            : null}
+                        </tbody>
+                      </table>
+                  ) : null}
+                  {/* {this.state.responseRules &&
                   Array.isArray(this.state.responseRules.response_rules) &&
                   this.state.responseRules.response_rules.length > 0 ? (
                       <table className="pt-table pt-interactive pt-bordered pt-striped">
@@ -252,6 +346,7 @@ responseRulesFunction = () => {
                         <tbody>
                         {this.state.responseRules.response_rules
                             ? this.state.responseRules.response_rules.map(responseRule => {
+                              console.log(this.state)
                               return (
                                   <tr key={responseRule.id}>
                                     <td>
@@ -288,7 +383,7 @@ responseRulesFunction = () => {
                             : null}
                         </tbody>
                       </table>
-                  ) : null}
+                  ) : null} */}
                 </Card>
             ) : null}
           </div>
@@ -303,10 +398,11 @@ export const AddPool = connect(
         server: state.serversettings.servers[ownProps.match.params.serverID],
         servers: state.serversettings.servers,
         nr: state.numberrange.servers,
-        rules: state.capture.servers
-            ? state.capture.servers[ownProps.match.params.serverID].rules
-            : []
+        rule: state.capture.rule
+        // rules: state.capture.servers
+        //     ? state.capture.servers[ownProps.match.params.serverID].rules
+        //     : []
       };
     },
-    {loadResponseRulesForNumberPool, deleteResponseRule}
+    {loadResponseRulesForNumberPool, deleteResponseRule, loadRule}
 )(_AddPool);

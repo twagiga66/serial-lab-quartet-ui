@@ -72,7 +72,7 @@ class _AddResponseRule extends Component {
     } else {
       responseRule = {};
     }
-    const pool = this.props.location.state.pool;
+    const pool = this.props.location.state ? this.props.location.state.pool : null
 
     return (
       <RightPanel

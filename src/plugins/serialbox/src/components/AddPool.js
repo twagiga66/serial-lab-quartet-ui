@@ -58,7 +58,28 @@ class _AddPool extends Component {
     console.log("Next Props: ", nextProps)
     if(this.state.responseRules.response_rules){
       this.state.responseRules.response_rules.find((item, index) => {
-        if(this.props.rule){
+        if(this.props.rule && this.props.rule.arr.length===this.state.responseRules.response_rules.length){
+          for(let i=0;i < this.state.responseRules.response_rules.length; ++i) {
+            if(item.rule === this.props.rule.arr[i].obj.id){
+              console.log("Returned item",item) 
+              let RR = this.state.responseRules;
+              RR.response_rules[index].rr_name = this.props.rule.arr[index].obj.name;
+              this.setState({
+                  responseRules: RR
+                }, ()=> console.log("STATE after: ", this.state.responseRules))
+  
+            }
+          }
+          
+          // const RR= this.state.responseRules;
+
+          // RR.response_rules[0].rr_name = "Example name!";
+          // this.setState({
+          //   responseRules: RR
+          // }, ()=> console.log("STATE after: ", this.state.responseRules))
+
+
+
           // if(item.rule === this.props.rule.arr[index].obj.id){
           //   let completeRR = {};
           //   console.log("STAAR",this.state)
@@ -146,10 +167,14 @@ responseRulesFunction = () => {
         responseRules: pool,
       })
   })
+  .then(()=> {
+    this.state.responseRules.response_rules.map(item => {
+      this.props.loadRule(this.props.server, {id: item.rule})
+    })
+  })
 }
 
   deleteResponseRules = responseRule => {
-    // let pool = this.getPool();
     this.setState({loading: true});
     console.log(this.currentServer, responseRule)
     this.props.deleteResponseRule(this.currentServer, responseRule)
@@ -208,16 +233,10 @@ responseRulesFunction = () => {
     }
     return pool;
   };
-  mapArray(){
 
-  }
   render() {
     let editMode = this.getEditMode();
     // let pool = this.getPool();
-    console.log("Render Props", this.props);
-    console.log("State", this.state);
-    
-    
     return (
         <RightPanel
             title={
@@ -260,7 +279,7 @@ responseRulesFunction = () => {
                     <FormattedMessage id="plugins.numberRange.responseRules" />
                   </h5>
                   {this.props.rule &&
-                  this.props.rule.arr.length > 0 ? (
+                  this.state.responseRules ? (
                       <table className="pt-table pt-interactive pt-bordered pt-striped">
                         <thead>
                         <tr>
@@ -281,20 +300,17 @@ responseRulesFunction = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {this.props.rule.arr
-                            ? this.props.rule.arr.map((responseRule, index) => {
+                        {this.state.responseRules.response_rules
+                            ? this.state.responseRules.response_rules.map((responseRule, index) => {
                               return (
-                                  <tr key={responseRule.obj.id}>
+                                  <tr key={responseRule.id}>
                                     <td>
-                                      {responseRule.obj.name}
+                                      {responseRule.rr_name}
                                     </td>
                                     <td>{
-                                      this.state.responseRules ?
-                                      this.state.responseRules.response_rules[index].content_type
-                                      :
-                                      ""
+                                      responseRule.content_type
                                       }</td>
-                                    {/* <td style={{width: "80px"}}>
+                                    <td style={{width: "80px"}}>
                                       <ButtonGroup minimal small>
                                         <Button
                                             small="true"
@@ -313,7 +329,7 @@ responseRulesFunction = () => {
                                             )}
                                         />
                                       </ButtonGroup>
-                                    </td>  */}
+                                    </td> 
                                   </tr>
                               );
                             })

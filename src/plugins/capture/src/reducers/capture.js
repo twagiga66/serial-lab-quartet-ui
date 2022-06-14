@@ -30,7 +30,7 @@ export const initialData = () => ({
 
 const arr = [];
 export const loadRule = (server, ruleID) => {
-  console.log("ARGS: ",server, ruleID)
+  // console.log("Running loadRule", server, ruleID);
   if(ruleID === "clearArr") {
     arr.splice(0);
     return dispatch => {
@@ -44,18 +44,20 @@ export const loadRule = (server, ruleID) => {
   }
   else {
     return dispatch => {
+      arr.splice(0);
       pluginRegistry
         .getServer(server.serverID)
         .getClient()
         .then(client => {
           client.apis.capture.capture_rules_read(ruleID).then((response) => {
             arr.push(response);
-            return dispatch({
+            return (
+              dispatch({
               type: actions.loadRule,
               payload: {
                 arr
               }
-            });
+            }))
           });
           });
     };

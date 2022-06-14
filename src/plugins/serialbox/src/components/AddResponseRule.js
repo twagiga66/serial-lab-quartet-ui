@@ -84,7 +84,8 @@ class _AddResponseRule extends Component {
           )
         }
       >
-        <div className="large-cards-container">
+        {pool ? 
+          <div className="large-cards-container">
           <Card className="pt-elevation-4 form-card">
             <h5>
               {!editMode ? (
@@ -130,8 +131,10 @@ class _AddResponseRule extends Component {
             />
           </Card>
         </div>
+        :
+        ""
+        }
       </RightPanel>
-
     );
   }
 }

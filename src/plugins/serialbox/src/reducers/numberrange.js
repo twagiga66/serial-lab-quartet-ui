@@ -35,7 +35,7 @@ const {Parser} = qu4rtet.require("json2csv");
 const jsonToXML = qu4rtet.require("jsontoxml");
 const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
 import {setServerState} from "lib/reducer-helper";
-
+import { loadRule } from "../../../capture/src/reducers/capture";
 export const initialData = () => ({
     servers: {},
     region: {},
@@ -288,7 +288,7 @@ export const deleteResponseRule = (server, responseRule, page) => {
                 client.apis.serialbox
                     .serialbox_response_rules_delete(responseRule)
                     .then(result => {
-                        return dispatch(loadPoolList(server, null, page, null, 0));
+                        return dispatch(loadPoolList(server, null, page, null, 0), loadRule(server, responseRule.rule));
                     })
                     .catch(e => {
                         showMessage({
@@ -450,7 +450,6 @@ export const loadResponseRulesForNumberPool = async (server, response, poolID) =
                 }
             });
         }
-        console.log("final response: ", response)
         return response
         
     } catch (e) {

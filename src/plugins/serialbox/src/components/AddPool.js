@@ -61,33 +61,13 @@ class _AddPool extends Component {
         if(this.props.rule && this.props.rule.arr.length===this.state.responseRules.response_rules.length){
           for(let i=0;i < this.state.responseRules.response_rules.length; ++i) {
             if(item.rule === this.props.rule.arr[i].obj.id){
-              console.log("Returned item",item) 
               let RR = this.state.responseRules;
               RR.response_rules[index].rr_name = this.props.rule.arr[index].obj.name;
               this.setState({
                   responseRules: RR
                 }, ()=> console.log("STATE after: ", this.state.responseRules))
-  
             }
           }
-          
-          // const RR= this.state.responseRules;
-
-          // RR.response_rules[0].rr_name = "Example name!";
-          // this.setState({
-          //   responseRules: RR
-          // }, ()=> console.log("STATE after: ", this.state.responseRules))
-
-
-
-          // if(item.rule === this.props.rule.arr[index].obj.id){
-          //   let completeRR = {};
-          //   console.log("STAAR",this.state)
-          //   const copyOfRR = [...this.state.responseRules.response_rules[index]];
-          //   console.log(copyOfRR)
-          //   copyOfRR.responseRuleName = this.props.rule.arr[index].obj.name
-          //   console.log(copyOfRR)
-          //  }
         }
       })
     }
@@ -175,39 +155,20 @@ responseRulesFunction = () => {
 }
 
   deleteResponseRules = responseRule => {
-    this.setState({loading: true});
-    console.log(this.currentServer, responseRule)
+    console.log("ITEM TO BE DELETED: ", this.currentServer, responseRule)
     this.props.deleteResponseRule(this.currentServer, responseRule)
     .then(()=> {
-      loadResponseRulesForNumberPool(
-        this.props.server,
-        this.responserulesState,
-        sessionStorage.getItem("ResponseRulesID")
+      const copyOfState = this.state.responseRules;
+      const copyOfResponserules = [...this.state.responseRules.response_rules];
+      var filteredList = copyOfResponserules.filter(x => {
+        return x.id != responseRule.id;
+      })
+      copyOfState.response_rules = filteredList;
+      this.setState({
+        responseRules: copyOfState
+      },
+      () => {console.log(this.state)}
       )
-    })
-    .then(() => {
-        let pool = {};
-        let pools = this.props.nr[this.props.match.params.serverID].pools;
-        // most up to date.
-        pool = pools.find(pool => {
-          return pool.machine_name === this.props.match.params.poolName 
-        });
-        this.setState({
-          loading: true,
-          responseRules: pool,
-        },
-        () => {
-          loadResponseRulesForNumberPool(
-            this.props.server,
-            this.responserulesState,
-            sessionStorage.getItem("ResponseRulesID")
-          )
-          this.setState({
-            loading: true,
-            responseRules: pool,
-          })
-        }
-        )
     })
   };
   getEditMode = () => {

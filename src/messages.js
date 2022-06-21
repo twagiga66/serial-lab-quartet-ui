@@ -41,6 +41,12 @@ export default {
         desktopPluginTutorial: "QU4RTET Desktop Plugin Development Tutorial",
         allReleaseNotes: "All release notes",
         releaseNotesDescriptionsFeature: {
+          "1.3.5": {
+            1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            3: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            4: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis."
+          },
           "1.3.4": {
             1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
             2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",

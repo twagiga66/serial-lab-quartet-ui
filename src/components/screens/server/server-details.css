@@ -28,9 +28,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
   margin: 25px 0;
   position: relative;
   z-index: 0;
+  max-height: 90%;
 }
 .form-card.pt-elevation-4.zero-padding h4 {
   padding: 10px 0 0 40px;
+}
+.form-card.pt-elevation-4.zero-padding h4 span{
+  margin: 0 10px;
 }
 .form-card.pt-elevation-4.zero-padding img {
   position: absolute;
@@ -39,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
   width: 250px;
   height: 250px;
   top: 50%;
-  right: 5%;
+  right: 1%;
   transform: translate(-50%, -50%);
 }
 .feature-description {

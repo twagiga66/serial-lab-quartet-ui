@@ -17,9 +17,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import React, {Component} from "react";
 import {FormattedMessage} from "react-intl";
-import {Card} from "@blueprintjs/core";
+import {Card, Icon} from "@blueprintjs/core";
 import {RightPanel} from "components/layouts/Panels";
-import {releaseNotes as rN} from './../releseNotesData.json';
+import {releaseNotes as rN, internalReleaseNotes as iRN} from '../releseNotesData.json';
 // import logo from './icon.png';
 import "./server-details.css";
 class releaseNotes extends Component {
@@ -38,9 +38,29 @@ class releaseNotes extends Component {
                     <h5>
                         <FormattedMessage id="plugins.capture.releaseNotes" />
                     </h5>
-                    {rN.map((note, index) => (
+                    {iRN.map((note, index) => (
                         <div className="form-card pt-elevation-4 zero-padding" key={index}>
-                           <h4>{note.versionNumber}, {note.varsionName}</h4>
+                           <h4>
+                             {note.versionNumber}, 
+                             {note.versionName}
+                             {
+                             note.versionType === "fix" 
+                             ?
+                             <Icon
+                              iconName="pt-icon-wrench"
+                            />
+                             :
+                             note.versionType === "improvement"
+                             ?
+                             <Icon
+                              iconName="pt-icon-edit"
+                            />
+                             :
+                             <Icon
+                              iconName="pt-icon-new-object"
+                            />
+                           }
+                           </h4>
                            <ul>
                                 {note.releaseNotesDescriptionsFeature.map((feature, index) => (
                                     <li key={index} className="release-list-style" >
@@ -52,6 +72,48 @@ class releaseNotes extends Component {
                                 ))}
                            </ul>
                            <img src='./icon.png' alt='qu4rtet'/>
+                           <div className="version-type-icon">
+                           
+                           </div>
+                        </div>
+                    ))}
+                    {rN.map((note, index) => (
+                        <div className="form-card pt-elevation-4 zero-padding" key={index}>
+                           <h4>
+                             {note.versionNumber}, 
+                             {note.versionName}
+                             {
+                             note.versionType === "fix" 
+                             ?
+                             <Icon
+                              iconName="pt-icon-wrench"
+                            />
+                             :
+                             note.versionType === "improvement"
+                             ?
+                             <Icon
+                              iconName="pt-icon-edit"
+                            />
+                             :
+                             <Icon
+                              iconName="pt-icon-new-object"
+                            />
+                           }
+                           </h4>
+                           <ul>
+                                {note.releaseNotesDescriptionsFeature.map((feature, index) => (
+                                    <li key={index} className="release-list-style" >
+                                      <g className="pt-icon-arrow-right" /> 
+                                       <FormattedMessage 
+                                      id={`app.dashboard.releaseNotesDescriptionsFeature.${note.versionNumber}.${feature}`} 
+                                      /> 
+                                    </li>
+                                ))}
+                           </ul>
+                           <img src='./icon.png' alt='qu4rtet'/>
+                           <div className="version-type-icon">
+                           
+                           </div>
                         </div>
                     ))}
                 </Card>

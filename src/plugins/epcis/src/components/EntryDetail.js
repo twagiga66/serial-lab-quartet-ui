@@ -31,7 +31,10 @@ import "./EntryDetail.css";
 class _EntryDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {geoEvents: []};
+    this.state = {
+      geoEvents: [],
+      currentEntryEvents: []
+    };
   }
 
   componentDidMount() {
@@ -49,10 +52,23 @@ class _EntryDetail extends Component {
     if (nextProps.geoEvents) {
       this.setState({geoEvents: nextProps.geoEvents});
     }
+    if(nextProps.location.pathname !== this.props.location.pathname) {
+      this.props.loadEntry(nextProps.server, nextProps.match.params.entryID);
+      this.props.getGeoForEntry(
+        nextProps.server,
+        nextProps.match.params.entryID
+      );
+    }
+    if(nextProps.currentEntryEvents !== undefined) {
+      this.setState({
+        currentEntryEvents: nextProps.currentEntryEvents
+      })
+    }
   }
 
   render() {
-    const {currentEntryEvents, server} = this.props;
+    const {server} = this.props;
+    const {currentEntryEvents} = this.state;
     return (
       <RightPanel
         title={(
@@ -102,6 +118,7 @@ export const EntryDetail = connect(
         && state.epcis.servers[ownProps.match.params.serverID][propName]
       );
     };
+    // console.log(state, ownProps)
     return {
       server: state.serversettings.servers[ownProps.match.params.serverID],
       geoEvents: hasProp("geoEvents")

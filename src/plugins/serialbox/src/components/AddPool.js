@@ -45,32 +45,51 @@ class _AddPool extends Component {
   }
   componentDidMount() {
     this.processEntries();
-    // this.props.loadRule(this.props.server, {id: 10});
-    // console.log("Props", this.props);
-    // console.log("State", this.state);
   }
 
   componentWillUnmount() {
-    console.log("Clearing Array.");
     this.props.loadRule(this.props.server, "clearArr");
   }
   componentWillReceiveProps(nextProps) {
-    console.log("Next Props: ", nextProps)
+    // console.log("Next Props: ", nextProps)
+    let rulesArrayToSet = [];
     if(this.state.responseRules.response_rules){
-      this.state.responseRules.response_rules.find((item, index) => {
+      this.state.responseRules.response_rules.map(item => {
+        // console.log("item",item)
         if(this.props.rule && this.props.rule.arr.length===this.state.responseRules.response_rules.length){
-          for(let i=0;i < this.state.responseRules.response_rules.length; ++i) {
-            if(item.rule === this.props.rule.arr[i].obj.id){
-              let RR = this.state.responseRules;
-              RR.response_rules[index].rr_name = this.props.rule.arr[index].obj.name;
-              this.setState({
-                  responseRules: RR
-                }, ()=> console.log("STATE after: ", this.state.responseRules))
+          this.props.rule.arr.find((ruleItem) => {
+            
+            if(item.rule === ruleItem.obj.id) {
+              // console.log("ruleItem",ruleItem)
+              item.rr_name = ruleItem.obj.name;
+              rulesArrayToSet.push(item);
+              // setTimeout(()=> (
+              //   this.setState({
+              //     responseRules: Array.from(new Set(rulesArrayToSet))
+              //   },()=> (console.log(this.state)))
+              // ), 100)
+              
+              
             }
-          }
+          })
         }
       })
     }
+    // if(this.state.responseRules.response_rules){
+    //   this.state.responseRules.response_rules.find((item, index) => {
+    //     if(this.props.rule && this.props.rule.arr.length===this.state.responseRules.response_rules.length){
+    //       for(let i=0;i < this.state.responseRules.response_rules.length; ++i) {
+    //         if(item.rule === this.props.rule.arr[i].obj.id){
+    //           let RR = this.state.responseRules;
+    //           RR.response_rules[index].rr_name = this.props.rule.arr[index].obj.name;
+    //           this.setState({
+    //               responseRules: RR
+    //             }, ()=> console.log("STATE after: ", this.state.responseRules))
+    //         }
+    //       }
+    //     }
+    //   })
+    // }
   }
   processEntries = (clear = false) => {
     if (this.debounced) {
@@ -265,6 +284,7 @@ responseRulesFunction = () => {
                             ? this.state.responseRules.response_rules.map((responseRule, index) => {
                               return (
                                   <tr key={responseRule.id}>
+                                    {console.log(responseRule)}
                                     <td>
                                       {responseRule.rr_name}
                                     </td>

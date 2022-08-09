@@ -51,28 +51,27 @@ class _AddPool extends Component {
     this.props.loadRule(this.props.server, "clearArr");
   }
   componentWillReceiveProps(nextProps) {
-    // console.log("Next Props: ", nextProps)
+    console.log("Next Props: ", nextProps)
     let rulesArrayToSet = [];
     if(this.state.responseRules.response_rules){
       this.state.responseRules.response_rules.map(item => {
-        // console.log("item",item)
-        if(this.props.rule && this.props.rule.arr.length===this.state.responseRules.response_rules.length){
-          this.props.rule.arr.find((ruleItem) => {
-            
-            if(item.rule === ruleItem.obj.id) {
-              // console.log("ruleItem",ruleItem)
-              item.rr_name = ruleItem.obj.name;
-              rulesArrayToSet.push(item);
-              // setTimeout(()=> (
-              //   this.setState({
-              //     responseRules: Array.from(new Set(rulesArrayToSet))
-              //   },()=> (console.log(this.state)))
-              // ), 100)
-              
-              
-            }
-          })
-        }
+        console.log("item", nextProps.rule, nextProps.rule.arr.length, this.state.responseRules, this.state.responseRules.response_rules.length);
+          if(nextProps.rule && nextProps.rule.arr.length===this.state.responseRules.response_rules.length){
+            nextProps.rule.arr.find((ruleItem) => {
+              // console.log("ruleItem", ruleItem);
+              if(item.rule === ruleItem.obj.id) {
+                // console.log("ruleItem",ruleItem)
+                item.rr_name = ruleItem.obj.name;
+                rulesArrayToSet.push(item);
+
+                // setTimeout(()=> (
+                //   this.setState({
+                //     responseRules: Array.from(new Set(rulesArrayToSet))
+                //   },()=> (console.log(this.state)))
+                // ), 100)
+              }
+            })
+          }
       })
     }
     // if(this.state.responseRules.response_rules){
@@ -121,7 +120,6 @@ class _AddPool extends Component {
   };
 
   editResponseRule = responseRule => {
-    // let pool = this.getPool();
     loadResponseRulesForNumberPool(
       this.props.server,
       this.responserulesState,
@@ -216,7 +214,6 @@ responseRulesFunction = () => {
 
   render() {
     let editMode = this.getEditMode();
-    // let pool = this.getPool();
     return (
         <RightPanel
             title={
@@ -284,9 +281,8 @@ responseRulesFunction = () => {
                             ? this.state.responseRules.response_rules.map((responseRule, index) => {
                               return (
                                   <tr key={responseRule.id}>
-                                    {console.log(responseRule)}
                                     <td>
-                                      {responseRule.rr_name}
+                                      {responseRule.rr_name ? responseRule.rr_name : "Loading..."}
                                     </td>
                                     <td>{
                                       responseRule.content_type

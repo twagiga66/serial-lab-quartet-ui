@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Fake local storage.
-const qu4rtetRequire = require("qu4rtet-ui/lib/require.js").default;
+const qu4rtetRequire = require("../../../../../require.js").default;
 
 class LocalStorageMock {
   constructor() {
@@ -90,6 +90,6 @@ window.require = module => {
   }
 };
 
-const {qu4rtet} = require("qu4rtet-ui/lib/qu4rtet");
+const {qu4rtet} = require("../../../../../qu4rtet.js");
 const React = qu4rtetRequire("react");
 const {Component} = React;

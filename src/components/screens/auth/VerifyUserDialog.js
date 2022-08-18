@@ -30,11 +30,11 @@ export class VerifyUserDialog extends Component {
         isOpen={isOpen}
         onClose={closeDialog}
         className={classNames({
-          "pt-dark": !!theme.startsWith("dark")
+          "pt-dark": theme ? !!theme.startsWith("dark") : true
         })}
-        title={`${intl.formatMessage({id: "app.servers.verifyUser"})} - ${
+        title={theme ? `${intl.formatMessage({id: "app.servers.registerUser"})} - ${
           server.serverSettingName
-        }`}
+        }`: "Default title"}
       >
         <div className="pt-dialog-body">
           <VerifyUserForm isOpen={isOpen} server={server} />

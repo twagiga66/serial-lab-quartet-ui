@@ -9,8 +9,11 @@ import toJson from "enzyme-to-json";
 import * as authAPI from "lib/server-api";
 import {reduxForm, change as changeFieldValue} from "redux-form";
 import { AddRule } from "./AddRule";
+
+Enzyme.configure({adapter: new Adapter()});
+
 it('Should render component', () => {
-    const clockComponent = shallow(<AddRule />);
+    const clockComponent = shallow(<TestWrapper><AddRule /></TestWrapper>);
     // clockComponent.setState({ isChecked: true, day: "11", month: "1", year:"2022", timeTochangeInUE: true});
     expect(clockComponent).toMatchSnapshot();
 });

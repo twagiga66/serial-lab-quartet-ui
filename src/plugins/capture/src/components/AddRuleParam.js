@@ -46,6 +46,7 @@ class _AddRuleParam extends Component {
       // to prepopulate with existing values.
       ruleParam = this.props.location.state.defaultValues;
     }
+    console.log(this.props)
     return (
       <RightPanel
         title={
@@ -91,6 +92,7 @@ class _AddRuleParam extends Component {
 }
 
 export const AddRuleParam = connect((state, ownProps) => {
+  console.log(state)
   return {
     server: state.serversettings.servers[ownProps.match.params.serverID],
     rules: state.capture.servers

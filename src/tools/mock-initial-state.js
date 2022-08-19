@@ -17,6 +17,14 @@ export default {
       }
     }
   },
+  capture: {
+    servers: {
+      "d0246781-67c6-474b-8ab0-29de61b6e6bb": {
+        serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb",
+        rules: [{id:"1",title: "rule_1"}]
+      }
+    }
+  },
   form: {
     addRegion: {
       values: {

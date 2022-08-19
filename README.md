@@ -1,8 +1,8 @@
-[![Download](https://api.bintray.com/packages/seriallab/QU4RTET-UI/QU4RTET-UI/images/download.svg)](https://downloads.qu4rtet.io/)
+[![Download](https://downloads.qu4rtet.io/)](https://downloads.qu4rtet.io/)
 
 # QU4RTET Desktop Application
 
-[Download this program (MS Windows and Mac OS X) on bintray](https://downloads.qu4rtet.io/).
+[Download this program (MS Windows and Mac OS X)](https://downloads.qu4rtet.io/).
 
 For a guide on how to use this application, please see the [QU4RTET App End User Documentation](https://serial-lab.gitlab.io/quartet-ui/).
 

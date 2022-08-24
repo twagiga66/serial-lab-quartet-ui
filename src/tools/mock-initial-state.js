@@ -21,7 +21,35 @@ export default {
     servers: {
       "d0246781-67c6-474b-8ab0-29de61b6e6bb": {
         serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb",
-        rules: [{id:"1",title: "rule_1"}]
+        rules: [
+          {
+            id:1,
+            title: "rule_1", 
+            name: "Name_One", 
+            params: [],
+            step_set:[{id:1}],
+            steps: [
+              {
+                description: "Description of the first step",
+                id: 1,
+                name: "1",
+                order: 1,
+                params: [],
+                rule: 1,
+                step_class: "1",
+                stepparameter_set: [
+                  {
+                  description: null,
+                  id: 1,
+                  name: "EPCIS Output Criteria",
+                  step: 1,
+                  value: "Ship Criteria"
+                }
+              ]
+              }
+            ]
+          }
+        ]
       }
     }
   },

@@ -42,9 +42,10 @@ class _AddStep extends Component {
   }
 
   getRule(rules, match) {
-    return rules.find(rule => {
+    console.log(rules)
+    return rules ? rules.find(rule => {
       return Number(rule.id) === Number(match.params.ruleID);
-    });
+    }): null;
   }
 
   editStepParam(param) {
@@ -78,9 +79,11 @@ class _AddStep extends Component {
 
   getStep(rule = null, match = null) {
     if (rule && match) {
-      return rule.steps.find(step => {
-        return Number(step.id) === Number(match.params.stepID);
-      });
+      if(rule.steps) {
+        return rule.steps.find(step => {
+          return Number(step.id) === Number(match.params.stepID);
+        });
+      }
     }
     if (
       this.props.location &&

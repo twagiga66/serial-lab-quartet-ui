@@ -99,7 +99,6 @@ it("renders correctly a pool with no region", () => {
     )
     .toJSON();
   return promise.then(data => {
-    console.log("Triggered", data);
     expect(regionDetailScreen).toMatchSnapshot();
   });
 });

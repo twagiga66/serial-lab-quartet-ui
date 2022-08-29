@@ -31,13 +31,36 @@ export default {
         start: "Start",
         connectServer: "Connect to a Server",
         resourcesDocumentation: "Resources & Documentation",
+        releaseNotes: "Relese notes",
         documentation: "{projectName} Module Documentation",
         documentationOnly: "{projectName} Documentation",
         servers: "Servers",
         noServerFound:
           "You currently have no QU4RTET server in your configuration.",
         version: "Version {appVersion}_internal",
-        desktopPluginTutorial: "QU4RTET Desktop Plugin Development Tutorial"
+        desktopPluginTutorial: "QU4RTET Desktop Plugin Development Tutorial",
+        allReleaseNotes: "All release notes",
+        releaseNotesDescriptionsFeature: {
+          "1.3.5": {
+            1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            3: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            4: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis."
+          },
+          "1.3.4": {
+            1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            3: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            4: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis."
+          },
+          "1.3.3": {
+            1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            3: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
+            4: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis."
+          }
+          
+        } 
       },
       serverSettings: {
         serverSettings: "Server Settings",
@@ -61,6 +84,7 @@ export default {
         userVerified: "User successfully verified.",
         deleteServer: "Remove Server",
         serverDetails: "Server Details",
+        releaseNotes: "Release Notes",
         deleteServerConfirm:
           "Are you sure you want to remove this server? No data from this server will be deleted.",
         noServerMsg:

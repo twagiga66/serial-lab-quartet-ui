@@ -429,7 +429,6 @@ export default handleActions(
 );
 
 export const loadResponseRulesForNumberPool = async (server, response, poolID) => {
-    // console.log(server, response, poolID)
     try {
         let responseRules = await pluginRegistry
             .getServer(server.serverID)

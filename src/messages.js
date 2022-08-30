@@ -41,25 +41,16 @@ export default {
         desktopPluginTutorial: "QU4RTET Desktop Plugin Development Tutorial",
         allReleaseNotes: "All release notes",
         releaseNotesDescriptionsFeature: {
-          "1.3.5": {
-            1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            3: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            4: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis."
+          "1.4.6_internal": {
+            1: "Releas Notes section added to the Dashboard screen with link to the page with all previous release notes",
+            2: "Screen with all release notes was created"
           },
-          "1.3.4": {
-            1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            3: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            4: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis."
-          },
-          "1.3.3": {
-            1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            3: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis.",
-            4: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis."
+          "1.4.0": {
+            1: "Speed-up requesting process for data from the server",
+            2: "Fix rendering process of the Event entry detail view, without having to renter the record",
+            3: "Releas Notes section added to the Dashboard screen with link to the page with all previous release notes",
+            4: "Screen with all release notes was created"
           }
-          
         } 
       },
       serverSettings: {

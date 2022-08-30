@@ -1,60 +1,30 @@
 {
     "releaseNotes": [
         {
-            "id": "3",
-            "versionNumber": "1.3.5",
-            "versionName": "Release",
+            "id": "1",
+            "versionNumber": "1.4.0",
+            "versionName": "New Release version 1.4.0",
             "versionType":"improvement",
             "versionFeatures": [
-                "3Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "3Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "3Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "3Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "..."
+                "Improvement",
+                "Fix rendering process of the Event entry detail view, without having to renter the record",
+                "Releas Notes section added to the Dashboard screen with link to the page with all previous release notes",
+                "Screen with all release notes was created"
             ],
             "releaseNotesDescriptionsFeature": [1,2,3,4]
-        },
-        {
-            "id": "2",
-            "versionNumber": "1.3.4",
-            "versionName": "Example release",
-            "versionType":"fix",
-            "versionFeatures": [
-                "2Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "2Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "2Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "2Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "..."
-            ],
-            "releaseNotesDescriptionsFeature": [1,2,3,4]
-        },
-        {
-            "id": "1",
-            "versionNumber": "1.3.3",
-            "versionName": "Release notes page",
-            "versionType":"feature",
-            "versionFeatures": [
-                "1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "..."
-            ],
-            "releaseNotesDescriptionsFeature": [1,2]
         }
     ],
     "internalReleaseNotes": [
         {
             "id": "1",
-            "versionNumber": "1.3.123123_internal",
-            "versionName": "Release",
+            "versionNumber": "1.4.6_internal",
+            "versionName": "Release Notes ",
             "versionType":"feature",
             "versionFeatures": [
-                "1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat nulla orci, quis dapibus libero pellentesque quis. ",
-                "..."
+                "Releas Notes section added to the Dashboard screen with link to the page with all previous release notes",
+                "Screen with all release notes was created"
             ],
-            "releaseNotesDescriptionsFeature": [1,2,3,4]
+            "releaseNotesDescriptionsFeature": [1,2]
         }
     ]
 }

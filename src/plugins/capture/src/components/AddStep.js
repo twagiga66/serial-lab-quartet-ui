@@ -42,7 +42,6 @@ class _AddStep extends Component {
   }
 
   getRule(rules, match) {
-    console.log(rules)
     return rules ? rules.find(rule => {
       return Number(rule.id) === Number(match.params.ruleID);
     }): null;

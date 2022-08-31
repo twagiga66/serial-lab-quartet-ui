@@ -42,7 +42,6 @@ class _AddStepParam extends Component {
     });
     let step = null;
     if (rule) {
-      console.log(rule)
       step = rule.steps.find(step => {
         return Number(step.id) === Number(this.props.match.params.stepID);
       });

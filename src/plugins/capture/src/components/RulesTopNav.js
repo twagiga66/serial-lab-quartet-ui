@@ -31,6 +31,7 @@ class _NavPluginRoot extends Component {
     return "RulesTopNav";
   }
   serverHasCapture() {
+    // console.log(this.props)
     return pluginRegistry
       .getServer(this.props.serverID)
       .appList.includes("capture");
@@ -60,7 +61,9 @@ class _NavPluginRoot extends Component {
   };
   render() {
     const {serverID} = this.props;
+    console.log("render!");
     if (this.serverHasCapture()) {
+      console.log("Have rule!");
       const {rules} = this.props;
       let children = rules
         ? rules.map(rule => {

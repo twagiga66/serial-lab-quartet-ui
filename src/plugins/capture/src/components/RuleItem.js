@@ -174,6 +174,7 @@ class _RuleItem extends Component {
   };
   renderContextMenu() {
     const {serverID, rule} = this.props;
+    console.log(this.props)
     return (
       <Menu>
         <ButtonGroup className="context-menu-control" minimal={true}>

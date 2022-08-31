@@ -145,6 +145,7 @@
   "jest": {
     "setupFiles": [
       "jest-canvas-mock"
-    ]
+    ],
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   }
 }

@@ -115,6 +115,7 @@ class _RuleList extends Component {
 
   render() {
     const {server, rules} = this.props;
+    console.log(this.props)
     return (
       <RightPanel
         title={(

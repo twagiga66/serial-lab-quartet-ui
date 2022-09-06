@@ -41,9 +41,10 @@ class releaseNotes extends Component {
                     {iRN.map((note, index) => (
                         <div className="form-card pt-elevation-4 zero-padding" key={index}>
                            <h4>
-                             {note.versionNumber}, 
+                             {note.versionNumber},
+                             {" "} 
                              {note.versionName}
-                             {
+                             {/* {
                              note.versionType === "fix" 
                              ?
                              <Icon
@@ -59,7 +60,7 @@ class releaseNotes extends Component {
                              <Icon
                               iconName="pt-icon-new-object"
                             />
-                           }
+                           } */}
                            </h4>
                            <ul>
                                 {note.releaseNotesDescriptionsFeature.map((feature, index) => (
@@ -81,8 +82,9 @@ class releaseNotes extends Component {
                         <div className="form-card pt-elevation-4 zero-padding" key={index}>
                            <h4>
                              {note.versionNumber}, 
+                             {" "}
                              {note.versionName}
-                             {
+                             {/* {
                              note.versionType === "fix" 
                              ?
                              <Icon
@@ -98,7 +100,7 @@ class releaseNotes extends Component {
                              <Icon
                               iconName="pt-icon-new-object"
                             />
-                           }
+                           } */}
                            </h4>
                            <ul>
                                 {note.releaseNotesDescriptionsFeature.map((feature, index) => (

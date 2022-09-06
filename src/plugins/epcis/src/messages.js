@@ -63,7 +63,7 @@ const defaultLocaleMsg = {
     objectEvent: "Object Event",
     entryList: "Entries",
     lastKnownDisposition: "Last Known Disposition",
-    realeaseNotes: "Release Notes"
+    realeaseNotes: "Release Notes for QU4RTET-UI"
   }
 };
 

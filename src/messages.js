@@ -24,23 +24,28 @@ export default {
         numberRange: "Number Ranges",
         dashboard: "Dashboard",
         server: "Server",
-        plugins: "Plugins"
+        plugins: "Plugins",
+        releaseNotes: "Release Notes"
       },
       dashboard: {
         dashboardHeader3: "The Open Source Level 4",
         start: "Start",
         connectServer: "Connect to a Server",
         resourcesDocumentation: "Resources & Documentation",
-        releaseNotes: "Relese notes",
+        releaseNotes: "Relese notes for QU4RTET-UI",
         documentation: "{projectName} Module Documentation",
         documentationOnly: "{projectName} Documentation",
         servers: "Servers",
         noServerFound:
           "You currently have no QU4RTET server in your configuration.",
-        version: "Version {appVersion}_internal",
+        version: "Version {appVersion}",
         desktopPluginTutorial: "QU4RTET Desktop Plugin Development Tutorial",
-        allReleaseNotes: "All release notes",
+        allReleaseNotes: "All release notes for QU4RTET-UI",
         releaseNotesDescriptionsFeature: {
+          "1.4.7_internal": {
+            1: "[IMPROVEMENT] Add Release Notes button to the top navigation bar",
+            2: "[IMPROVEMENT] Add type of change for every row of release notes (FIX, IMPROVEMENT, NEW FEATURE)"
+          },
           "1.4.6_internal": {
             1: "Releas Notes section added to the Dashboard screen with link to the page with all previous release notes",
             2: "Screen with all release notes was created"
@@ -75,7 +80,7 @@ export default {
         userVerified: "User successfully verified.",
         deleteServer: "Remove Server",
         serverDetails: "Server Details",
-        releaseNotes: "Release Notes",
+        releaseNotes: "Release Notes for QU4RTET-UI",
         deleteServerConfirm:
           "Are you sure you want to remove this server? No data from this server will be deleted.",
         noServerMsg:

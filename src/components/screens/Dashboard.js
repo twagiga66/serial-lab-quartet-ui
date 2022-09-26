@@ -32,7 +32,7 @@ class _DashboardRight extends Component {
     super(props);
     const appVersion = window.require("electron").remote.app.getVersion();
     this.state = {
-      version: (appVersion + "_internal")
+      version: (appVersion + "_testing")
     };
   }
   goTo = path => {
@@ -201,7 +201,7 @@ class _DashboardRight extends Component {
                   ?
                   <ul>
                   <li>
-                    <h6>{internalReleaseNotes[0].versionNumber}, {internalReleaseNotes[0].varsionName}</h6>
+                    <h6>{internalReleaseNotes[0].versionNumber}, {internalReleaseNotes[0].varsionName === undefined ? null : internalReleaseNotes[0].varsionName}</h6>
                   </li>
                   <li>
                     {internalReleaseNotes[0].versionFeatures.map((feature, index) => (
@@ -221,7 +221,7 @@ class _DashboardRight extends Component {
                 :
                 <ul>
                   <li>
-                    <h6>{releaseNotes[0].versionNumber}, <FormattedMessage id={`${releaseNotes[0].varsionName}`} /></h6>
+                    <h6>{releaseNotes[0].versionNumber}, {internalReleaseNotes[0].varsionName === undefined ? null : <FormattedMessage id={`${releaseNotes[0].varsionName}`} />}</h6>
                   </li>
                   <li>
                     {releaseNotes[0].releaseNotesDescriptionsFeature.map((feature, index) => (

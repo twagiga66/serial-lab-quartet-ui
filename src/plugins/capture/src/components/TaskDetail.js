@@ -42,9 +42,13 @@ class _TaskDetail extends Component {
   constructor(props) {
     super(props);
     let task =
+      this.props.tasks
+      ?
       this.props.tasks.find(task => {
         return task.name === this.props.match.params.taskName;
-      }) || null;
+      }) || null
+      :
+      ""
     if (typeof task.rule === 'object') {
       // backward compatible.
       task.ruleObject = task.rule;
@@ -160,7 +164,7 @@ class _TaskDetail extends Component {
   }
 
   render() {
-    // console.log(this.state)
+    console.log(this.props)
     const {task} = this.state;
     let intent = Intent.PRIMARY;
     switch (task.status) {
@@ -369,12 +373,15 @@ class _TaskDetail extends Component {
 
 export const TaskDetail = connect((state, ownProps) => {
   return {
-    server: state.serversettings.servers[ownProps.match.params.serverID],
-    tasks: objectPath.get(
+    server: state.serversettings.servers && ownProps.match ? 
+    state.serversettings.servers[ownProps.match.params.serverID]
+    :
+    "",
+    tasks: ownProps.match ? objectPath.get(
       state,
       ["capture", "servers", ownProps.match.params.serverID, "tasks"],
       []
-    ),
+    ): "",
     theme: state.layout.theme
   };
 }, {})(_TaskDetail);

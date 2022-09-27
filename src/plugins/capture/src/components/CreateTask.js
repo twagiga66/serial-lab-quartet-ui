@@ -34,7 +34,6 @@ class _AddTask extends Component {
     const editMode = !!(this.props.location
       && this.props.location.state
       && this.props.location.state.editPool);
-    console.log(this.props)
       return (
       <RightPanel
         title={

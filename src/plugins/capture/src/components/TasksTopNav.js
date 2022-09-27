@@ -160,7 +160,7 @@ export const TasksTopNav = connect(
     return {
       server: state.serversettings.servers[ownProps.serverID],
       rules:
-        state.capture.servers && state.capture.servers[ownProps.serverID]
+        state.capture && state.capture.servers[ownProps.serverID]
           ? state.capture.servers[ownProps.serverID].rules
           : [],
       currentPath: state.layout.currentPath,

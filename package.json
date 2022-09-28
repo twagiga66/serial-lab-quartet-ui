@@ -72,7 +72,7 @@
     "dist-mac": "npm run build && ./node_modules/.bin/electron-builder --mac",
     "test": "SET NODE_ENV=production&& ./node_modules/.bin/jest --env=jsdom --runInBand --updateSnapshot",
     "test-build": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build --updateSnapshot",
-    "test-one": "npm run build-win && SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build",
+    "test-one": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/epcis/src",
     "ci-test": "CI=true ./node_modules/.bin/jest --env=jsdom",
     "electron": "electron .",
     "react-start": "./node_modules/.bin/babel --watch src --out-dir public/build --copy-files",

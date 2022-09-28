@@ -363,5 +363,43 @@ export default {
       region: "random2",
       size_granted: 4
     }
+  },
+  epcis: {
+    servers: {
+      "d0246781-67c6-474b-8ab0-29de61b6e6bb": {
+        detailItems: 
+          {
+            "urn:epc:id:sgtin:0300005.010001.A00000000001": 
+          {
+            createdDate:"2022-09-28T17:38:39.579227",
+            events: [
+              {objectEvent: {
+              action:"ADD",
+              bizLocation:"urn:epc:id:sgln:0300005.00000.0",
+              bizStep:"urn:epcglobal:cbv:bizstep:commissioning",
+              bizTransactionList: {},
+              destinationList:{},
+              disposition:"urn:epcglobal:cbv:disp:active",
+              epcList: ["urn:epc:id:sgtin:0300005.010001.A00000000001"],
+              errorDeclaration:null,
+              eventID:null,
+              eventTime:"2022-03-01T12:00:00.341449+00:00",
+              eventTimezoneOffset:"-07:00",
+              id:"7f42fc69-3ab0-4c8e-84d2-5ece9858d307",
+              ilmd: {
+                  itemExpirationDate:"2030-12-31",
+                  lotNumber:"VRSTEST01",
+              },
+              quantityList:{},
+              readPoint: "urn:epc:id:sgln:0300005.00000.0",
+              recordTime:"2022-07-14T12:46:49.779159+00:00"
+          }}
+        ],
+            
+          }},
+        count: 58
+      }
+
+    }
   }
 };

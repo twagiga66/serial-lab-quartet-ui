@@ -6,14 +6,14 @@ import {pluginRegistry} from "plugins/pluginRegistration";
 import {Server} from "lib/servers";
 import sinon from "sinon";
 import * as message from "lib/message";
-import {EntryDetail} from "./EntryDetail";
+import {EntryList} from "./EntryList";
 
   sinon.stub(message, "showMessage").callsFake(() => {});
   const store = mockStore(initialState);
   const props1 = {
     match: {
       params: {
-        serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb"
+        serverID: "d0246781-67c6-474b-8ab0-29de61b6e6b5"
       }
     }
   };
@@ -44,19 +44,19 @@ it("renders correctly", () => {
     const showDetails = renderer
       .create(
         <TestWrapper>
-          <EntryDetail {...props1} store={store} />
+          <EntryList {...props1} store={store} />
         </TestWrapper>
       )
       .toJSON();
     expect(showDetails).toMatchSnapshot();
   });
 
-  it("renders correctly with event details", () => {
+  it("renders correctly with event entries", () => {
     
     const showDetails = renderer
       .create(
         <TestWrapper>
-          <EntryDetail {...props2} store={store} />
+          <EntryList {...props2} store={store} />
         </TestWrapper>
       )
       .toJSON();

@@ -58,7 +58,7 @@ try {
   })
 }
 catch(e) {
-  console.log(e)
+  // console.log(e)
 }
 /* Listen for global credentials notifications */
 ipcRenderer.on("credentialsRetrieved", (event, payload) => {

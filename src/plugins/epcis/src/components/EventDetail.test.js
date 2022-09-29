@@ -6,7 +6,7 @@ import {pluginRegistry} from "plugins/pluginRegistration";
 import {Server} from "lib/servers";
 import sinon from "sinon";
 import * as message from "lib/message";
-import {EntryDetail} from "./EntryDetail";
+import {EventDetail} from "./EventDetail";
 
   sinon.stub(message, "showMessage").callsFake(() => {});
   const store = mockStore(initialState);
@@ -28,7 +28,7 @@ import {EntryDetail} from "./EntryDetail";
     match: {
       params: {
         serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb",
-        entryID: "urn:epc:id:sgtin:0300005.010001.A00000000001"
+        eventID: "cc4a2f9d-2e61-4961-9716-1aa2752d332a"
       }
     },
   };
@@ -44,7 +44,7 @@ it("renders correctly", () => {
     const showDetails = renderer
       .create(
         <TestWrapper>
-          <EntryDetail {...props1} store={store} />
+          <EventDetail {...props1} store={store} />
         </TestWrapper>
       )
       .toJSON();
@@ -56,7 +56,7 @@ it("renders correctly", () => {
     const showDetails = renderer
       .create(
         <TestWrapper>
-          <EntryDetail {...props2} store={store} />
+          <EventDetail {...props2} store={store} />
         </TestWrapper>
       )
       .toJSON();

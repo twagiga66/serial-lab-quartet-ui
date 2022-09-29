@@ -393,10 +393,68 @@ export default {
               quantityList:{},
               readPoint: "urn:epc:id:sgln:0300005.00000.0",
               recordTime:"2022-07-14T12:46:49.779159+00:00"
-          }}
+          }}]},
+          "cc4a2f9d-2e61-4961-9716-1aa2752d332a":{
+            events: [
+              {objectEvent: {
+              action:"OBSERVE",
+              bizLocation:"urn:epc:id:sgln:0300005.00000.0",
+              bizStep:"urn:epcglobal:cbv:bizstep:commissioning",
+              bizTransactionList: {},
+              destinationList:{},
+              disposition:"urn:epcglobal:cbv:disp:active",
+              epcList: ["urn:epc:id:sgtin:0300005.010001.A00000000001"],
+              errorDeclaration:null,
+              eventID:null,
+              eventTime:"2022-03-01T12:00:00.341449+00:00",
+              eventTimezoneOffset:"-07:00",
+              id:"7f42fc69-3ab0-4c8e-84d2-5ece9858d307",
+              ilmd: {
+                  itemExpirationDate:"2030-12-31",
+                  lotNumber:"VRSTEST01",
+              },
+              quantityList:{},
+              readPoint: "urn:epc:id:sgln:0300005.00000.0",
+              recordTime:"2022-07-14T12:46:49.779159+00:00"
+          }}]
+          }
+        },
+        entries: [
+          {
+            created:"2022-07-14T12:46:49.790040Z",
+            decommissioned:false,
+            id:"ee807298-1883-4682-a695-acedc6c40548",
+            identifier:"urn:epc:id:sgtin:0300005.010001.A00000000001",
+            is_parent:false,
+            last_aggregation_event:"270dd597-93ea-452a-ac63-ab0fa7bd9b11",
+            last_aggregation_event_action:"ADD",
+            last_aggregation_event_time:"2022-03-01T12:20:00.341449Z",
+            last_disposition:"urn:epcglobal:cbv:disp:in_progress",
+            last_event:"270dd597-93ea-452a-ac63-ab0fa7bd9b11",
+            last_event_time:"2022-03-01T12:20:00.341449Z",
+            modified:"2022-07-14T12:46:50.313393Z",
+            parent_id:"0a02be49-7454-4095-ab7f-f32bbc001ce7",
+            top_id:"5b2bcfc4-1d73-4ea3-acce-28306eb64cbe",
+          }
         ],
-            
-          }},
+        events: [
+          {
+            created:"2022-07-14T12:46:49.790040Z",
+            decommissioned:false,
+            id:"ee807298-1883-4682-a695-acedc6c40548",
+            identifier:"urn:epc:id:sgtin:0300005.010001.A00000000001",
+            is_parent:false,
+            last_aggregation_event:"270dd597-93ea-452a-ac63-ab0fa7bd9b11",
+            last_aggregation_event_action:"ADD",
+            last_aggregation_event_time:"2022-03-01T12:20:00.341449Z",
+            last_disposition:"urn:epcglobal:cbv:disp:in_progress",
+            last_event:"270dd597-93ea-452a-ac63-ab0fa7bd9b11",
+            last_event_time:"2022-03-01T12:20:00.341449Z",
+            modified:"2022-07-14T12:46:50.313393Z",
+            parent_id:"0a02be49-7454-4095-ab7f-f32bbc001ce7",
+            top_id:"5b2bcfc4-1d73-4ea3-acce-28306eb64cbe",
+          }
+        ],
         count: 58
       }
 

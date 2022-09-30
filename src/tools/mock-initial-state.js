@@ -459,5 +459,22 @@ export default {
       }
 
     }
-  }
+  },
+  masterdata:{
+    servers: {
+      "d0246781-67c6-474b-8ab0-29de61b6e6bb": {
+        locationDetail: {
+          identifier:"4324",
+          detail: {
+            id:1,
+            GLN13:"23",
+            SGLN: "123",
+            name:"name"
+          }
+        }
+      }
+    }
+  },
+  
+
 };

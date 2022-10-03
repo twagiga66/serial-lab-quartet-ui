@@ -73,7 +73,7 @@
     "test": "SET NODE_ENV=production&& ./node_modules/.bin/jest --env=jsdom --runInBand --updateSnapshot",
     "test-build": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build --updateSnapshot",
     "test-build-test-env": "SET NODE_ENV=test&& ./node_modules/.bin/jest --testPathPattern=/build/public/build --updateSnapshot",
-    "test-one": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/masterdata/src/components/Forms/Dialogs/CompanyDialog",
+    "test-one": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/masterdata/src/components/Forms/TradeItemFieldForm",
     "test-build-capture":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/capture/src",
     "test-build-epcis":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/epcis/src",
     "test-build-masterdata":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/masterdata/src",

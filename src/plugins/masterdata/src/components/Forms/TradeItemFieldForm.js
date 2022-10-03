@@ -78,6 +78,8 @@ class _AddTradeItemField extends Component {
                 <FormattedMessage id="plugins.masterData.editTradeItemField" />
               )}
             </h5>
+            {tradeItem 
+            ?
             <TradeItemFieldForm
               edit={false}
               operationId={
@@ -97,6 +99,9 @@ class _AddTradeItemField extends Component {
               server={pluginRegistry.getServer(this.props.server.serverID)}
               history={this.props.history}
             />
+          :
+          ""
+          }
           </Card>
         </div>
       </RightPanel>

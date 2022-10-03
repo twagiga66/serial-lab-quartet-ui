@@ -471,7 +471,10 @@ export default {
             SGLN: "123",
             name:"name"
           }
-        }
+        },
+        tradeItems: [
+          {id:123}
+        ]
       }
     }
   },

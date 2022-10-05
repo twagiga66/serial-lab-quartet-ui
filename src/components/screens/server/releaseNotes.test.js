@@ -15,11 +15,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import React from "react";
+import "tools/mockStore"; // mock ipcRenderer, localStorage, ...
+import renderer from "react-test-renderer";
+import {TestWrapper} from "tools/mockStore";
+import releaseNotes from "./releaseNotes";
 
-import {createAction} from "redux-actions";
-
-export default {
-  loadRules: createAction("CAPTURE_LOAD_RULES"),
-  loadRule: createAction("CAPTURE_LOAD_RULE"),
-  loadTasks: createAction("CAPTURE_LOAD_TASKS")
-};
+// Recharts resizable chart prevents this from working. Skipping for now.
+it("renders correctly", () => {
+  const releasenotes = renderer
+    .create(
+        
+      <TestWrapper>
+          <TestWrapper>
+        <Provider store={store}>
+          <Router>
+          <releaseNotes />
+          </Router>
+        </Provider>
+      </TestWrapper>
+        
+      </TestWrapper>
+    )
+    .toJSON();
+  expect(releasenotes).toMatchSnapshot();
+});

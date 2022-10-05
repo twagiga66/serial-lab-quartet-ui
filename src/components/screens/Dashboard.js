@@ -25,12 +25,14 @@ import {Large4} from "./Large4";
 import "./Dashboard.css";
 import {withRouter} from "react-router";
 import Clock from "../elements/Clock";
+import { releaseNotes, internalReleaseNotes } from './releseNotesData.json';
+
 class _DashboardRight extends Component {
   constructor(props) {
     super(props);
     const appVersion = window.require("electron").remote.app.getVersion();
     this.state = {
-      version: appVersion
+      version: (appVersion + "_testing")
     };
   }
   goTo = path => {
@@ -187,6 +189,57 @@ class _DashboardRight extends Component {
                     </a>
                   </li>
                 </ul>
+              </div>
+              <div className="dashboard-actions-group">
+                <h4>
+                  <FormattedMessage id="app.dashboard.releaseNotes" />
+                </h4>
+                {
+                  internalReleaseNotes[0]
+                  && 
+                  this.state.version.split("_")[this.state.version.split("_").length - 1] === "internal"
+                  ?
+                  <ul>
+                  <li>
+                    <h6>{internalReleaseNotes[0].versionNumber}, {internalReleaseNotes[0].varsionName === undefined ? null : internalReleaseNotes[0].varsionName}</h6>
+                  </li>
+                  <li>
+                    {internalReleaseNotes[0].versionFeatures.map((feature, index) => (
+                      <div key={index} className="feature-description">
+                        <g className="pt-icon-arrow-right" />
+                      {" "}
+                      {feature}
+                      </div>
+                    ))}
+                  </li>
+                  <li>
+                    <a onClick={this.goTo.bind(this, '/release-notes')}>
+                      <FormattedMessage id="app.dashboard.allReleaseNotes" />
+                    </a>
+                  </li>
+                </ul>
+                :
+                <ul>
+                  <li>
+                    <h6>{releaseNotes[0].versionNumber}, {internalReleaseNotes[0].varsionName === undefined ? null : <FormattedMessage id={`${releaseNotes[0].varsionName}`} />}</h6>
+                  </li>
+                  <li>
+                    {releaseNotes[0].releaseNotesDescriptionsFeature.map((feature, index) => (
+                      <div key={index} className="feature-description">
+                        <g className="pt-icon-arrow-right" />
+                      {" "}
+                      <FormattedMessage 
+                      id={`app.dashboard.releaseNotesDescriptionsFeature.${releaseNotes[0].versionNumber}.${feature}`} /></div>
+                    ))}
+                  </li>
+                  <li>
+                    <a onClick={this.goTo.bind(this, '/release-notes')}>
+                      <FormattedMessage id="app.dashboard.allReleaseNotes" />
+                    </a>
+                  </li>
+                </ul>
+              }
+              
               </div>
             </div>
             <div className="dashboard-items">

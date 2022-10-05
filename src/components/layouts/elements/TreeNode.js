@@ -169,27 +169,30 @@ class _TreeNode extends Component {
             className={classNames({
               [`tree-node-${this.props.nodeType}`]: true,
               "tree-node-link": true,
-              "tree-node-active": this.props.active || this.state.active
+              "tree-node-active": this.props.active || this.state.active,
+              "tree-node-flex": true
             })}>
-            <span className="tree-node-label">{this.props.children}</span>
+            <span className="tree-node-label">
+              {this.props.children} 
+            </span>
+            {this.props.visibility === false 
+            ? 
+            <div 
+            className={
+              classNames({
+                [`tree-node-depth-${this.props.depth} remove_server pt-button pt-icon-disable`]: true,
+                [`tree-node-depth-${this.props.depth} remove_server pt-button pt-icon-disable tree-node-invisible`]: 
+                  this.props.visibility === false && !this.props.serverVis.includes(this.props.serverID)
+            })}
+            onClick={this.hideActiveServer}
+            ></div> 
+            : ""
+            }
           </a>
           
         </div>
         <SubTree collapsed={collapsed}>{childrenNodes}</SubTree>
       </li>
-      {this.props.visibility === false 
-      ? 
-      <div 
-      className={
-        classNames({
-          [`tree-node-depth-${this.props.depth} remove_server pt-button pt-icon-disable`]: true,
-          [`tree-node-depth-${this.props.depth} remove_server pt-button pt-icon-disable tree-node-invisible`]: 
-            this.props.visibility === false && !this.props.serverVis.includes(this.props.serverID)
-      })}
-      onClick={this.hideActiveServer}
-      ></div> 
-      : ""
-      }
       </li>
     );
   }

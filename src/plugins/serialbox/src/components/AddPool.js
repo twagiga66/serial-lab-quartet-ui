@@ -17,7 +17,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import PoolForm from "./PoolForm";
-import {deleteResponseRule} from "../reducers/numberrange";
+import {deleteResponseRule, loadResponseRulesForNumberPool} from "../reducers/numberrange";
+import {loadRule} from "../../../capture/src/reducers/capture";
+
 const React = qu4rtet.require("react");
 const {Component} = React;
 const {connect} = qu4rtet.require("react-redux");
@@ -28,22 +30,137 @@ const {FormattedMessage} = qu4rtet.require("react-intl");
 class _AddPool extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loading: true, 
+      responseRules: []
+    };
     this.currentServer = this.props.servers[this.props.match.params.serverID];
+    this.debounced = null;
+    try{
+      this.responserulesState=this.props.nr[this.props.match.params.serverID];
+    }
+    catch(e) {
+      console.log(e)
+    }
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.processEntries();
+  }
+
+  componentWillUnmount() {
+    this.props.loadRule(this.props.server, "clearArr");
+  }
+  componentWillReceiveProps(nextProps) {
+    let rulesArrayToSet = [];
+    if(this.state.responseRules.response_rules){
+      this.state.responseRules.response_rules.map(item => {
+          if(nextProps.rule && nextProps.rule.arr.length===this.state.responseRules.response_rules.length){
+            nextProps.rule.arr.find((ruleItem) => {
+              if(item.rule === ruleItem.obj.id) {
+                item.rr_name = ruleItem.obj.name;
+                rulesArrayToSet.push(item);
+              }
+            })
+          }
+      })
+    }
+  }
+  processEntries = (clear = false) => {
+    if (this.debounced) {
+      clearTimeout(this.debounced);
+    }
+    this.debounced = setTimeout(() => {
+      loadResponseRulesForNumberPool(
+        this.props.server,
+        this.responserulesState,
+        sessionStorage.getItem("ResponseRulesID")
+      )
+      .then(() => {
+        let pool = {};
+        let pools = this.props.nr[this.props.match.params.serverID].pools;
+        pool = pools.find(pool => {
+          return pool.machine_name === this.props.match.params.poolName;
+        });
+        this.setState({
+          loading: false,
+          responseRules: pool,
+        }, ()=> {
+          this.state.responseRules.response_rules.map(item => {
+            this.props.loadRule(this.props.server, {id: item.rule})
+          })
+        })
+      })
+    })
+  };
 
   editResponseRule = responseRule => {
-    let pool = this.getPool();
-    this.props.history.push({
-      pathname: `/number-range/add-response-rule/${
-          this.props.match.params.serverID
-      }/pool-id/${pool.id}`,
-      state: {defaultValues: responseRule, edit: true, pool: pool}
-    });
+    loadResponseRulesForNumberPool(
+      this.props.server,
+      this.responserulesState,
+      sessionStorage.getItem("ResponseRulesID")
+    )
+    .then(() => {
+      let pool = {};
+        let pools = this.props.nr[this.props.match.params.serverID].pools;
+        // most up to date.
+        pool = pools.find(pool => {
+          return pool.machine_name === this.props.match.params.poolName;
+        });
+        this.setState({
+          loading: false,
+          responseRules: pool,
+        })
+        this.props.history.push({
+          pathname: `/number-range/add-response-rule/${
+              this.props.match.params.serverID
+          }/pool-id/${pool.id}`,
+          state: {defaultValues: responseRule, edit: true, pool: pool}
+        });
+    })
+    
   };
-  deleteResponseRule = responseRule => {
-    let pool = this.getPool();
-    this.props.deleteResponseRule(this.currentServer, responseRule);
+
+responseRulesFunction = () => {
+  loadResponseRulesForNumberPool(
+    this.props.server,
+    this.responserulesState,
+    sessionStorage.getItem("ResponseRulesID")
+  )
+  .then(() => {
+    let pool = {};
+      let pools = this.props.nr[this.props.match.params.serverID].pools;
+      // most up to date.
+      pool = pools.find(pool => {
+        return pool.machine_name === this.props.match.params.poolName;
+      });
+      this.setState({
+        loading: false,
+        responseRules: pool,
+      })
+  })
+  .then(()=> {
+    this.state.responseRules.response_rules.map(item => {
+      this.props.loadRule(this.props.server, {id: item.rule})
+    })
+  })
+}
+
+  deleteResponseRules = responseRule => {
+    console.log("ITEM TO BE DELETED: ", this.currentServer, responseRule)
+    this.props.deleteResponseRule(this.currentServer, responseRule)
+    .then(()=> {
+      const copyOfState = this.state.responseRules;
+      const copyOfResponserules = [...this.state.responseRules.response_rules];
+      var filteredList = copyOfResponserules.filter(x => {
+        return x.id != responseRule.id;
+      })
+      copyOfState.response_rules = filteredList;
+      this.setState({
+        responseRules: copyOfState
+      },
+      () => {console.log(this.state)}
+      )
+    })
   };
   getEditMode = () => {
     return (this.props.location.pathname.search('edit') > 0)
@@ -68,9 +185,9 @@ class _AddPool extends Component {
     }
     return pool;
   };
+
   render() {
     let editMode = this.getEditMode();
-    let pool = this.getPool();
     return (
         <RightPanel
             title={
@@ -92,7 +209,7 @@ class _AddPool extends Component {
               <PoolForm
                   server={this.currentServer}
                   history={this.props.history}
-                  pool={pool}
+                  pool={this.state.responseRules}
               />
             </Card>
             {editMode ? (
@@ -104,17 +221,16 @@ class _AddPool extends Component {
                           this.props.history.push({
                             pathname: `/number-range/add-response-rule/${
                                 this.currentServer.serverID
-                            }/pool-id/${pool.id}/`,
-                            state: {pool: pool}
+                            }/pool-id/${this.state.responseRules.id}/`,
+                            state: {pool: this.state.responseRules}
                           });
                         }}>
                       <FormattedMessage id="plugins.numberRange.addResponseRule" />
                     </button>
                     <FormattedMessage id="plugins.numberRange.responseRules" />
                   </h5>
-                  {pool &&
-                  Array.isArray(pool.response_rules) &&
-                  pool.response_rules.length > 0 ? (
+                  {this.props.rule &&
+                  this.state.responseRules ? (
                       <table className="pt-table pt-interactive pt-bordered pt-striped">
                         <thead>
                         <tr>
@@ -135,8 +251,69 @@ class _AddPool extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {pool.response_rules
-                            ? pool.response_rules.map(responseRule => {
+                        {this.state.responseRules.response_rules
+                            ? this.state.responseRules.response_rules.map((responseRule, index) => {
+                              return (
+                                  <tr key={responseRule.id}>
+                                    <td>
+                                      {responseRule.rr_name ? responseRule.rr_name : "Loading..."}
+                                    </td>
+                                    <td>{
+                                      responseRule.content_type
+                                      }</td>
+                                    <td style={{width: "80px"}}>
+                                      <ButtonGroup minimal small>
+                                        <Button
+                                            small="true"
+                                            iconName="edit"
+                                            onClick={this.editResponseRule.bind(
+                                                this,
+                                                responseRule
+                                            )}
+                                        />
+                                        <Button
+                                            small="true"
+                                            iconName="trash"
+                                            onClick={this.deleteResponseRules.bind(
+                                                this,
+                                                responseRule
+                                            )}
+                                        />
+                                      </ButtonGroup>
+                                    </td> 
+                                  </tr>
+                              );
+                            })
+                            : null}
+                        </tbody>
+                      </table>
+                  ) : null}
+                  {/* {this.state.responseRules &&
+                  Array.isArray(this.state.responseRules.response_rules) &&
+                  this.state.responseRules.response_rules.length > 0 ? (
+                      <table className="pt-table pt-interactive pt-bordered pt-striped">
+                        <thead>
+                        <tr>
+                          <th>
+                            <FormattedMessage
+                                id="plugins.numberRange.ruleName"
+                                defaultMessage="Rule Name"
+                            />
+                          </th>
+                          <th>
+                            {" "}
+                            <FormattedMessage
+                                id="plugins.numberRange.contentType"
+                                defaultMessage="Content Type"
+                            />
+                          </th>
+                          <th />
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.state.responseRules.response_rules
+                            ? this.state.responseRules.response_rules.map(responseRule => {
+                              console.log(this.state)
                               return (
                                   <tr key={responseRule.id}>
                                     <td>
@@ -160,7 +337,7 @@ class _AddPool extends Component {
                                         <Button
                                             small="true"
                                             iconName="trash"
-                                            onClick={this.deleteResponseRule.bind(
+                                            onClick={this.deleteResponseRules.bind(
                                                 this,
                                                 responseRule
                                             )}
@@ -173,7 +350,7 @@ class _AddPool extends Component {
                             : null}
                         </tbody>
                       </table>
-                  ) : null}
+                  ) : null} */}
                 </Card>
             ) : null}
           </div>
@@ -185,12 +362,14 @@ class _AddPool extends Component {
 export const AddPool = connect(
     (state, ownProps) => {
       return {
+        server: state.serversettings.servers[ownProps.match.params.serverID],
         servers: state.serversettings.servers,
         nr: state.numberrange.servers,
-        rules: state.capture.servers
-            ? state.capture.servers[ownProps.match.params.serverID].rules
-            : []
+        rule: state.capture.rule
+        // rules: state.capture.servers
+        //     ? state.capture.servers[ownProps.match.params.serverID].rules
+        //     : []
       };
     },
-    {deleteResponseRule}
+    {loadResponseRulesForNumberPool, deleteResponseRule, loadRule}
 )(_AddPool);

@@ -1,0 +1,41 @@
+{
+    "releaseNotes": [
+        {
+            "id": "1",
+            "versionNumber": "1.4.0",
+            "versionName": "New Release version 1.4.0",
+            "versionType":"improvement",
+            "versionFeatures": [
+                "Improvement",
+                "Fix rendering process of the Event entry detail view, without having to renter the record",
+                "Releas Notes section added to the Dashboard screen with link to the page with all previous release notes",
+                "Screen with all release notes was created"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2,3,4]
+        }
+    ],
+    "internalReleaseNotes": [
+        {
+            "id": "2",
+            "versionNumber": "1.4.7_internal",
+            "versionName": "Release Notes Update",
+            "versionType":"improvement",
+            "versionFeatures": [
+                "[IMPROVEMENT] Add Release Notes button to the top navigation bar",
+                "[IMPROVEMENT] Add type of change for every row of release notes (FIX, IMPROVEMENT, NEW FEATURE)"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        },
+        {
+            "id": "1",
+            "versionNumber": "1.4.6_internal",
+            "versionName": "Release Notes ",
+            "versionType":"feature",
+            "versionFeatures": [
+                "Releas Notes section added to the Dashboard screen with link to the page with all previous release notes",
+                "Screen with all release notes was created"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        }
+    ]
+}

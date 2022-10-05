@@ -18,7 +18,7 @@
 
 import "../style.css";
 import RegionRange from "./RegionRange";
-import {deleteARegion} from "../reducers/numberrange";
+import {deleteARegion, deleteARegionOfNumberPool} from "../reducers/numberrange";
 const React = qu4rtet.require("react");
 const {Component} = React;
 const {connect} = qu4rtet.require("react-redux");
@@ -99,9 +99,10 @@ export class _RegionCard extends Component {
   };
 
   trashRegion = evt => {
-    const {deleteARegion, serverObject, pool, region} = this.props;
+    const {deleteARegionOfNumberPool, deleteARegion, serverObject, pool, region} = this.props;
     this.toggleDialog();
-    deleteARegion(serverObject, pool, region);
+    // deleteARegion(serverObject, pool, region);
+    deleteARegionOfNumberPool(serverObject, pool, region)
   };
 
   render() {
@@ -226,5 +227,5 @@ export const RegionCard = connect(
   (state, ownProps) => {
     return {};
   },
-  {deleteARegion}
+  {deleteARegion,deleteARegionOfNumberPool}
 )(_RegionCard);

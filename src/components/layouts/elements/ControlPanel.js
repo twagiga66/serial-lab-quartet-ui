@@ -41,7 +41,6 @@ export class _ControlPanel extends Component {
     this.props.switchVisibility(true);
     this.props.serverVisibility([]);
     this.setState({ isDark: this.isDark(this.props.theme) });
-    // console.log(this.props.visibility)
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ isDark: this.isDark(nextProps.theme) });

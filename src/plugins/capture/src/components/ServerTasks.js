@@ -147,7 +147,7 @@ class _ServerTasks extends Component {
     this.setState(
       { loading : true },
       () => {
-          setTimeout(()=>{this.setState({loading : false})}, 750)
+          setTimeout(()=>{this.setState({loading : false})}, [])
       }
     );
   };

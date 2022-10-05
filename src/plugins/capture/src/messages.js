@@ -44,6 +44,7 @@ const defaultLocaleMsg = {
     stepParameters: "Step Parameters",
     addRuleParameter: "Add Rule Parameter",
     editRuleParam: "Edit Rule Parameter",
+    releaseNotes: "Release Notes for QU4RTET-UI",
     noRuleFound: "No Capture module detected on server",
     steps: "Steps",
     taskCreated: "Task with id {taskID} has been created.",

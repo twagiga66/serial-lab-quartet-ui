@@ -52,6 +52,7 @@ class StepItem extends Component {
     const serverObject = pluginRegistry.getServer(serverID);
     this.toggleConfirmDelete();
     ContextMenu.hide();
+    console.log("serverID, step", serverID, step)
     this.props.deleteStep(serverObject, step);
     this.props.history.push(`/capture/rules/${serverObject.serverID}`);
   };

@@ -198,8 +198,17 @@ class PoolListItem extends Component {
                 <td>{pool.readable_name}</td>
                 <td>
                     <Link
-                        to={`/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`}>
-                        {pool.machine_name}
+                        to={`/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`}
+                        >
+                        <div 
+                            onClick={
+                                (e)=>this.props.setValues(
+                                e, 
+                                this.props.index, 
+                                pool.id, 
+                                `/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`)}>{pool.machine_name
+                            }
+                        </div>
                     </Link>
                 </td>
                 <td>
@@ -222,10 +231,20 @@ class PoolListItem extends Component {
                     <Link
                         to={`/number-range/region-detail/${serverID}/${pool.machine_name}/`}>
                         {this.props.regionNumber}{" "}
-                        <FormattedMessage
+                        <div 
+                            onClick={
+                                (e)=>this.props.setValues(
+                                e, 
+                                this.props.index, 
+                                pool.id, 
+                                `/number-range/region-detail/${serverID}/${pool.machine_name}/`)}>
+                                {/* {pool.machine_name} */}
+                               <FormattedMessage
                             id="plugins.numberRange.regions"
                             defaultMessage="regions"
-                        />
+                        /> 
+                        </div>
+                        
                     </Link>
                 </td>
                 <Dialog

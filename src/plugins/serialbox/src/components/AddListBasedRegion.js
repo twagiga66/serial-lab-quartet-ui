@@ -285,9 +285,7 @@ class _AddListBasedRegion extends Component {
               server={this.currentServer.server}
               pool={this.currentPool}
               history={this.props.history}
-              redirectPath={`/number-range/region-detail/${
-                this.props.match.params.serverID
-              }/${this.currentPool.machine_name}`}
+              redirectPath={`/number-range/pools/${this.props.match.params.serverID}`}
               fieldElements={{
                 end_point: (
                   <EndpointDialog

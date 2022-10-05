@@ -77,7 +77,8 @@ const defaultLocaleMsg = {
     addParamEditOnly: "Add Parameter (Edit Only)",
     addResponseRule: "Add a Response Rule",
     responseRules: "Response Rules",
-    editResponseRule: "Edit Response Rule"
+    editResponseRule: "Edit Response Rule",
+    realeaseNotes: "Release Notes for QU4RTET-UI"
   }
 };
 

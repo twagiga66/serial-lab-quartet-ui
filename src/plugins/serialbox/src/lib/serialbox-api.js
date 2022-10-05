@@ -45,6 +45,23 @@ export const getPools = server => {
     });
 };
 
+export const getPool = (server, poolName) => {
+  return pluginRegistry
+    .getServer(server.serverID)
+    .fetchObject("serialbox_pool_detail_read",{machine_name: poolName} , [])
+    .then(pool => {
+      return pool;
+    })
+    .catch(error => {
+      showMessage({
+        type: "danger",
+        id: "plugins.numberRange.errorFetchPools",
+        values: {serverName: server.serverSettingName}
+      });
+      return error;
+    });
+};
+
 /**
  * getRegion - Description
  *
@@ -96,11 +113,13 @@ export const getRegionByName = async (server, name, operationId) => {
  */
 export const getRegions = (server, pool) => {
   let promises = [];
+  if (pool.sequentialregion_set) {
   for (let name of pool.sequentialregion_set) {
     promises.push(
       getRegionByName(server, name, "serialbox_sequential_region_detail_read")
     );
   }
+}
   if (pool.randomizedregion_set) {
     for (let name of pool.randomizedregion_set) {
       promises.push(

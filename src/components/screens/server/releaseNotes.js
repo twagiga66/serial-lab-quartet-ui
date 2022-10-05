@@ -38,83 +38,56 @@ class releaseNotes extends Component {
                     <h5>
                         <FormattedMessage id="plugins.capture.releaseNotes" />
                     </h5>
-                    {iRN.map((note, index) => (
-                        <div className="form-card pt-elevation-4 zero-padding" key={index}>
-                           <h4>
-                             {note.versionNumber},
-                             {" "} 
-                             {note.versionName}
-                             {/* {
-                             note.versionType === "fix" 
-                             ?
-                             <Icon
-                              iconName="pt-icon-wrench"
-                            />
-                             :
-                             note.versionType === "improvement"
-                             ?
-                             <Icon
-                              iconName="pt-icon-edit"
-                            />
-                             :
-                             <Icon
-                              iconName="pt-icon-new-object"
-                            />
-                           } */}
-                           </h4>
-                           <ul>
-                                {note.releaseNotesDescriptionsFeature.map((feature, index) => (
-                                    <li key={index} className="release-list-style" >
-                                      <g className="pt-icon-arrow-right" /> 
-                                       <FormattedMessage 
-                                      id={`app.dashboard.releaseNotesDescriptionsFeature.${note.versionNumber}.${feature}`} 
-                                      /> 
-                                    </li>
-                                ))}
-                           </ul>
-                           <img src='./icon.png' alt='qu4rtet'/>
-                           <div className="version-type-icon">
-                           
-                           </div>
-                        </div>
-                    ))}
+                    {
+                      sessionStorage.getItem("appVersion") === false
+                      ?
+                      iRN.map((note, index) => (
+                          <div className="form-card pt-elevation-4 zero-padding" key={index}>
+                            <h4>
+                              {note.versionNumber},
+                              {" "} 
+                              {note.versionName}
+                            </h4>
+                            <ul>
+                                  {note.versionFeatures.map((feature, index) => (
+                                      <li key={index} className="release-list-style" >
+                                        <g className="pt-icon-arrow-right" /> 
+                                        {feature}
+                                        {/* <FormattedMessage 
+                                          id={`app.dashboard.releaseNotesDescriptionsFeature.${note.versionNumber}.${feature}`} 
+                                        />  */}
+                                      </li>
+                                  ))}
+                            </ul>
+                            <img src='./icon.png' alt='qu4rtet'/>
+                            <div className="version-type-icon">
+                            
+                            </div>
+                          </div>
+                      ))
+                      :
+                      ""
+                    }
                     {rN.map((note, index) => (
                         <div className="form-card pt-elevation-4 zero-padding" key={index}>
                            <h4>
                              {note.versionNumber}, 
                              {" "}
                              {note.versionName}
-                             {/* {
-                             note.versionType === "fix" 
-                             ?
-                             <Icon
-                              iconName="pt-icon-wrench"
-                            />
-                             :
-                             note.versionType === "improvement"
-                             ?
-                             <Icon
-                              iconName="pt-icon-edit"
-                            />
-                             :
-                             <Icon
-                              iconName="pt-icon-new-object"
-                            />
-                           } */}
                            </h4>
                            <ul>
-                                {note.releaseNotesDescriptionsFeature.map((feature, index) => (
+                                {note.versionFeatures.map((feature, index) => (
                                     <li key={index} className="release-list-style" >
                                       <g className="pt-icon-arrow-right" /> 
-                                       <FormattedMessage 
-                                      id={`app.dashboard.releaseNotesDescriptionsFeature.${note.versionNumber}.${feature}`} 
-                                      /> 
+                                      {feature}
+                                       {/* <FormattedMessage 
+                                        id={`app.dashboard.releaseNotesDescriptionsFeature.${note.versionNumber}.${feature}`} 
+                                      />  */}
                                     </li>
                                 ))}
                            </ul>
                            <img src='./icon.png' alt='qu4rtet'/>
                            <div className="version-type-icon">
-                           
                            </div>
                         </div>
                     ))}

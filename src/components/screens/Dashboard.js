@@ -32,8 +32,17 @@ class _DashboardRight extends Component {
     super(props);
     const appVersion = window.require("electron").remote.app.getVersion();
     this.state = {
-      version: (appVersion + "_testing")
+      version: (appVersion + "")
     };
+  }
+  componentDidMount() {
+    if(this.state.version.split("").includes("i")) {
+      sessionStorage.setItem("appVersion", true)
+    }
+    else {
+      sessionStorage.setItem("appVersion", false)
+    }
+    
   }
   goTo = path => {
     this.props.history.push(path);
@@ -221,15 +230,17 @@ class _DashboardRight extends Component {
                 :
                 <ul>
                   <li>
-                    <h6>{releaseNotes[0].versionNumber}, {internalReleaseNotes[0].varsionName === undefined ? null : <FormattedMessage id={`${releaseNotes[0].varsionName}`} />}</h6>
+                    <h6>{releaseNotes[0].versionNumber}, {releaseNotes[0].versionName === undefined ? null : releaseNotes[0].versionName}</h6>
                   </li>
                   <li>
-                    {releaseNotes[0].releaseNotesDescriptionsFeature.map((feature, index) => (
+                    {releaseNotes[0].versionFeatures.map((feature, index) => (
                       <div key={index} className="feature-description">
                         <g className="pt-icon-arrow-right" />
                       {" "}
-                      <FormattedMessage 
-                      id={`app.dashboard.releaseNotesDescriptionsFeature.${releaseNotes[0].versionNumber}.${feature}`} /></div>
+                      {feature}
+                      {/* <FormattedMessage 
+                      id={`app.dashboard.releaseNotesDescriptionsFeature.${releaseNotes[0].versionNumber}.${feature}`} /> */}
+                      </div>
                     ))}
                   </li>
                   <li>

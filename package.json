@@ -101,7 +101,7 @@
     "babel-preset-react": "^6.24.1",
     "console-warn-throws-error": "^1.1.0",
     "electron": "^2.0.18",
-    "electron-builder": "20",
+    "electron-builder": "21.2.0",
     "electron-rebuild": "^1.8.2",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
@@ -127,8 +127,10 @@
     "appId": "com.serial-lab.qu4rtet.ui",
     "mac": {
       "target": [
-        "zip"
-      ]
+        "pkg"
+      ],
+      "icon": "build/icon.png",
+      "category": "public.app-category.developer-tools"
     },
     "win": {
       "publisherName": "SerialLab Corp",

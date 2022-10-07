@@ -117,8 +117,9 @@ if (process.env.REACT_DEV === "dev") {
 }
 
 async function createWindow() {
+  let splash;
   if(process.platform !== "darwin") {
-    let splash = require("./main-process/splash.js").renderSplashScreen();
+    splash = require("./main-process/splash.js").renderSplashScreen();
   }
   electron.session.defaultSession.webRequest.onHeadersReceived(
     (details, callback) => {

@@ -21,3 +21,4 @@ rm -r ./build/;
 mkdir ./build;
 cp -r ./public ./build;
 cp ./public/icon.png ./build
+cp ./public/icon-small.png ./build

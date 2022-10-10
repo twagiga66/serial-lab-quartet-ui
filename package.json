@@ -66,14 +66,15 @@
     "start-win": "SET NODE_ENV=production&& ./node_modules/.bin/nf start",
     "build": "chmod +x .//build.sh",
     "build-win": ".\\build.sh",
+    "build-mac": "sh build.sh",
     "dist": "npm run build && ./node_modules/.bin/electron-builder -wl",
     "dist-lin": "npm run build && ./node_modules/.bin/electron-builder --linux",
     "dist-win": "npm run build-win && ./node_modules/.bin/electron-builder --win",
-    "dist-mac": "npm run build && ./node_modules/.bin/electron-builder --mac",
+    "dist-mac": "npm run build-mac && ./node_modules/.bin/electron-builder --mac",
     "test": "SET NODE_ENV=production&& ./node_modules/.bin/jest --env=jsdom --runInBand --updateSnapshot",
     "test-build": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build --updateSnapshot",
     "test-build-test-env": "SET NODE_ENV=test&& ./node_modules/.bin/jest --testPathPattern=/build/public/build --updateSnapshot",
-    "test-one": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/masterdata/src/components/Forms/TradeItemFieldForm",
+    "test-one": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/masterdata/src/components/Lists/TradeItemsList",
     "test-build-capture":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/capture/src",
     "test-build-epcis":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/epcis/src",
     "test-build-masterdata":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/masterdata/src",
@@ -131,6 +132,15 @@
       ],
       "icon": "build/icon.png",
       "category": "public.app-category.developer-tools"
+    },
+    "pkg":{
+      "installLocation":"/Applications",
+      "allowRootDirectory": true,
+      "background": {
+        "alignment": "bottomleft",
+        "file": "build/icon-small.png",
+        "scaling": "proportional"
+      }
     },
     "win": {
       "publisherName": "SerialLab Corp",

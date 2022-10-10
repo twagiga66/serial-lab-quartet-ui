@@ -474,7 +474,66 @@ export default {
         },
         tradeItems: [
           {id:123}
-        ]
+        ],
+        companies: [
+          {
+              GLN13:"1324354657687",
+              SGLN:"urn:epc:id:sgtin:324354.1657687.6789",
+              address1:"Marszałkowska",
+              address2:null,
+              address3:null,
+              city:"Warsaw",
+              company_type:null,
+              country:"PL",
+              gs1_company_prefix:"324354",
+              id:1,
+              latitude:null,
+              longitude:null,
+              name:"Alchemia",
+              postal_code:null,
+              state_province:null
+          }
+      ],
+      locationDetail: [
+         {
+          id:1,
+          GLN13:"23",
+          SGLN: "123",
+          name:"name"
+        }
+      ],
+      tradeItems: [
+        {
+          GTIN14:"14253647586811",
+          NDC:"12121-12-123",
+          NDC_pattern:"5-3-2",
+          additional_id:null,
+          additional_id_typecode:null,
+          company:1,
+          country_of_origin:"PL",
+          description_short:null,
+          dosage_form_type:"Kubek",
+          drained_weight:100,
+          drained_weight_uom:null,
+          functional_name:"Kompot 200 ml",
+          gross_weight:null,
+          gross_weight_uom:null,
+          id:2,
+          image:null,
+          label_description:null,
+          manufacturer_name:null,
+          net_content_description:null,
+          net_weight:null,
+          net_weight_uom:null,
+          pack_count:null,
+          package_uom:null,
+          regulated_product_name:"Kompot",
+          serial_number_length:null,
+          strength_description:null,
+          trade_item_description:null,
+          tradeitemfield_set:[]
+        }
+      ]
       }
     }
   },

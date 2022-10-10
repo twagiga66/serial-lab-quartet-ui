@@ -106,6 +106,7 @@ const TradeItemEntry = props => {
 class _TradeItemsList extends Component {
   render() {
     const {server, tradeItems, loadTradeItems, count, next} = this.props;
+    console.log(this.props);
     return (
       <RightPanel
         title={

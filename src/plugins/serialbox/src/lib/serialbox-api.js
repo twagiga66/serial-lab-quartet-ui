@@ -15,8 +15,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-const {showMessage} = qu4rtet.require("./lib/message");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
+import {showMessage} from "lib/message";
+import {pluginRegistry} from "plugins/pluginRegistration";
 
 const PREFIX_PATH = "serialbox/";
 

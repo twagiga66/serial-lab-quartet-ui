@@ -14,6 +14,19 @@ export default {
         appList: ["", "capture", "epcis", "manifest", "rest-auth", "serialbox"],
         username: "lduros",
         password: "password1234"
+      },
+      "d0246781-67c6-474b-8ab0-29de61b6e6b1": {
+        serverID: "d0246781-67c6-474b-8ab0-29de61b6e6b1",
+        protocol: "http",
+        port: "8000",
+        path: "",
+        ssl: false,
+        hostname: "localhost",
+        serverSettingName: "box 1",
+        url: "http://localhost:8000/",
+        appList: ["", "capture", "epcis", "manifest", "rest-auth", "serialbox"],
+        username: "lduros",
+        password: "password1234"
       }
     }
   },
@@ -181,7 +194,7 @@ export default {
   },
   numberrange: {
     servers: {
-      "704e4478-f018-4fb0-b0b3-2711bbdd325c": {
+      "d0246781-67c6-474b-8ab0-29de61b6e6bb": {
         pools: [
           {
             sequentialregion_set: [
@@ -197,7 +210,7 @@ export default {
           }
         ],
         server: {
-          serverID: "704e4478-f018-4fb0-b0b3-2711bbdd325c",
+          serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb",
           protocol: "http",
           port: "8000",
           path: "",

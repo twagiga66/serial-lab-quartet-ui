@@ -32,6 +32,16 @@
     ],
     "internalReleaseNotes": [
         {
+            "id": "3",
+            "versionNumber": "2.0.1_internal",
+            "versionName": "Add number pool fix",
+            "versionType":"Bugfix",
+            "versionFeatures": [
+                "[FIX] Adding Number Pool bug fix"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        },
+        {
             "id": "2",
             "versionNumber": "1.4.7_internal",
             "versionName": "Release Notes Update",

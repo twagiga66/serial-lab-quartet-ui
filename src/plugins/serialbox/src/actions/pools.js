@@ -1,4 +1,4 @@
-const {createAction} = qu4rtet.require("redux-actions");
+import {createAction} from "redux-actions";
 
 export default {
   loadPools: createAction("NUMBER_RANGE_LOAD_POOLS"),

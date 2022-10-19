@@ -18,16 +18,15 @@
 
 import {RegionCard} from "./RegionCard";
 import "../style.css";
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
-const {withRouter} = qu4rtet.require("react-router");
-const {Callout} = qu4rtet.require("@blueprintjs/core");
-const {FormattedMessage} = qu4rtet.require("react-intl");
-const classNames = qu4rtet.require("classnames");
-const {DeleteDialog} = qu4rtet.require("./components/elements/DeleteDialog");
-const {RightPanel} = qu4rtet.require("./components/layouts/Panels");
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {pluginRegistry} from "plugins/pluginRegistration";
+import {withRouter} from "react-router";
+import {Callout} from "@blueprintjs/core";
+import {FormattedMessage} from "react-intl";
+import classNames from "classnames";
+import {DeleteDialog} from "components/elements/DeleteDialog";
+import {RightPanel} from "components/layouts/Panels";
 import {loadPools, loadRegions,loadRegionsForNumberPool, loadPool, loadExactRegionsForNumberPool,loadPoolList} from "../reducers/numberrange";
 
 /**

@@ -12,7 +12,7 @@ import sinon from "sinon";
 import Enzyme, {mount, shallow} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import * as message from "lib/message";
-import { CompaniesList } from "./CompaniesList";
+import { CompaniesNav } from "./CompaniesNav";
 
 Enzyme.configure({adapter: new Adapter()});
 const store = mockStore(initialState);
@@ -23,19 +23,6 @@ const props1 = {
           serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb"
         }
     },
-};
-const props2 = {
-    match: {
-        params: {
-          serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb"
-        }
-    },
-    location: {
-        state:{
-            edit: true
-        }
-    },
-    serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb"
 };
 
 pluginRegistry.registerServer(
@@ -50,20 +37,9 @@ it("renders correctly ", ()=> {
     const form = renderer
     .create(
         <TestWrapper>
-            <CompaniesList {...props1} store={store} />
+            <CompaniesNav {...props1} store={store} />
         </TestWrapper>
     )
     .toJSON();
     expect(form).toMatchSnapshot();
 })
-
-// it("renders correctly in edit mode", ()=> {
-//     const form = renderer
-//     .create(
-//         <TestWrapper>
-//             <AddCompany {...props2} store={store} />
-//         </TestWrapper>
-//     )
-//     .toJSON();
-//     expect(form).toMatchSnapshot();
-// })

@@ -16,25 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "../style.css";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import RegionRange from "./RegionRange";
 import {deleteARegion, deleteARegionOfNumberPool} from "../reducers/numberrange";
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {Field, reduxForm, SubmissionError, change} = qu4rtet.require(
-  "redux-form"
-);
-const {showMessage} = qu4rtet.require("./lib/message");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
-const {Card, Tag, Intent, Button, ButtonGroup} = qu4rtet.require(
-  "@blueprintjs/core"
-);
-const {FormattedMessage, FormattedDate, FormattedNumber} = qu4rtet.require(
-  "react-intl"
-);
-const classNames = qu4rtet.require("classnames");
-const {DeleteDialog} = qu4rtet.require("./components/elements/DeleteDialog");
+import {Card, Tag, Intent, Button, ButtonGroup} from "@blueprintjs/core";
+import {FormattedMessage, FormattedDate, FormattedNumber} from "react-intl";
+import classNames from "classnames";
+import {DeleteDialog} from "components/elements/DeleteDialog";
+import "../style.css";
 
 export class _RegionCard extends Component {
   constructor(props) {
@@ -46,7 +36,6 @@ export class _RegionCard extends Component {
     };
   }
   componentDidMount() {
-    //this.state = {hovered: false, dialogOpened: false};
     this.regionType = this.getRegionType(this.props.region);
     this.setState({region: this.props.region});
   }

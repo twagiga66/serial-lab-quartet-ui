@@ -27,13 +27,13 @@ import {
 } from "../lib/serialbox-api";
 import actions from "../actions/pools";
 
-const {handleActions} = qu4rtet.require("redux-actions");
-const {showMessage} = qu4rtet.require("./lib/message");
-const serverActions = qu4rtet.require("./actions/serversettings");
-const base64 = qu4rtet.require("base-64");
-const {Parser} = qu4rtet.require("json2csv");
-const jsonToXML = qu4rtet.require("jsontoxml");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
+import {handleActions} from "redux-actions";
+import {showMessage} from "../../../../lib/message";
+import serverActions from "actions/serversettings";
+import base64 from "base-64";
+import {Parser} from "json2csv";
+import jsonToXML from "jsontoxml";
+import {pluginRegistry} from "plugins/pluginRegistration";
 import {setServerState} from "lib/reducer-helper";
 import { loadRule } from "../../../capture/src/reducers/capture";
 export const initialData = () => ({
@@ -56,7 +56,6 @@ export const loadResponseRules = async (server, response) => {
             pool.response_rules = [];
         });
         if (responseRules && responseRules.length > 0) {
-            console,log("responseRules",responseRules)
             responseRules.forEach(responseRule => {
                 try {
                     poolsMap[responseRule.pool].response_rules.push(responseRule);
@@ -102,7 +101,6 @@ export const loadPools = server => {
 };
 
 export const loadPool = (server, poolName) => {
-    console.log(server, poolName)
     return dispatch => {
         getPool(server, poolName)
         .then(async pool => {
@@ -111,7 +109,6 @@ export const loadPool = (server, poolName) => {
                 payload: pool
             });
             getRegions(server, pool).then(regions => {
-                console.log(server, pool, regions)
                 dispatch({
                     type: actions.loadRegions,
                     payload: regions
@@ -429,6 +426,7 @@ export default handleActions(
 );
 
 export const loadResponseRulesForNumberPool = async (server, response, poolID) => {
+    console.log(server, response, poolID);
     try {
         let responseRules = await pluginRegistry
             .getServer(server.serverID)
@@ -470,7 +468,6 @@ export const loadPoolList = (server, search, page, ordering, poolID) => {
     if (poolID) {
         params.poolID = poolID;
     }
-    // console.log(server, search, page, ordering, poolID)
     return async dispatch => {
         sessionStorage.setItem("loadingRR", true);
         let serverObject = pluginRegistry.getServer(server.serverID);

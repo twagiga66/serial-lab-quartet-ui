@@ -16,16 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {FormattedMessage} from "react-intl";
 import PoolForm from "./PoolForm";
 import {deleteResponseRule, loadResponseRulesForNumberPool} from "../reducers/numberrange";
 import {loadRule} from "../../../capture/src/reducers/capture";
+import {RightPanel} from "../../../../components/layouts/Panels";
+import {Card, Button, ButtonGroup} from "@blueprintjs/core";
 
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {RightPanel} = qu4rtet.require("./components/layouts/Panels");
-const {Card, Button, ButtonGroup} = qu4rtet.require("@blueprintjs/core");
-const {FormattedMessage} = qu4rtet.require("react-intl");
 
 class _AddPool extends Component {
   constructor(props) {
@@ -81,14 +80,23 @@ class _AddPool extends Component {
         pool = pools.find(pool => {
           return pool.machine_name === this.props.match.params.poolName;
         });
-        this.setState({
-          loading: false,
-          responseRules: pool,
-        }, ()=> {
-          this.state.responseRules.response_rules.map(item => {
-            this.props.loadRule(this.props.server, {id: item.rule})
+        let mode = this.getEditMode();
+        if(!mode){
+          this.setState({
+            loading: false,
+            responseRules: pool,
           })
-        })
+        }
+        else{
+          this.setState({
+            loading: false,
+            responseRules: pool,
+          }, ()=> {
+            this.state.responseRules.response_rules.map(item => {
+              this.props.loadRule(this.props.server, {id: item.rule})
+            })
+          })
+        }
       })
     })
   };
@@ -146,7 +154,6 @@ responseRulesFunction = () => {
 }
 
   deleteResponseRules = responseRule => {
-    console.log("ITEM TO BE DELETED: ", this.currentServer, responseRule)
     this.props.deleteResponseRule(this.currentServer, responseRule)
     .then(()=> {
       const copyOfState = this.state.responseRules;
@@ -361,6 +368,7 @@ responseRulesFunction = () => {
 
 export const AddPool = connect(
     (state, ownProps) => {
+      // console.log("state AddPool", state);
       return {
         server: state.serversettings.servers[ownProps.match.params.serverID],
         servers: state.serversettings.servers,

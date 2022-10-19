@@ -16,20 +16,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Field, reduxForm, SubmissionError, change} from "redux-form";
+import {getFormInfo} from"lib/server-api";
+import {showMessage} from"lib/message";
+import {DefaultField} from"components/elements/forms";
+import {pluginRegistry} from"plugins/pluginRegistration";
+import {withRouter} from"react-router";
 import {postAddRandomizedRegion} from "../lib/serialbox-api";
 import {loadPools} from "../reducers/numberrange";
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {Field, reduxForm, SubmissionError, change} = qu4rtet.require(
-  "redux-form"
-);
-const {getFormInfo} = qu4rtet.require("./lib/server-api");
-const {showMessage} = qu4rtet.require("./lib/message");
-const {DefaultField} = qu4rtet.require("./components/elements/forms");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
-const {withRouter} = qu4rtet.require("react-router");
-
 class _RandomizedRegionForm extends Component {
   constructor(props) {
     super(props);

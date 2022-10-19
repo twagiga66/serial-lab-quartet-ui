@@ -19,11 +19,10 @@
 import {loadPools, loadResponseRules} from "../reducers/numberrange";
 import PoolListItem from "./PoolListItem";
 
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {RightPanel} = qu4rtet.require("./components/layouts/Panels");
-const {
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {RightPanel} from "../../../../components/layouts/Panels";
+import {
     Card,
     Menu,
     MenuItem,
@@ -35,12 +34,10 @@ const {
     ContextMenu,
     RadioGroup,
     Radio
-} = qu4rtet.require("@blueprintjs/core")
-const {FormattedMessage, FormattedDate, FormattedNumber} = qu4rtet.require(
-    "react-intl"
-);
-const {Link} = qu4rtet.require("react-router-dom");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
+} from "@blueprintjs/core";
+import {FormattedMessage, FormattedDate, FormattedNumber} from "react-intl";
+import {Link} from "react-router-dom";
+import {pluginRegistry} from"plugins/pluginRegistration";
 
 class ServerPools extends Component {
     getAllowedRegionTypes = (pool) => {

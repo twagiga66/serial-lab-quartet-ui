@@ -15,14 +15,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
-const {SingleCardPicker} = qu4rtet.require(
-  "./components/elements/SingleCardPicker"
-);
-const {Dialog, Button, Tag} = qu4rtet.require("@blueprintjs/core");
-const classNames = qu4rtet.require("classnames");
+import React, {Component} from "react";
+import {pluginRegistry} from "plugins/pluginRegistration";
+import {SingleCardPicker} from "../../../../../components/elements/SingleCardPicker.js";
+import {Dialog, Button, Tag} from "@blueprintjs/core";
+import classNames from "classnames";
 
 const AuthenticationInfoEntry = props => {
   const updateFieldVal = entry => {

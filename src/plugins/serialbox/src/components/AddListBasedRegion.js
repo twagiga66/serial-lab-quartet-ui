@@ -21,26 +21,18 @@ import {EndpointDialog} from "./Dialogs/EndpointDialog";
 import {TemplateDialog} from "./Dialogs/TemplateDialog";
 import {AuthenticationInfoDialog} from "./Dialogs/AuthenticationInfoDialog";
 import {RuleDialog} from "./Dialogs/RuleDialog";
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {RightPanel} = qu4rtet.require("./components/layouts/Panels");
-const {Card, ButtonGroup, Button, Icon} = qu4rtet.require("@blueprintjs/core");
-const {FormattedMessage} = qu4rtet.require("react-intl");
-const {reduxForm} = qu4rtet.require("redux-form");
-const changeFieldValue = qu4rtet.require("redux-form").change;
-const uuidv1 = qu4rtet.require("uuid/v1");
-const PageForm = qu4rtet.require("./components/elements/PageForm").default;
-const {loadEndpoints, loadAuthenticationList} = qu4rtet.require(
-  `${qu4rtet.pluginPath}/quartet-ui-output/lib/reducers/output.js`
-);
-const {loadRules} = qu4rtet.require(
-  `./plugins/capture/src/reducers/capture.js`
-);
-
-const {loadTemplates} = qu4rtet.require(
-  `${qu4rtet.pluginPath}/quartet-ui-templates/lib/reducers/templates.js`
-);
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {RightPanel} from "../../../../components/layouts/Panels";
+import {Card, ButtonGroup, Button, Icon} from "@blueprintjs/core";
+import {FormattedMessage} from "react-intl";
+import {reduxForm} from "redux-form";
+import changeFieldValue from "redux-form";
+import uuidv1 from "uuid/v1";
+import PageForm from "../../../../components/elements/PageForm";
+const {loadEndpoints, loadAuthenticationList} = qu4rtet.require(`${qu4rtet.pluginPath}/quartet-ui-output/lib/reducers/output.js`);
+import {loadRules} from "../../../capture/src/reducers/capture.js";
+const {loadTemplates} = qu4rtet.require(`${qu4rtet.pluginPath}/quartet-ui-templates/lib/reducers/templates.js`);
 
 const ListBasedRegionForm = reduxForm({
   form: "ListBasedRegionForm"

@@ -308,7 +308,6 @@ export class _NavPluginRoot extends Component {
   };
   render() {
     const {serverID, pools} = this.props;
-    console.log(this.props)
     if (this.props.server && this.serverHasSerialbox()) {
       let children = NavItems(pools, serverID, this.props.intl);
       return (

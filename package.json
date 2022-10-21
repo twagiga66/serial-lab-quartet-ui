@@ -75,7 +75,7 @@
     "test-build": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build --updateSnapshot",
     "test-build-test-env": "SET NODE_ENV=test&& ./node_modules/.bin/jest --testPathPattern=/build/public/build --updateSnapshot",
     "test-one-a": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/components/elements/PageForm",
-    "test-one": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/serialbox/src/components/PoolListItem",
+    "test-one": "SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/serialbox/src/components/NavItems",
     "test-build-capture":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/capture/src",
     "test-build-epcis":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/epcis/src",
     "test-build-masterdata":"SET NODE_ENV=production&& ./node_modules/.bin/jest --testPathPattern=/build/public/build/plugins/masterdata/src",

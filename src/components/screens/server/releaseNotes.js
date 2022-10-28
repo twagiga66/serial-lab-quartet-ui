@@ -39,7 +39,7 @@ class releaseNotes extends Component {
                         <FormattedMessage id="plugins.capture.releaseNotes" />
                     </h5>
                     {
-                      sessionStorage.getItem("appVersion") === false
+                      JSON.parse(sessionStorage.getItem("appVersion")) === true
                       ?
                       iRN.map((note, index) => (
                           <div className="form-card pt-elevation-4 zero-padding" key={index}>

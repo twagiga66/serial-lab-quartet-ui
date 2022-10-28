@@ -42,7 +42,6 @@ class _DashboardRight extends Component {
     else {
       sessionStorage.setItem("appVersion", false)
     }
-    
   }
   goTo = path => {
     this.props.history.push(path);

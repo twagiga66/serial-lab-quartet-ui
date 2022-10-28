@@ -32,6 +32,16 @@
     ],
     "internalReleaseNotes": [
         {
+            "id": "4",
+            "versionNumber": "2.0.2_internal",
+            "versionName": "Add number pool fix",
+            "versionType":"Bugfix",
+            "versionFeatures": [
+                "[FIX] Creating list-based region for Number Pool"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        },
+        {
             "id": "3",
             "versionNumber": "2.0.1_internal",
             "versionName": "Add number pool fix",

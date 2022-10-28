@@ -240,7 +240,7 @@ export default connect(
   (state, ownProps) => {
     return {
       servers: state.serversettings.servers,
-      nr: state.numberrange.servers
+      nr: state.numberrange ? state.numberrange.servers : null
     };
   },
   {loadPools}

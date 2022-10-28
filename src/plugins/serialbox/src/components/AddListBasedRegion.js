@@ -27,7 +27,7 @@ import {RightPanel} from "../../../../components/layouts/Panels";
 import {Card, ButtonGroup, Button, Icon} from "@blueprintjs/core";
 import {FormattedMessage} from "react-intl";
 import {reduxForm} from "redux-form";
-import changeFieldValue from "redux-form";
+const changeFieldValue = qu4rtet.require("redux-form").change;
 import uuidv1 from "uuid/v1";
 import PageForm from "../../../../components/elements/PageForm";
 const {loadEndpoints, loadAuthenticationList} = qu4rtet.require(`${qu4rtet.pluginPath}/quartet-ui-output/lib/reducers/output.js`);

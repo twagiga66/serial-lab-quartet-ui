@@ -368,7 +368,6 @@ responseRulesFunction = () => {
 
 export const AddPool = connect(
     (state, ownProps) => {
-      // console.log("state AddPool", state);
       return {
         server: state.serversettings.servers[ownProps.match.params.serverID],
         servers: state.serversettings.servers,

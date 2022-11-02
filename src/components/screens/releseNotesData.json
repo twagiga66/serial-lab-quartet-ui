@@ -32,6 +32,16 @@
     ],
     "internalReleaseNotes": [
         {
+            "id": "5",
+            "versionNumber": "2.0.3_internal",
+            "versionName": "Fix pop-up display",
+            "versionType":"Bugfix",
+            "versionFeatures": [
+                "[FIX] Pop-up display function"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        },
+        {
             "id": "4",
             "versionNumber": "2.0.2_internal",
             "versionName": "Add number pool fix",

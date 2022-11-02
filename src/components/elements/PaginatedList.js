@@ -214,7 +214,6 @@ setValues = (e, index, id, path) => {
 }
 
   render() {
-    // console.log(this.state.maxPages)
     const {entries} = this.state;
     return (
       <Card className="pt-elevation-4">

@@ -1,6 +1,6 @@
-# QU4RTET-UI BUG REPORT
+# QU4RTET-UI BUG REPORT ![alt text](./icon.png "Title Text")
 
-![alt text](./icon.png "Title Text")
+
 
 ## Version
 

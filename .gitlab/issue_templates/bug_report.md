@@ -11,7 +11,7 @@
 ### Steps to reproduce
 
 (How one can reproduce the issue - this is very important)
-(example: Clicked A-> Clicked B -> Opened A -> Move back to A)
+(example: Clicked A-> Clicked B -> Opened A -> Moved back to A)
 
 ### What is the current bug behavior?
 {- (What actually happens) -}

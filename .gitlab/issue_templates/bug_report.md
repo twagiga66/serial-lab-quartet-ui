@@ -16,7 +16,7 @@
 
 ## What is the current bug behavior?
 {- 
-(What actually happens)
+    (What actually happens)
 -}
 ## What is the expected correct behavior?
 {+ 

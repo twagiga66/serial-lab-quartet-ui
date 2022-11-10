@@ -58,7 +58,7 @@ class _ServerTasks extends Component {
       loading: true
     };
     this.offset = 0;
-    this.serverTaskName = this.props.server.serverID;
+    this.serverTaskName = this.props.server ? this.props.server.serverID : "";
     this.currentPage = parseInt(sessionStorage.getItem(`pageTask${this.serverTaskName}`));
     this.debounced = null;
     this.taskType = null;
@@ -147,7 +147,7 @@ class _ServerTasks extends Component {
     this.setState(
       { loading : true },
       () => {
-          setTimeout(()=>{this.setState({loading : false})}, 750)
+          setTimeout(()=>{this.setState({loading : false})}, [])
       }
     );
   };
@@ -184,7 +184,7 @@ class _ServerTasks extends Component {
   };
 
   render() {
-    let serverName = this.props.server.serverSettingName;
+    let serverName = this.props.server ? this.props.server.serverSettingName : "";
     const {tasks} = this.state;
     return (
       <Card className="pt-elevation-4">

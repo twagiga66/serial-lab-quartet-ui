@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import classNames from "classnames";
-import {timeUS, timeEU} from './timeChangeData.json';
+import {
+    // timeUS, 
+    timeEU
+} from './timeChangeData.json';
 import "./Clock.css";
 class Clock extends Component {
 constructor(props) {
@@ -10,7 +13,7 @@ constructor(props) {
         day: null,
         month: null,
         year: null,
-        timeTochangeInUS: null,
+        // timeTochangeInUS: null,
         timeTochangeInUE: null,
         visibility: true,
         tempo: 0,
@@ -20,6 +23,7 @@ constructor(props) {
 }
 componentDidMount() {
         if(this.state.isChecked === false) {
+            
             this.myInterval = setInterval(() => {
                 if (this.state.tempo >= 30) {
                     this.setState({
@@ -37,7 +41,7 @@ componentDidMount() {
                     });
                 // How to pass arguments to function:
                 // this.displayTimeChange(timezoneArray, countryState);
-                this.displayTimeChange(timeUS, "timeTochangeInUS");
+                // this.displayTimeChange(timeUS, "timeTochangeInUS");
                 this.displayTimeChange(timeEU, "timeTochangeInUE");
                 };
             }, 1000);
@@ -68,9 +72,10 @@ displayTimeChange = (timezoneArray, countryState) => {
         const newDate = new Date(splitDate[2], splitDate[1] - 1, splitDate[0]);
         const nowDate = new Date().getTime();
         // const language = window.navigator.userLanguage || window.navigator.language;
-        // console.log(language);
         if (newDate - nowDate > 0 ) {
             if (newDate - nowDate > 1209600000) {
+                clearInterval(this.myInterval);
+                console.log("Stopping")
                 break;
             } else {
                 const value = this.msToTime(newDate - nowDate);
@@ -97,9 +102,12 @@ remindLater = (e) => {
 }
 render(){
     return(
-        this.state.timeTochangeInUE && this.state.timeTochangeInUS || 
-        this.state.timeTochangeInUE ||
-        this.state.timeTochangeInUS 
+        this.state.timeTochangeInUE 
+        // && this.state.timeTochangeInUS 
+        // || 
+        // this.state.timeTochangeInUE 
+        // ||
+        // this.state.timeTochangeInUS 
         ?
         <div className={
             classNames({

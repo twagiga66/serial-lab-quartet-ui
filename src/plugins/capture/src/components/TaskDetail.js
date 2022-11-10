@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import React, {Component} from "react";
-import {Card, Callout, Button, Tag, Intent, Icon} from "@blueprintjs/core";
+import {Card, Callout, Button, Tag, Intent, Icon,InputGroup} from "@blueprintjs/core";
 import {connect} from "react-redux";
 import {pluginRegistry} from "plugins/pluginRegistration";
 import objectPath from "object-path";
@@ -42,9 +42,13 @@ class _TaskDetail extends Component {
   constructor(props) {
     super(props);
     let task =
+      this.props.tasks
+      ?
       this.props.tasks.find(task => {
         return task.name === this.props.match.params.taskName;
-      }) || null;
+      }) || null
+      :
+      ""
     if (typeof task.rule === 'object') {
       // backward compatible.
       task.ruleObject = task.rule;
@@ -52,11 +56,15 @@ class _TaskDetail extends Component {
     this.state = {
       task: task,
       confirmOpened: false,
-      downloadLink: ""
+      downloadLink: "",
+      firstInputValue: 0,
+      secondInputValue: 0,
+      serachedPariod: ""
     };
     this.autoRefresh = null;
     this.timeArray = [];
   }
+  
   setDownloadLink = async () => {
     let serverObject = await pluginRegistry.getServer(this.props.server);
     let client = await serverObject.getClient();
@@ -160,8 +168,10 @@ class _TaskDetail extends Component {
   }
 
   render() {
-    // console.log(this.state)
+    console.log(this.props)
     const {task} = this.state;
+    const filteredArray = [...new Set(this.timeArray)];
+    const lastValueFilteredArray = filteredArray[filteredArray.length-1];
     let intent = Intent.PRIMARY;
     switch (task.status) {
       case "FINISHED":
@@ -287,6 +297,45 @@ class _TaskDetail extends Component {
                 </div>
               </Card>
             ) : null}
+            {/* {task.taskhistory_set &&
+            Array.isArray(task.taskhistory_set) &&
+            task.taskhistory_set.length > 0 ? (
+              <Card className="pt-elevation-4">
+                <h5>Task Time</h5>
+                <div>
+                  <table className="pt-table pt-bordered pt-striped">
+                    <thead>
+                      <tr>
+                        <td>Total time</td>
+                        <td>From last update</td>
+                        <td>Time difference</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {" "}
+                          <tr>
+                            <th>{this.msToTime(new Date(lastValueFilteredArray).getTime() - new Date(task.taskhistory_set[0].created).getTime())}</th>
+                            <th>{this.msToTime(new Date(lastValueFilteredArray).getTime() - new Date(task.taskhistory_set[task.taskhistory_set.length-1].modified).getTime())}</th>
+                            <th><InputGroup value={this.state.firstInputValue} onChange={evt => this.updateFirstInputValue(evt)} type="number" min='1' max={filteredArray.length-1} placeHolder={`min.1`} /></th>
+                            <th><InputGroup value={this.state.secondInputValue} onChange={evt => this.updateSecondInputValue(evt)} type="number" min='1' max={filteredArray.length} placeHolder={`max.${filteredArray.length}`}/></th>
+
+                          </tr>
+                          {
+                            this.state.serachedPariod != "" ?
+                            <tr>
+                              Time difference between messages {this.state.firstInputValue} and {this.state.secondInputValue}:
+                              
+                              <p>{this.msToTime(new Date(filteredArray[this.state.secondInputValue-1]).getTime() - new Date(filteredArray[this.state.firstInputValue-1]).getTime())}</p>
+                              </tr>
+                          // <tr>Diiference: {new Date(task.taskmessage_set[this.firstInputValue-1]).getTime()}</tr>
+                          :null
+                          }
+                      {" "}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            ) : null} */}
             <Card className="task-messages pt-elevation-4">
               <h5>Messages</h5>
               {task.taskmessage_set.map((message, index) => {
@@ -351,7 +400,6 @@ class _TaskDetail extends Component {
                             : 
                             null
                           }
-
                         </tbody>
                       </table>
                     </div>
@@ -369,12 +417,15 @@ class _TaskDetail extends Component {
 
 export const TaskDetail = connect((state, ownProps) => {
   return {
-    server: state.serversettings.servers[ownProps.match.params.serverID],
-    tasks: objectPath.get(
+    server: state.serversettings.servers && ownProps.match ? 
+    state.serversettings.servers[ownProps.match.params.serverID]
+    :
+    "",
+    tasks: ownProps.match ? objectPath.get(
       state,
       ["capture", "servers", ownProps.match.params.serverID, "tasks"],
       []
-    ),
+    ): "",
     theme: state.layout.theme
   };
 }, {})(_TaskDetail);

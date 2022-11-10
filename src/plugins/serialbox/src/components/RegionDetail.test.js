@@ -16,22 +16,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "./tools/MockQu4rtet";
-const {
+// import "./tools/MockQu4rtet";
+import {
   TestWrapper,
   mockStore,
   initialState,
   updateRegistryIntl
-} = window.require("./tools/mockStore");
-const React = window.require("react");
-const renderer = require("react-test-renderer");
-const Router = window.require("react-router-dom").MemoryRouter;
-const {Provider} = window.require("react-redux");
-import {AddPool} from "./AddPool";
-const {Server} = window.require("./lib/servers");
-const {pluginRegistry} = window.require("./plugins/pluginRegistration");
-const {flattenMessages} = window.require("./lib/flattenMessages");
-const messages = window.require("./messages").default;
+} from "tools/mockStore";
+import React, {Component} from "react";
+import renderer from "react-test-renderer";
+import {Server} from "lib/servers";
+import {pluginRegistry} from "plugins/pluginRegistration";
+import {flattenMessages} from "lib/flattenMessages";
+import messages from "messages";
 import nrmessages from "../messages";
 import {RegionDetail} from "./RegionDetail";
 
@@ -75,10 +72,82 @@ const pluginData = {
   },
   intl: newIntl
 };
-
+const pluginData1 = {
+  ...initialState,
+  serversettings: {servers: {fakeid: {serverID: "fakeid"}}},
+  numberrange: {
+    servers: {
+      fakeid: {
+        server: {
+          serverID: "fakeid",
+          password: "toor",
+          username: "root",
+          port: "80",
+          serverName: "localhost",
+          serverSettingName: "fake server",
+          ssl: false,
+          path: ""
+        },
+        pools: [
+          {
+            sequentialregion_set: [],
+            created_date: "2018-02-12T14:56:11.462232Z",
+            modified_date: "2018-02-12T14:56:11.462279Z",
+            readable_name: "Fake Pool",
+            machine_name: "fakepool",
+            active: true,
+            request_threshold: 50000
+          }
+        ]
+      }
+    },
+    region: {},
+    currentRegions: [
+      {active:true,
+        created_date:"2020-06-11T22:07:13.866789Z",
+        current:10288070,
+        machine_name:"00342291131903",
+        max:11000000,
+        min:7000000,
+        modified_date:"2021-02-02T05:49:37.564797Z",
+        order:2,
+        pool:"00342291131903",
+        readable_name:"00342291131903",
+        remaining:3981671,
+        start:7000000,}
+    ]
+  },
+  intl: newIntl
+};
 const store = mockStore(pluginData);
-
+const store1 = mockStore(pluginData1);
 it("renders correctly a pool with no region", () => {
+  let server = pluginData.numberrange.servers.fakeid.server;
+  pluginRegistry.registerServer(new Server(server));
+  const promise = Promise.resolve({
+    statusCode: 200,
+    ok: true,
+    body: []
+  });
+  window.fetch = jest.fn().mockImplementation(() => promise);
+
+  const regionDetailScreen = renderer
+    .create(
+      <TestWrapper locale={locale} messages={newIntl.messages} store={store}>
+        <RegionDetail
+          store={store}
+          match={{params: {serverID: "fakeid", pool: "fakepool"}}}
+          server={server}
+        />
+      </TestWrapper>
+    )
+    .toJSON();
+  return promise.then(data => {
+    expect(regionDetailScreen).toMatchSnapshot();
+  });
+});
+
+it("renders correctly a pool with region detail", () => {
   let server = pluginData.numberrange.servers.fakeid.server;
   pluginRegistry.registerServer(new Server(server));
   const promise = Promise.resolve({
@@ -91,7 +160,7 @@ it("renders correctly a pool with no region", () => {
     .create(
       <TestWrapper locale={locale} messages={newIntl.messages} store={store}>
         <RegionDetail
-          store={store}
+          store={store1}
           match={{params: {serverID: "fakeid", pool: "fakepool"}}}
           server={server}
         />

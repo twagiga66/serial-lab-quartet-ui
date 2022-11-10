@@ -1,16 +1,10 @@
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import classNames from "classnames";
 import {deleteAPool, setAllocation} from "../reducers/numberrange";
-const {showMessage} = qu4rtet.require("./lib/message");
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {RightPanel} = qu4rtet.require("./components/layouts/Panels");
 import {pluginRegistry} from "../../../pluginRegistration";
-
-const classNames = qu4rtet.require("classnames");
-const intl = pluginRegistry.getIntl()
 import {DeleteDialog} from "components/elements/DeleteDialog";
-
-const {
+import {
     Card,
     Menu,
     MenuItem,
@@ -22,11 +16,11 @@ const {
     ContextMenu,
     RadioGroup,
     Radio
-} = qu4rtet.require("@blueprintjs/core")
-const {FormattedMessage, FormattedDate, FormattedNumber} = qu4rtet.require(
-    "react-intl"
-);
-const {Link} = qu4rtet.require("react-router-dom");
+} from "@blueprintjs/core";
+import {FormattedMessage, FormattedDate, FormattedNumber} from "react-intl";
+import {Link} from "react-router-dom";
+
+const intl = pluginRegistry.getIntl();
 
 class PoolListItem extends Component {
     constructor(props) {
@@ -198,8 +192,17 @@ class PoolListItem extends Component {
                 <td>{pool.readable_name}</td>
                 <td>
                     <Link
-                        to={`/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`}>
-                        {pool.machine_name}
+                        to={`/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`}
+                        >
+                        <div 
+                            onClick={
+                                (e)=>this.props.setValues(
+                                e, 
+                                this.props.index, 
+                                pool.id, 
+                                `/number-range/edit-pool/${serverID}/${pool.machine_name}?returnpage=${this.props.page}`)}>{pool.machine_name
+                            }
+                        </div>
                     </Link>
                 </td>
                 <td>
@@ -222,10 +225,20 @@ class PoolListItem extends Component {
                     <Link
                         to={`/number-range/region-detail/${serverID}/${pool.machine_name}/`}>
                         {this.props.regionNumber}{" "}
-                        <FormattedMessage
+                        <div 
+                            onClick={
+                                (e)=>this.props.setValues(
+                                e, 
+                                this.props.index, 
+                                pool.id, 
+                                `/number-range/region-detail/${serverID}/${pool.machine_name}/`)}>
+                                {/* {pool.machine_name} */}
+                               <FormattedMessage
                             id="plugins.numberRange.regions"
                             defaultMessage="regions"
-                        />
+                        /> 
+                        </div>
+                        
                     </Link>
                 </td>
                 <Dialog

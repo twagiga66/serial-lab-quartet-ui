@@ -15,10 +15,9 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {FormattedNumber} = qu4rtet.require("react-intl");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
+import React, {Component} from "react";
+import {FormattedNumber} from "react-intl";
+import {pluginRegistry} from "plugins/pluginRegistration";
 
 export default class RegionRange extends Component {
   render() {

@@ -37,7 +37,8 @@ const defaultLocaleMsg = {
     deleteTradeItemConfirmBody: "This will delete this trade item permanently.",
     addLocationIdentifier: "Add an Identifier",
     addLocationField: "Add a Field",
-    editTradeItemField: "Edit Trade Item Field"
+    editTradeItemField: "Edit Trade Item Field",
+    realeaseNotes: "Release Notes for QU4RTET-UI"
   }
 };
 

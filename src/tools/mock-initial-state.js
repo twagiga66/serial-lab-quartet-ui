@@ -14,6 +14,19 @@ export default {
         appList: ["", "capture", "epcis", "manifest", "rest-auth", "serialbox"],
         username: "lduros",
         password: "password1234"
+      },
+      "d0246781-67c6-474b-8ab0-29de61b6e6b1": {
+        serverID: "d0246781-67c6-474b-8ab0-29de61b6e6b1",
+        protocol: "http",
+        port: "8000",
+        path: "",
+        ssl: false,
+        hostname: "localhost",
+        serverSettingName: "box 1",
+        url: "http://localhost:8000/",
+        appList: ["", "capture", "epcis", "manifest", "rest-auth", "serialbox"],
+        username: "lduros",
+        password: "password1234"
       }
     }
   },
@@ -181,7 +194,7 @@ export default {
   },
   numberrange: {
     servers: {
-      "704e4478-f018-4fb0-b0b3-2711bbdd325c": {
+      "d0246781-67c6-474b-8ab0-29de61b6e6bb": {
         pools: [
           {
             sequentialregion_set: [
@@ -197,7 +210,7 @@ export default {
           }
         ],
         server: {
-          serverID: "704e4478-f018-4fb0-b0b3-2711bbdd325c",
+          serverID: "d0246781-67c6-474b-8ab0-29de61b6e6bb",
           protocol: "http",
           port: "8000",
           path: "",
@@ -363,5 +376,180 @@ export default {
       region: "random2",
       size_granted: 4
     }
-  }
+  },
+  epcis: {
+    servers: {
+      "d0246781-67c6-474b-8ab0-29de61b6e6bb": {
+        detailItems: 
+          {
+            "urn:epc:id:sgtin:0300005.010001.A00000000001": 
+          {
+            createdDate:"2022-09-28T17:38:39.579227",
+            events: [
+              {objectEvent: {
+              action:"ADD",
+              bizLocation:"urn:epc:id:sgln:0300005.00000.0",
+              bizStep:"urn:epcglobal:cbv:bizstep:commissioning",
+              bizTransactionList: {},
+              destinationList:{},
+              disposition:"urn:epcglobal:cbv:disp:active",
+              epcList: ["urn:epc:id:sgtin:0300005.010001.A00000000001"],
+              errorDeclaration:null,
+              eventID:null,
+              eventTime:"2022-03-01T12:00:00.341449+00:00",
+              eventTimezoneOffset:"-07:00",
+              id:"7f42fc69-3ab0-4c8e-84d2-5ece9858d307",
+              ilmd: {
+                  itemExpirationDate:"2030-12-31",
+                  lotNumber:"VRSTEST01",
+              },
+              quantityList:{},
+              readPoint: "urn:epc:id:sgln:0300005.00000.0",
+              recordTime:"2022-07-14T12:46:49.779159+00:00"
+          }}]},
+          "cc4a2f9d-2e61-4961-9716-1aa2752d332a":{
+            events: [
+              {objectEvent: {
+              action:"OBSERVE",
+              bizLocation:"urn:epc:id:sgln:0300005.00000.0",
+              bizStep:"urn:epcglobal:cbv:bizstep:commissioning",
+              bizTransactionList: {},
+              destinationList:{},
+              disposition:"urn:epcglobal:cbv:disp:active",
+              epcList: ["urn:epc:id:sgtin:0300005.010001.A00000000001"],
+              errorDeclaration:null,
+              eventID:null,
+              eventTime:"2022-03-01T12:00:00.341449+00:00",
+              eventTimezoneOffset:"-07:00",
+              id:"7f42fc69-3ab0-4c8e-84d2-5ece9858d307",
+              ilmd: {
+                  itemExpirationDate:"2030-12-31",
+                  lotNumber:"VRSTEST01",
+              },
+              quantityList:{},
+              readPoint: "urn:epc:id:sgln:0300005.00000.0",
+              recordTime:"2022-07-14T12:46:49.779159+00:00"
+          }}]
+          }
+        },
+        entries: [
+          {
+            created:"2022-07-14T12:46:49.790040Z",
+            decommissioned:false,
+            id:"ee807298-1883-4682-a695-acedc6c40548",
+            identifier:"urn:epc:id:sgtin:0300005.010001.A00000000001",
+            is_parent:false,
+            last_aggregation_event:"270dd597-93ea-452a-ac63-ab0fa7bd9b11",
+            last_aggregation_event_action:"ADD",
+            last_aggregation_event_time:"2022-03-01T12:20:00.341449Z",
+            last_disposition:"urn:epcglobal:cbv:disp:in_progress",
+            last_event:"270dd597-93ea-452a-ac63-ab0fa7bd9b11",
+            last_event_time:"2022-03-01T12:20:00.341449Z",
+            modified:"2022-07-14T12:46:50.313393Z",
+            parent_id:"0a02be49-7454-4095-ab7f-f32bbc001ce7",
+            top_id:"5b2bcfc4-1d73-4ea3-acce-28306eb64cbe",
+          }
+        ],
+        events: [
+          {
+            created:"2022-07-14T12:46:49.790040Z",
+            decommissioned:false,
+            id:"ee807298-1883-4682-a695-acedc6c40548",
+            identifier:"urn:epc:id:sgtin:0300005.010001.A00000000001",
+            is_parent:false,
+            last_aggregation_event:"270dd597-93ea-452a-ac63-ab0fa7bd9b11",
+            last_aggregation_event_action:"ADD",
+            last_aggregation_event_time:"2022-03-01T12:20:00.341449Z",
+            last_disposition:"urn:epcglobal:cbv:disp:in_progress",
+            last_event:"270dd597-93ea-452a-ac63-ab0fa7bd9b11",
+            last_event_time:"2022-03-01T12:20:00.341449Z",
+            modified:"2022-07-14T12:46:50.313393Z",
+            parent_id:"0a02be49-7454-4095-ab7f-f32bbc001ce7",
+            top_id:"5b2bcfc4-1d73-4ea3-acce-28306eb64cbe",
+          }
+        ],
+        count: 58
+      }
+
+    }
+  },
+  masterdata:{
+    servers: {
+      "d0246781-67c6-474b-8ab0-29de61b6e6bb": {
+        locationDetail: {
+          identifier:"4324",
+          detail: {
+            id:1,
+            GLN13:"23",
+            SGLN: "123",
+            name:"name"
+          }
+        },
+        tradeItems: [
+          {id:123}
+        ],
+        companies: [
+          {
+              GLN13:"1324354657687",
+              SGLN:"urn:epc:id:sgtin:324354.1657687.6789",
+              address1:"Marszałkowska",
+              address2:null,
+              address3:null,
+              city:"Warsaw",
+              company_type:null,
+              country:"PL",
+              gs1_company_prefix:"324354",
+              id:1,
+              latitude:null,
+              longitude:null,
+              name:"Alchemia",
+              postal_code:null,
+              state_province:null
+          }
+      ],
+      locationDetail: [
+         {
+          id:1,
+          GLN13:"23",
+          SGLN: "123",
+          name:"name"
+        }
+      ],
+      tradeItems: [
+        {
+          GTIN14:"14253647586811",
+          NDC:"12121-12-123",
+          NDC_pattern:"5-3-2",
+          additional_id:null,
+          additional_id_typecode:null,
+          company:1,
+          country_of_origin:"PL",
+          description_short:null,
+          dosage_form_type:"Kubek",
+          drained_weight:100,
+          drained_weight_uom:null,
+          functional_name:"Kompot 200 ml",
+          gross_weight:null,
+          gross_weight_uom:null,
+          id:2,
+          image:null,
+          label_description:null,
+          manufacturer_name:null,
+          net_content_description:null,
+          net_weight:null,
+          net_weight_uom:null,
+          pack_count:null,
+          package_uom:null,
+          regulated_product_name:"Kompot",
+          serial_number_length:null,
+          strength_description:null,
+          trade_item_description:null,
+          tradeitemfield_set:[]
+        }
+      ]
+      }
+    }
+  },
+  
+
 };

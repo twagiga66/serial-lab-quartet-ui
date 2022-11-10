@@ -22,6 +22,8 @@ import {Card, Tag, ControlGroup, Button, InputGroup,
 import {FormattedMessage} from "react-intl";
 import {withRouter} from "react-router";
 import {pluginRegistry} from "plugins/pluginRegistration";
+import { loadEntry } from "../../plugins/epcis/src/reducers/epcis";
+import { session } from "inject-css";
 
 /*
   Displays a list of objects (entries, events, companies, locations) as
@@ -45,6 +47,7 @@ class _PaginatedList extends Component {
     };
     this.offset = 0;
     this.currentPage = 1;
+    // this.poolID = [4,2,5,6];
     this.debounced = null;
     this.fetchEntries = null;
     this.timer = null;
@@ -175,21 +178,42 @@ class _PaginatedList extends Component {
     if (this.debounced) {
       clearTimeout(this.debounced);
     }
+    const poolID=6;
     this.debounced = setTimeout(() => {
       const {loadEntries, server} = this.props;
-      loadEntries(
-        server,
-        this.state.keywordSearch,
-        this.currentPage,
-        this.props.ordering ? this.props.ordering : null,
-        this.props.type ? this.props.type : null
-      );
+      if (this.props.event === true) {
+        loadEntries(
+          server,
+          this.state.keywordSearch,
+          this.currentPage,
+          this.props.ordering ? this.props.ordering : null,
+          this.props.type ? this.props.type : null,
+          // poolID
+        );
+      } else {
+        loadEntries(
+          server,
+          this.state.keywordSearch,
+          this.currentPage,
+          this.props.ordering ? this.props.ordering : null,
+          // this.props.type ? this.props.type : null,
+          poolID
+        );
+      }
     }, clear);
     // this.loadingScreen(); 
   };
 
+setValues = (e, index, id, path) => {
+  e.preventDefault();
+  // sessionStorage.setItem("addNewPool", false)
+  sessionStorage.setItem("newPool", false);
+  sessionStorage.setItem("ResponseRulesID", id);
+  sessionStorage.setItem("clickedElementOfNumberPoolsList", index);
+  this.goTo(path);
+}
+
   render() {
-    // console.log(this.state.maxPages)
     const {entries} = this.state;
     return (
       <Card className="pt-elevation-4">
@@ -268,6 +292,8 @@ class _PaginatedList extends Component {
                           server={this.props.server}
                           history={this.props.history}
                           page={this.currentPage}
+                          index = {index}
+                          setValues = {this.setValues}
                         />
                       );
                     })
@@ -276,15 +302,15 @@ class _PaginatedList extends Component {
                     || 
                     this.state.loadingRR === true ?
                   <tr className='tableLoading'>
-                    <div class="middle">
-                        <div class="bar bar1"></div>
-                        <div class="bar bar2"></div>
-                        <div class="bar bar3"></div>
-                        <div class="bar bar4"></div>
-                        <div class="bar bar5"></div>
-                        <div class="bar bar6"></div>
-                        <div class="bar bar7"></div>
-                        <div class="bar bar8"></div>
+                    <div className="middle">
+                        <div className="bar bar1"></div>
+                        <div className="bar bar2"></div>
+                        <div className="bar bar3"></div>
+                        <div className="bar bar4"></div>
+                        <div className="bar bar5"></div>
+                        <div className="bar bar6"></div>
+                        <div className="bar bar7"></div>
+                        <div className="bar bar8"></div>
                     </div>
                   </tr>  
                   : 

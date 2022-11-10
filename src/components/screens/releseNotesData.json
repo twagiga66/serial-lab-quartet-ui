@@ -1,0 +1,87 @@
+{
+    "releaseNotes": [
+        {
+            "id": "2",
+            "versionNumber": "2.0.0",
+            "versionName": "New Release version 2.0.0",
+            "versionType":"improvement",
+            "versionFeatures": [
+                "[IMPROVEMENT] Improve loading speed of data at number pools list.",
+                "[NEW FEATURE] Releas Notes section added to the Dashboard screen with link to the page with all previous release notes.",
+                "[FIX] Fix rendering process of the Event entry detail view, without having to renter the record."
+            ],
+            "releaseNotesDescriptionsFeature": [1,2,3,4]
+        },
+        {
+            "id": "1",
+            "versionNumber": "1.3.0",
+            "versionName": "Version 1.3.0",
+            "versionType":"improvement",
+            "versionFeatures": [
+                "[NEW FEATURE] Feature to allow QU4RTET users to more efficiently revert to the “Tasks List” view when they have entered Task Detail view, via use of a  “Back Arrow”.",
+                "[NEW FEATURE] Feature to remind QU4RTET users to adjust the time on their packaging lines to account for the Daylight Savings time adjustments in spring and autumn.",
+                "[IMPROVEMENT] Restriction of the capability for users with low level QU4RET access to edit the random Serial Number (SN) ranges.",
+                "[IMPROVEMENT] Animation while data is loading for “Tasks List” and “Number Pools”.",
+                "[IMPROVEMENT] A modern and unified application view with improved style settings.",
+                "[NEW FEATURE] Feature to calculate and show the user (in hours, minutes, seconds, and milliseconds) the time difference between steps in the Task Detail.",
+                "[IMPROVEMENT] Addition of a form for the creation of “List-Based regions” within the UI.",
+                "[NEW FEATURE] Functionality to allow the user to change the visibility of server names."
+            ],
+            "releaseNotesDescriptionsFeature": [1,2,3,4]
+        }
+    ],
+    "internalReleaseNotes": [
+        {
+            "id": "5",
+            "versionNumber": "2.0.3_internal",
+            "versionName": "Fix pop-up display",
+            "versionType":"Bugfix",
+            "versionFeatures": [
+                "[FIX] Pop-up display function"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        },
+        {
+            "id": "4",
+            "versionNumber": "2.0.2_internal",
+            "versionName": "Add number pool fix",
+            "versionType":"Bugfix",
+            "versionFeatures": [
+                "[FIX] Creating list-based region for Number Pool"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        },
+        {
+            "id": "3",
+            "versionNumber": "2.0.1_internal",
+            "versionName": "Add number pool fix",
+            "versionType":"Bugfix",
+            "versionFeatures": [
+                "[FIX] Adding Number Pool bug fix"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        },
+        {
+            "id": "2",
+            "versionNumber": "1.4.7_internal",
+            "versionName": "Release Notes Update",
+            "versionType":"improvement",
+            "versionFeatures": [
+                "[IMPROVEMENT] Add Release Notes button to the top navigation bar",
+                "[IMPROVEMENT] Add type of change for every row of release notes (FIX, IMPROVEMENT, NEW FEATURE)"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        },
+        {
+            "id": "1",
+            "versionNumber": "1.4.6_internal",
+            "versionName": "Release Notes ",
+            "versionType":"feature",
+            "versionFeatures": [
+                "Releas Notes section added to the Dashboard screen with link to the page with all previous release notes",
+                "Screen with all release notes was created"
+            ],
+            "releaseNotesDescriptionsFeature": [1,2]
+        }
+    ]
+}

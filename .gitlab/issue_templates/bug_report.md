@@ -1,8 +1,6 @@
-# QU4RTET-UI BUG REPORT ![alt text](./icon.png "Title Text")
+## ![alt text](./icon.png "Title Text") QU4RTET-UI BUG REPORT
 
-
-
-## Version
+##### Version
 
 (Number of QU4RTET-UI Version)
 
@@ -13,6 +11,7 @@
 ## Steps to reproduce
 
 (How one can reproduce the issue - this is very important)
+(example: Clicked A-> Clicked B -> Opened A -> Move back to A)
 
 ## What is the current bug behavior?
 {- (What actually happens) -}

@@ -6,7 +6,7 @@
             "versionName": "New Release version 2.0.0",
             "versionType":"improvement",
             "versionFeatures": [
-                "[IMPROVEMENT] Improve loading speed of data at number pools list.",
+                "[IMPROVEMENT] Improve loading speed of data at 'Number Pools' list.",
                 "[NEW FEATURE] Releas Notes section added to the Dashboard screen with link to the page with all previous release notes.",
                 "[FIX] Fix rendering process of the Event entry detail view, without having to renter the record."
             ],

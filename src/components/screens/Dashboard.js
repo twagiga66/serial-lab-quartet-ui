@@ -32,7 +32,7 @@ class _DashboardRight extends Component {
     super(props);
     const appVersion = window.require("electron").remote.app.getVersion();
     this.state = {
-      version: (appVersion + "_internal")
+      version: (appVersion + "")
     };
   }
   componentDidMount() {

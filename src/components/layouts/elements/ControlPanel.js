@@ -52,7 +52,7 @@ export class _ControlPanel extends Component {
     return true;
   };
   changeVisibility = () => {
-    if (this.props.intl.locale === "en-US") {
+    if (this.props.intl.locale === "en-US" || this.props.intl.locale === "fr-FR") {
       swal({
         icon: "warning",
         buttons: [true, true],
@@ -77,24 +77,25 @@ export class _ControlPanel extends Component {
           }
         } 
       })
-    } else if (this.props.intl.locale === "fr-FR") {
-      /* Here it if possibility to add prompts in other languages */
-      // swal({
-      //   icon: "warning",
-      //   buttons: ["X","✓"],
-      //   content: (
-      //     <div></div>
-      //   )
-      // })
-      // .then((willHide) => {
-      //   if (willHide) {
-      //     swal("", {
-      //       icon: "success",
-      //     });
-      //     this.props.switchVisibility(!this.props.visibility)
-      //   } 
-      // })
-    }
+    } 
+    // else if (this.props.intl.locale === "fr-FR") {
+    //   /* Here it if possibility to add prompts in other languages */
+    //   // swal({
+    //   //   icon: "warning",
+    //   //   buttons: ["X","✓"],
+    //   //   content: (
+    //   //     <div></div>
+    //   //   )
+    //   // })
+    //   // .then((willHide) => {
+    //   //   if (willHide) {
+    //   //     swal("", {
+    //   //       icon: "success",
+    //   //     });
+    //   //     this.props.switchVisibility(!this.props.visibility)
+    //   //   } 
+    //   // })
+    // }
     
   }
   render() {

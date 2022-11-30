@@ -71,7 +71,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 .feature-description {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .release-list-style g,

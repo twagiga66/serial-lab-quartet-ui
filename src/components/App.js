@@ -119,6 +119,9 @@ class _App extends Component {
               <NavLink to="/plugins" iconName="pt-icon-exchange">
                 <FormattedMessage id="app.nav.plugins" />
               </NavLink>
+              <NavLink to="/release-notes" iconName="annotation">
+                <FormattedMessage id="app.nav.releaseNotes" />
+              </NavLink>
               <NavbarDivider />
               <SwitchLocale />
               <NavbarDivider />

@@ -17,10 +17,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import {loadPools, setAllocation, deleteAPool} from "../reducers/numberrange";
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {
   Menu,
   MenuItem,
   MenuDivider,
@@ -30,14 +29,13 @@ const {
   ContextMenu,
   RadioGroup,
   Radio
-} = qu4rtet.require("@blueprintjs/core");
-const {FormattedMessage} = qu4rtet.require("react-intl");
-const {withRoute} = qu4rtet.require("react-router-dom");
-const {TreeNode} = qu4rtet.require("./components/layouts/elements/TreeNode");
-const classNames = qu4rtet.require("classnames");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
-const {DeleteDialog} = qu4rtet.require("./components/elements/DeleteDialog");
-const {withRouter} = qu4rtet.require("react-router");
+} from "@blueprintjs/core";
+import {FormattedMessage} from "react-intl";
+import {TreeNode} from "../../../../components/layouts/elements/TreeNode";
+import classNames from "classnames";
+import {pluginRegistry} from "plugins/pluginRegistration";
+import {DeleteDialog} from "../../../../components/elements/DeleteDialog";
+import {withRouter} from "react-router";
 
 class _PoolItem extends Component {
   constructor(props) {
@@ -283,6 +281,7 @@ export class _NavPluginRoot extends Component {
       .appList.includes("serialbox");
   }
   goTo = path => {
+    sessionStorage.setItem("newPool", true);
     this.props.history.push(path);
     this.props.loadPools(pluginRegistry.getServer(this.props.serverID));
   };

@@ -77,6 +77,9 @@ class _AddStepParam extends Component {
                 <FormattedMessage id="plugins.capture.editStepParam" />
               )}
             </h5>
+            {
+            step 
+            ? 
             <StepParamForm
               edit={editMode}
               operationId={
@@ -95,7 +98,11 @@ class _AddStepParam extends Component {
               parameters={stepParam ? {id: stepParam.id} : {}}
               server={pluginRegistry.getServer(this.props.server.serverID)}
               history={this.props.history}
-            />
+            /> 
+            :
+              ""
+            }
+            
           </Card>
         </div>
       </RightPanel>

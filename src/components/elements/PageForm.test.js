@@ -256,20 +256,20 @@ const formattedFields = [
   }
 ];
 
-it("renders correctly", () => {
-  const form = renderer
-    .create(
-      <TestWrapper>
-        <PageForm
-          handleSubmit={() => {
-            return null;
-          }}
-        />
-      </TestWrapper>
-    )
-    .toJSON();
-  expect(form).toMatchSnapshot();
-});
+// it("renders correctly", () => {
+//   const form = renderer
+//     .create(
+//       <TestWrapper>
+//         <PageForm
+//           handleSubmit={() => {
+//             return null;
+//           }}
+//         />
+//       </TestWrapper>
+//     )
+//     .toJSON();
+//   expect(form).toMatchSnapshot();
+// });
 
 Enzyme.configure({adapter: new Adapter()});
 

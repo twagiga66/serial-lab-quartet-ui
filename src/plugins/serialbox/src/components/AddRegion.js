@@ -17,12 +17,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import RegionForm from "./RegionForm";
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {RightPanel} = qu4rtet.require("./components/layouts/Panels");
-const {Card} = qu4rtet.require("@blueprintjs/core");
-const {FormattedMessage} = qu4rtet.require("react-intl");
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {RightPanel} from "components/layouts/Panels";
+import {Card} from "@blueprintjs/core";
+import {FormattedMessage} from "react-intl";
 
 class _AddRegion extends Component {
   constructor(props) {

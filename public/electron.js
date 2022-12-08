@@ -117,7 +117,10 @@ if (process.env.REACT_DEV === "dev") {
 }
 
 async function createWindow() {
-  let splash = require("./main-process/splash.js").renderSplashScreen();
+  let splash;
+  if(process.platform !== "darwin") {
+    splash = require("./main-process/splash.js").renderSplashScreen();
+  }
   electron.session.defaultSession.webRequest.onHeadersReceived(
     (details, callback) => {
       callback({ responseHeaders: `script-src 'self'; child-src 'self';` });

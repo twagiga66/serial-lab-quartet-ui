@@ -261,7 +261,7 @@ class _MultiCardPicker extends Component {
           {Array.isArray(entries) && entries.length > 0
             ? entries.map((entry, index) => {
                 let selected = false;
-                if (this.state.pickedItems[entry.id]) {
+                if (this.state.pickedItems !== null && this.state.pickedItems[entry.id]) {
                   selected = true;
                 }
                 return (

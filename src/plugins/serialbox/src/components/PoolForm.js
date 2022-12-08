@@ -15,33 +15,46 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+import React, {Component} from "react";
 import {postAddPool} from "../lib/serialbox-api";
 import {loadPools} from "../reducers/numberrange";
-const React = qu4rtet.require("react");
-const {Component} = React;
-const {connect} = qu4rtet.require("react-redux");
-const {Field, reduxForm, SubmissionError, change} = qu4rtet.require(
-  "redux-form"
-);
-const {getFormInfo} = qu4rtet.require("./lib/server-api");
-const {showMessage} = qu4rtet.require("./lib/message");
-const {DefaultField} = qu4rtet.require("./components/elements/forms");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
-const {withRouter} = qu4rtet.require("react-router");
+import {connect} from "react-redux";
+import {Field, reduxForm, SubmissionError, change} from "redux-form";
+import {getFormInfo} from "../../../../lib/server-api";
+import {showMessage} from "../../../../lib/message";
+import {DefaultField} from "../../../../components/elements/forms";
+import {pluginRegistry} from "plugins/pluginRegistration";
+import {withRouter} from "react-router";
 
 class _PoolForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {formStructure: []};
+    this.state = {
+      formStructure: [],
+      poolData: this.props.pool,
+      isNewPool: sessionStorage.getItem("newPool")
+    };
   }
 
   componentDidMount() {
+    if (this.state.isNewPool === true){
+      if(this.props.nr) {
+        this.props.nr = undefined
+      }
+    }
     this.constructForm(this.props);
+    this.setState({poolData: this.props.pool});
   }
   componentWillReceiveProps(nextProps) {
     // quick check to ensure we have a valid server.
-    this.constructForm(nextProps);
+    if (this.props.nr !== undefined) {
+      this.state.isNewPool
+      this.setState({poolData: this.props.nr[this.props.match.params.serverID].pools[sessionStorage.getItem("clickedElementOfNumberPoolsList")]});
+      this.constructForm(this.state.poolData);
+    }
+    else {
+      this.constructForm(nextProps);
+    }
   }
   cancel = evt => {
     evt.preventDefault();
@@ -60,10 +73,27 @@ class _PoolForm extends Component {
             formStructure: formStructure
           },
           () => {
-            if (props.pool) {
+            // if (this.props.nr !== undefined && sessionStorage.getItem("addNewPool") !== true) {
+            //   // fed existing values.
+            //     props.initialize(this.props.nr[this.props.match.params.serverID].pools[sessionStorage.getItem("clickedElementOfNumberPoolsList")]);
+            // } else {
+            //   // After state has been rendered,
+            //   // initialize checkboxes as false by default to prevent them
+            //   // from being missing in post.
+            //   for (let field of this.state.formStructure) {
+            //     if (field.description.type === "boolean") {
+            //       props.dispatch(change("addPool", field.name, false));
+            //     }
+            //   }
+            // }
+            const pathStr = this.props.history.location.pathname;
+              const [empty, firstPartPath, secondPathPart,  ...others] = pathStr.split("/");
+            
               // fed existing values.
-              props.initialize(props.pool);
-            } else {
+              
+                if (secondPathPart === "edit-pool") {
+                  props.initialize(this.props.nr[this.props.match.params.serverID].pools[sessionStorage.getItem("clickedElementOfNumberPoolsList")]);
+                } else {
               // After state has been rendered,
               // initialize checkboxes as false by default to prevent them
               // from being missing in post.
@@ -118,9 +148,9 @@ class _PoolForm extends Component {
               type: "success"
             });
           }
-          this.props.loadPools(
-            pluginRegistry.getServer(this.props.server.serverID)
-          );
+          // this.props.loadPools(
+          //   pluginRegistry.getServer(this.props.server.serverID)
+          // );
           setTimeout(() => {
             // tiny bit of padding.
             this.props.history.push(
@@ -210,7 +240,7 @@ export default connect(
   (state, ownProps) => {
     return {
       servers: state.serversettings.servers,
-      nr: state.numberrange.servers
+      nr: state.numberrange ? state.numberrange.servers : null
     };
   },
   {loadPools}

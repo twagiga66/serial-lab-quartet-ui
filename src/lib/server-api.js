@@ -57,7 +57,8 @@ const prepHeadersAuth = async (
  *
  */
 export const getFormInfo = async (server, path, createForm, processField) => {
-  return fetch(`${server.url}${path}`, await prepHeadersAuth(server, "OPTIONS"))
+  try{
+    return fetch(`${server.url}${path}`, await prepHeadersAuth(server, "OPTIONS"))
     .then(resp => {
       return resp.json();
     })
@@ -96,14 +97,23 @@ export const getFormInfo = async (server, path, createForm, processField) => {
         }
       }
     })
-    .catch(error => {
-      showMessage({
-        type: "danger",
-        id: "app.servers.errorFormFetch",
-        values: {error, serverName: server.serverSettingName}
-      });
-      throw error;
-    });
+  }
+  catch(error){
+    showMessage({
+          type: "danger",
+          id: "app.servers.errorFormFetch",
+          values: {error, serverName: server.serverSettingName}
+        });
+        throw error;
+  }
+    // .catch(error => {
+    //   showMessage({
+    //     type: "danger",
+    //     id: "app.servers.errorFormFetch",
+    //     values: {error, serverName: server.serverSettingName}
+    //   });
+    //   throw error;
+    // });
 };
 
 /**

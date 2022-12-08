@@ -31,6 +31,7 @@ class _NavPluginRoot extends Component {
     return "RulesTopNav";
   }
   serverHasCapture() {
+    // console.log(this.props)
     return pluginRegistry
       .getServer(this.props.serverID)
       .appList.includes("capture");

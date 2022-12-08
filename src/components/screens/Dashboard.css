@@ -68,3 +68,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
   font-style:italic;
   font-size: 14px;
 }
+
+.feature-description {
+  display: flex;
+  /* align-items: center; */
+}
+
+.release-list-style g,
+.feature-description g {
+  margin-right: 10px;
+}
+
+.release-list-style {
+  display: flex;
+  align-items: center;
+
+}

@@ -18,6 +18,7 @@
 
 import {
     getPools,
+    getPool,
     getRegion,
     getRegions,
     allocate,
@@ -26,19 +27,20 @@ import {
 } from "../lib/serialbox-api";
 import actions from "../actions/pools";
 
-const {handleActions} = qu4rtet.require("redux-actions");
-const {showMessage} = qu4rtet.require("./lib/message");
-const serverActions = qu4rtet.require("./actions/serversettings");
-const base64 = qu4rtet.require("base-64");
-const {Parser} = qu4rtet.require("json2csv");
-const jsonToXML = qu4rtet.require("jsontoxml");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
+import {handleActions} from "redux-actions";
+import {showMessage} from "../../../../lib/message";
+import serverActions from "actions/serversettings";
+import base64 from "base-64";
+import {Parser} from "json2csv";
+import jsonToXML from "jsontoxml";
+import {pluginRegistry} from "plugins/pluginRegistration";
 import {setServerState} from "lib/reducer-helper";
-
+import { loadRule } from "../../../capture/src/reducers/capture";
 export const initialData = () => ({
     servers: {},
     region: {},
-    currentRegions: []
+    currentRegions: [],
+    pool: {}
 });
 
 export const loadResponseRules = async (server, response) => {
@@ -70,7 +72,6 @@ export const loadResponseRules = async (server, response) => {
               }, []);
             return response
         }
-        console.log(response)
         return response
     } catch (e) {
         if (response) {
@@ -96,6 +97,25 @@ export const loadPools = server => {
                 }
             });
         });
+    };
+};
+
+export const loadPool = (server, poolName) => {
+    return dispatch => {
+        getPool(server, poolName)
+        .then(async pool => {
+            dispatch({
+                type: actions.loadPool,
+                payload: pool
+            });
+            getRegions(server, pool).then(regions => {
+                dispatch({
+                    type: actions.loadRegions,
+                    payload: regions
+                });
+            });
+        });
+        
     };
 };
 
@@ -147,7 +167,45 @@ export const loadRegions = (server, pool) => {
             });
     };
 };
-
+export const loadRegionsForNumberPool = (server, pool) => {
+    return dispatch => {
+        // first get all pools again to refresh pool list.
+        loadPool()
+            .then(async pools => {
+                // second get region for given pool (updated.)
+                let updatedPool = pools.find(aPool => {
+                    return aPool.machine_name === pool.machine_name;
+                });
+                getRegions(server, updatedPool).then(regions => {
+                    dispatch({
+                        type: actions.loadRegions,
+                        payload: regions
+                    });
+                });
+            })
+            .catch(e => {
+                showMessage({type: "error", msg: e});
+            });
+    };
+};
+export const loadExactRegionsForNumberPool = (server, pool) => {
+    return dispatch => {
+    getPool(server, pool.machine_name)
+    .then(async pool => {
+        dispatch({
+            type: actions.loadPool,
+            payload: pool
+        });
+    })
+    getRegions(server, pool)
+    .then(async regions => {
+        dispatch({
+            type: actions.loadRegions,
+            payload: regions
+        });
+    });
+};
+};
 export const deleteARegion = (server, pool, region) => {
     return dispatch => {
         deleteRegion(server, region)
@@ -173,7 +231,32 @@ export const deleteARegion = (server, pool, region) => {
             });
     };
 };
-
+export const deleteARegionOfNumberPool = (server, pool, region) => {
+    return dispatch => {
+        deleteRegion(server, region)
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403 || response.status === 401) {
+                        pluginRegistry.getHistory().push("/access-denied");
+                        return;
+                    } else {
+                        throw new Error(response);
+                    }
+                }
+                if (response.ok && response.status === 204) {
+                    dispatch(loadPool(server, pool.machine_name))
+                    // dispatch(loadRegions(server, pool));
+                    showMessage({
+                        id: "plugins.numberRange.regionDeletedSuccessfully",
+                        type: "warning"
+                    });
+                }
+            })
+            .catch(error => {
+                showMessage({type: "error", msg: error.detail});
+            });
+    };
+};
 export const deleteAPool = (server, pool) => {
     return dispatch => {
         deletePool(server, pool)
@@ -194,7 +277,7 @@ export const deleteAPool = (server, pool) => {
 };
 
 export const deleteResponseRule = (server, responseRule, page) => {
-    return dispatch => {
+    return async dispatch => {
         pluginRegistry
             .getServer(server.serverID)
             .getClient()
@@ -202,7 +285,7 @@ export const deleteResponseRule = (server, responseRule, page) => {
                 client.apis.serialbox
                     .serialbox_response_rules_delete(responseRule)
                     .then(result => {
-                        return dispatch(loadPoolList(server, null, page, null));
+                        return dispatch(loadPoolList(server, null, page, null, 0), loadRule(server, responseRule.rule));
                     })
                     .catch(e => {
                         showMessage({
@@ -248,7 +331,7 @@ const generateFile = (server, pool, exportType, data, size) => {
 export const setAllocation = (server, pool, value, exportType) => {
     return dispatch => {
         allocate(server, pool, value, exportType).then(data => {
-            console.info('dispatch called...')
+            // console.info('dispatch called...')
             if (typeof data === "object") {
                 // let's take a look at the data.
                 if (data.detail) {
@@ -302,6 +385,12 @@ export default handleActions(
                 next: action.payload.next
             });
         },
+        [actions.loadPool]: (state, action) => {
+            return {
+                ...state,
+                pool: action.payload,
+            };
+        },
         [actions.loadRegion]: (state, action) => {
             return {
                 ...state,
@@ -336,8 +425,36 @@ export default handleActions(
     {}
 );
 
+export const loadResponseRulesForNumberPool = async (server, response, poolID) => {
+    console.log(server, response, poolID);
+    try {
+        let responseRules = await pluginRegistry
+            .getServer(server.serverID)
+            .fetchListAll("serialbox_response_rules_pool_list", {pool_id: poolID}, []);
+        let poolsMap = {};
+        response.pools.forEach(pool => {
+            poolsMap[pool.id] = pool;
+            pool.response_rules = [];
+        });
+        if (responseRules && responseRules.length > 0) {
+            responseRules.forEach(responseRule => {
+                try {
+                    poolsMap[responseRule.pool].response_rules.push(responseRule);
+                } catch (e) {
+                    // ignore responseRule that don't have a pool set.
+                    console.log("A response rule appears to not have a pool/rule assigned.");
+                    console.log(e);
+                }
+            });
+        }
+        return response
+        
+    } catch (e) {
+        return response
+    }
+};
 
-export const loadPoolList = (server, search, page, ordering) => {
+export const loadPoolList = (server, search, page, ordering, poolID) => {
     const params = {};
     if (search) {
         params.search = search;
@@ -348,14 +465,51 @@ export const loadPoolList = (server, search, page, ordering) => {
     if (ordering) {
         params.ordering = ordering;
     }
+    if (poolID) {
+        params.poolID = poolID;
+    }
     return async dispatch => {
+        sessionStorage.setItem("loadingRR", true);
         let serverObject = pluginRegistry.getServer(server.serverID);
         let response_pools = null;
         let pools = null;
         serverObject
             .fetchPageList("serialbox_pools_list", params, [])
             .then(async response => {
-                response = await loadResponseRules(server, response);
+                response = await loadResponseRulesForNumberPool(server, response, poolID=poolID);
+                sessionStorage.setItem("loadingRR", false);
+                return dispatch({
+                    type: actions.loadPools,
+                    payload: {
+                        serverID: server.serverID,
+                        server: server,
+                        pools: response.results,
+                        count: response.count,
+                        next: response.next
+                    }
+                });
+            })
+            .catch(e => {
+                sessionStorage.setItem("loadingRR", false);
+                showMessage({
+                    type: "error",
+                    id: "plugins.masterData.errorFetchPools",
+                    values: {error: e}
+                });
+            });
+    };
+};
+
+
+export const loadResponserulesForPool = (server, poolID) => {
+    return async dispatch => {
+        let serverObject = pluginRegistry.getServer(server.serverID);
+        sessionStorage.setItem("loadingRR", true);
+        serverObject
+            .fetchPageList("serialbox_pools_list", params, [])
+            .then(async response => {
+                sessionStorage.setItem("loadingRR", false);
+                response = await loadResponseRulesForNumberPool(server, response, poolID=poolID);
                 return dispatch({
                     type: actions.loadPools,
                     payload: {
@@ -368,6 +522,7 @@ export const loadPoolList = (server, search, page, ordering) => {
                 })
             })
             .catch(e => {
+                sessionStorage.setItem("loadingRR", false);
                 showMessage({
                     type: "error",
                     id: "plugins.masterData.errorFetchPools",

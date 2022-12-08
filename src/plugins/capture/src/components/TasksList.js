@@ -69,17 +69,20 @@ class _TasksList extends Component {
 export const TasksList = connect(
   (state, ownProps) => {
     return {
-      server: state.serversettings.servers[ownProps.match.params.serverID],
-      rules: state.capture.servers
+      server: state.serversettings.servers && ownProps.match
+      ? state.serversettings.servers[ownProps.match.params.serverID]
+      :
+      [],
+      rules: state.capture
         ? state.capture.servers[ownProps.match.params.serverID].rules
         : [],
-      tasks: state.capture.servers
+      tasks: state.capture
         ? state.capture.servers[ownProps.match.params.serverID].tasks
         : [],
-      count: state.capture.servers
+      count: state.capture
         ? state.capture.servers[ownProps.match.params.serverID].count
         : 0,
-      next: state.capture.servers
+      next: state.capture
         ? state.capture.servers[ownProps.match.params.serverID].next
         : null
     };

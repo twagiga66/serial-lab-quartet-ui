@@ -24,8 +24,45 @@ import {setServerState} from "lib/reducer-helper";
 import actions from "../actions/capture";
 
 export const initialData = () => ({
-  servers: {}
+  servers: {},
+  rule:[]
 });
+
+const arr = [];
+export const loadRule = (server, ruleID) => {
+  // console.log("Running loadRule", server, ruleID);
+  if(ruleID === "clearArr") {
+    arr.splice(0);
+    return dispatch => {
+      return dispatch({
+        type: actions.loadRule,
+        payload: {
+          arr
+        }
+      });
+    }
+  }
+  else {
+    return dispatch => {
+      arr.splice(0);
+      pluginRegistry
+        .getServer(server.serverID)
+        .getClient()
+        .then(client => {
+          client.apis.capture.capture_rules_read(ruleID).then((response) => {
+            arr.push(response);
+            return (
+              dispatch({
+              type: actions.loadRule,
+              payload: {
+                arr
+              }
+            }))
+          });
+          });
+    };
+  }
+}
 
 export const loadRules = server => {
   const serverObject = pluginRegistry.getServer(server.serverID);
@@ -79,6 +116,7 @@ export const deleteRule = (server, rule) => {
       .getClient()
       .then(client => {
         client.apis.capture.capture_rules_delete(rule).then(result => {
+
           return dispatch(loadRules(server));
         });
       });
@@ -88,7 +126,7 @@ export const deleteRule = (server, rule) => {
 export const loadTasks = (server, search, page, ordering) => {
   const params = {};
   params.search = sessionStorage.getItem(`pageSearch${server.serverID}`);
-  params.page = sessionStorage.getItem(`pageTask${server.serverID}`);;
+  params.page = sessionStorage.getItem(`pageTask${server.serverID}`);
   if (ordering) {
     params.ordering = ordering;
   }
@@ -179,6 +217,12 @@ export default handleActions(
         count: action.payload.rules.length || 0,
         next: null
       });
+    },
+    [actions.loadRule]: (state, action) => {
+      return {
+        ...state,
+        rule: action.payload,
+      };
     },
     [actions.loadTasks]: (state, action) => {
       return setServerState(state, action.payload.serverID, {

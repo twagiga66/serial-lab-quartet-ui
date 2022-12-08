@@ -15,8 +15,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-const {showMessage} = qu4rtet.require("./lib/message");
-const {pluginRegistry} = qu4rtet.require("./plugins/pluginRegistration");
+import {showMessage} from "lib/message";
+import {pluginRegistry} from "plugins/pluginRegistration";
 
 const PREFIX_PATH = "serialbox/";
 
@@ -34,6 +34,23 @@ export const getPools = server => {
     .then(pools => {
       // console.log(pools)
       return pools;
+    })
+    .catch(error => {
+      showMessage({
+        type: "danger",
+        id: "plugins.numberRange.errorFetchPools",
+        values: {serverName: server.serverSettingName}
+      });
+      return error;
+    });
+};
+
+export const getPool = (server, poolName) => {
+  return pluginRegistry
+    .getServer(server.serverID)
+    .fetchObject("serialbox_pool_detail_read",{machine_name: poolName} , [])
+    .then(pool => {
+      return pool;
     })
     .catch(error => {
       showMessage({
@@ -96,11 +113,13 @@ export const getRegionByName = async (server, name, operationId) => {
  */
 export const getRegions = (server, pool) => {
   let promises = [];
+  if (pool.sequentialregion_set) {
   for (let name of pool.sequentialregion_set) {
     promises.push(
       getRegionByName(server, name, "serialbox_sequential_region_detail_read")
     );
   }
+}
   if (pool.randomizedregion_set) {
     for (let name of pool.randomizedregion_set) {
       promises.push(

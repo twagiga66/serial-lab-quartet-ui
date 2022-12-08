@@ -20,5 +20,6 @@ import {createAction} from "redux-actions";
 
 export default {
   loadRules: createAction("CAPTURE_LOAD_RULES"),
+  loadRule: createAction("CAPTURE_LOAD_RULE"),
   loadTasks: createAction("CAPTURE_LOAD_TASKS")
 };

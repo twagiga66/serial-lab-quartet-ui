@@ -52,6 +52,7 @@ class StepItem extends Component {
     const serverObject = pluginRegistry.getServer(serverID);
     this.toggleConfirmDelete();
     ContextMenu.hide();
+    console.log("serverID, step", serverID, step)
     this.props.deleteStep(serverObject, step);
     this.props.history.push(`/capture/rules/${serverObject.serverID}`);
   };
@@ -174,6 +175,7 @@ class _RuleItem extends Component {
   };
   renderContextMenu() {
     const {serverID, rule} = this.props;
+    console.log(this.props)
     return (
       <Menu>
         <ButtonGroup className="context-menu-control" minimal={true}>

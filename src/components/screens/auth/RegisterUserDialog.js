@@ -29,14 +29,14 @@ export class RegisterUserDialog extends Component {
         isOpen={this.props.isOpen}
         onClose={this.props.closeDialog}
         className={classNames({
-          "pt-dark": !!theme.startsWith("dark")
+          "pt-dark": theme ? !!theme.startsWith("dark") : true
         })}
-        title={`${intl.formatMessage({id: "app.servers.registerUser"})} - ${
+        title={theme ? `${intl.formatMessage({id: "app.servers.registerUser"})} - ${
           server.serverSettingName
-        }`}
+        }`: "Default title"}
       >
         <div className="pt-dialog-body">
-          <RegisterForm isOpen={isOpen} server={server} />
+          <RegisterForm isOpen={isOpen ? isOpen : false} server={server} />
         </div>
       </Dialog>
     );

@@ -43,6 +43,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. */
   background-color: #8DC449;
   width: 100px;
 }
+.region_loading {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+}
 .bar {
   width: 10px;
   height: 31px;
